@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اليوم الأول: AI-Powered WordPress Bootcamp (شاشة العرض للطلاب)</title>
+  
+  <!-- Font Awesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Shared Theme Palette -->
+  <link rel="stylesheet" href="theme-palette.css">
+
+  <style>
+    /* Projector & Classroom Presentation Optimized Styles */
+    :root {
+      --slide-padding: clamp(2rem, 5vh, 4rem) clamp(2rem, 6vw, 5rem);
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      overflow: hidden;
+      cursor: default;
+    }
+
+    /* Auto-hide UI during presentation when inactive */
+    body.idle-cursor {
+      cursor: none;
+    }
+    body.idle-cursor .projector-controls {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+    }
+
+    .projector-deck {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .slide {
+      padding: var(--slide-padding);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .slide-content-box {
+      max-width: 1250px;
+      width: 100%;
+      margin: 0 auto;
+      text-align: right;
+    }
+
+    .slide-content-center {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Big Glowing Badges & Tags */
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(56, 88, 233, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(56, 88, 233, 0.4);
+      padding: 0.5rem 1.25rem;
+      border-radius: var(--radius-full);
+      font-size: clamp(0.9rem, 1.5vh, 1.15rem);
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 0 25px rgba(56, 88, 233, 0.25);
+    }
+
+    .projector-title {
+      font-size: clamp(2.2rem, 5.5vh, 4.2rem);
+      line-height: 1.2;
+      font-weight: 900;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .projector-subtitle {
+      font-size: clamp(1.15rem, 2.5vh, 1.75rem);
+      color: var(--text-secondary);
+      max-width: 950px;
+      line-height: 1.6;
+    }
+
+    /* Floating Projector Controls */
+    .projector-controls {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-full);
+      padding: 0.4rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      z-index: 1000;
+      transition: all 0.4s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      direction: ltr;
+    }
+
+    .control-icon-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.25rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .control-icon-btn:hover {
+      background: var(--wp-blue);
+      color: #fff;
+      transform: scale(1.1);
+    }
+
+    .slide-page-badge {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      direction: rtl;
+      padding: 0 0.5rem;
+    }
+
+    /* Interactive Countdown Timer Component */
+    .countdown-widget {
+      background: rgba(15, 23, 42, 0.95);
+      border: 2px solid var(--wp-blue);
+      border-radius: var(--radius-lg);
+      padding: 2rem 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 50px rgba(56, 88, 233, 0.35);
+      margin-top: 1.5rem;
+    }
+    .timer-display {
+      font-family: var(--font-code);
+      font-size: clamp(3.5rem, 10vh, 6.5rem);
+      font-weight: 900;
+      color: #38bdf8;
+      text-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
+      letter-spacing: 4px;
+    }
+    .timer-controls {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+    .timer-btn {
+      padding: 0.6rem 1.6rem;
+      border-radius: var(--radius-full);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all var(--transition-fast);
+      border: none;
+    }
+    .timer-btn-start {
+      background: var(--emerald-green);
+      color: #fff;
+    }
+    .timer-btn-start:hover {
+      background: #059669;
+      transform: scale(1.05);
+    }
+    .timer-btn-reset {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-primary);
+    }
+    .timer-btn-reset:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* Live Interactive Quiz Reveal for Classroom */
+    .classroom-qa-card {
+      background: var(--bg-card);
+      border: 2px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 2rem;
+      margin-bottom: 1.25rem;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      text-align: right;
+    }
+    .classroom-qa-card:hover {
+      border-color: var(--wp-blue);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .classroom-question {
+      font-size: clamp(1.2rem, 2.5vh, 1.6rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .classroom-answer {
+      font-size: clamp(1.05rem, 2vh, 1.35rem);
+      color: var(--emerald-green);
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.1);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1.25rem;
+      border-right: 4px solid var(--emerald-green);
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .classroom-qa-card.open .classroom-answer {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Big Prompt Card for Live Student Copying */
+    .student-prompt-card {
+      background: var(--code-bg);
+      border: 2px solid var(--code-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      margin: 1.5rem 0;
+      text-align: right;
+    }
+    .student-prompt-header {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--code-border);
+      direction: ltr;
+    }
+    .student-prompt-text {
+      padding: 1.5rem 2rem;
+      font-size: clamp(1rem, 2vh, 1.25rem);
+      line-height: 1.8;
+      color: #f1f5f9;
+      max-height: clamp(240px, 45vh, 500px);
+      overflow-y: auto;
+      white-space: pre-wrap;
+      direction: rtl;
+    }
+
+    /* Floating Quick Jump Drawer */
+    .jump-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 380px;
+      height: 100vh;
+      background: var(--bg-secondary);
+      border-left: 2px solid var(--border-medium);
+      box-shadow: var(--shadow-lg);
+      z-index: 2000;
+      padding: 2rem 1.5rem;
+      transform: translateX(105%);
+      transition: transform var(--transition-smooth);
+      overflow-y: auto;
+    }
+    .jump-drawer.open {
+      transform: translateX(0);
+    }
+    .jump-item {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      transition: all var(--transition-fast);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+    }
+    .jump-item:hover, .jump-item.active {
+      background: var(--wp-blue);
+      color: #fff;
+      border-color: var(--wp-blue);
+      transform: translateX(-4px);
+    }
+
+    /* Ambient Background Elements */
+    .ambient-glow-1 {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(56, 88, 233, 0.15) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+      pointer-events: none;
+      filter: blur(50px);
+    }
+    .ambient-glow-2 {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%);
+      bottom: -150px;
+      left: -150px;
+      pointer-events: none;
+      filter: blur(50px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Glows -->
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBar"></div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notice" id="toastNotice">
+    <i class="fa-solid fa-circle-check"></i> تم نسخ الـ Prompt بنجاح!
+  </div>
+
+  <!-- MAIN SLIDES DECK -->
+  <div class="projector-deck" id="deck">
+
+    <!-- SLIDE 0: HERO INTRO -->
+    <div class="slide active" data-slide="0" data-title="شريحة البداية">
+      <div class="slide-content-center">
+        <span class="hero-badge">
+          <i class="fa-solid fa-sparkles"></i> AI-Powered WordPress Bootcamp
+        </span>
+        <h1 class="projector-title" style="font-size: clamp(2.5rem, 6.5vh, 5rem);">
+          اليوم الأول: من فهم الإنترنت إلى إطلاق أول موقع
+        </h1>
+        <p class="projector-subtitle" style="margin-bottom: 2.5rem;">
+          رحلتك العملية من الصفر تمامًا لبناء موقعك الأول باستخدام محرر Gutenberg والذكاء الاصطناعي
+        </p>
+        <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+          <div class="card" style="min-width: 200px; padding: 1.25rem 2rem; align-items: center;">
+            <i class="fa-solid fa-graduation-cap" style="font-size: 2rem; color: var(--wp-blue); margin-bottom: 0.5rem;"></i>
+            <h3 style="margin: 0; font-size: 1.25rem;">مستوى مبتدئ</h3>
+            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">بدون أي كود مسبق</p>
+          </div>
+          <div class="card" style="min-width: 200px; padding: 1.25rem 2rem; align-items: center;">
+            <i class="fa-solid fa-clock" style="font-size: 2rem; color: var(--ai-purple); margin-bottom: 0.5rem;"></i>
+            <h3 style="margin: 0; font-size: 1.25rem;">4 جلسات عملية</h3>
+            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">تطبيق فوري مباشر</p>
+          </div>
+          <div class="card" style="min-width: 200px; padding: 1.25rem 2rem; align-items: center;">
+            <i class="fa-solid fa-trophy" style="font-size: 2rem; color: var(--emerald-green); margin-bottom: 0.5rem;"></i>
+            <h3 style="margin: 0; font-size: 1.25rem;">190 XP متاح</h3>
+            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">تحديات وجوائز شرفية</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 1: GOALS & DELIVERABLES -->
+    <div class="slide" data-slide="1" data-title="مخرجات اليوم">
+      <div class="slide-content-box">
+        <span class="slide-tag"><i class="fa-solid fa-bullseye"></i> مخرجات اليوم التدريبي</span>
+        <h2 class="projector-title" style="font-size: clamp(2rem, 4.5vh, 3.2rem);">ماذا ستصنع بيديك بنهاية اليوم؟</h2>
+        
+        <div class="cards-grid" style="margin-top: 1.5rem;">
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-network-wired"></i></div>
+            <h3 class="card-title">1. هندسة الويب</h3>
+            <p class="card-desc">فهم رحلة اتصال المتصفح بالخادم، وعلاقة الـ IP، Domain، Hosting و DNS.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-globe"></i></div>
+            <h3 class="card-title">2. موقع حقيقي مباشر</h3>
+            <p class="card-desc">إنشاء موقع على منصة WordPress.com بدون أي تكلفة وضبط لوحة التحكم بالكامل.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-robot"></i></div>
+            <h3 class="card-title">3. هوية كاملة بالذكاء الاصطناعي</h3>
+            <p class="card-desc">ابتكار اسم المشروع، الشعار النصي، وخريطة الصفحات وكتابة المحتوى بواسطة ChatGPT.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--amber-gold);"><i class="fa-solid fa-cubes"></i></div>
+            <h3 class="card-title">4. إتقان محرر Gutenberg</h3>
+            <p class="card-desc">بناء صفحة رئيسية جذابة (Hero Section + أزرار + أعمدة) وصفحة «من نحن» ومقال أول.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: GAMIFICATION RANKS -->
+    <div class="slide" data-slide="2" data-title="لوحة الألقاب والتحديات">
+      <div class="slide-content-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span class="slide-tag"><i class="fa-solid fa-gamepad"></i> نظام التنافس Gamification</span>
+          <span class="xp-badge"><i class="fa-solid fa-star"></i> التنافس فردي وشريف</span>
+        </div>
+        <h2 class="projector-title" style="font-size: clamp(2rem, 4.5vh, 3.2rem);">لوحة ألقاب المعسكر التدريبي</h2>
+        
+        <div class="cards-grid" style="margin-top: 1.5rem;">
+          <div class="card" style="border: 2px solid var(--emerald-green); background: rgba(16, 185, 129, 0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span class="xp-badge">0 - 300 XP</span>
+              <i class="fa-solid fa-compass" style="font-size: 2rem; color: var(--emerald-green);"></i>
+            </div>
+            <h3 class="card-title" style="color: var(--emerald-green); font-size: 1.6rem;">WP Explorer</h3>
+            <p class="card-desc">اكتشاف الأساسيات، فهم فلسفة الويب، وبناء أول موقع إلكتروني بنجاح (هدفنا اليوم!).</p>
+          </div>
+
+          <div class="card" style="border: 2px solid var(--ai-purple); background: rgba(139, 92, 246, 0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span class="xp-badge" style="color: var(--ai-purple); border-color: var(--ai-purple);">350 - 700 XP</span>
+              <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 2rem; color: var(--ai-purple);"></i>
+            </div>
+            <h3 class="card-title" style="color: var(--ai-purple); font-size: 1.6rem;">AI Page Crafter</h3>
+            <p class="card-desc">بناء صفحات تسويقية متقنة على Elementor وتطويع الـ AI لإنتاج المحتوى والتصاميم.</p>
+          </div>
+
+          <div class="card" style="border: 2px solid var(--amber-gold); background: rgba(245, 158, 11, 0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span class="xp-badge" style="color: var(--amber-gold); border-color: var(--amber-gold);">750+ XP</span>
+              <i class="fa-solid fa-crown" style="font-size: 2rem; color: var(--amber-gold);"></i>
+            </div>
+            <h3 class="card-title" style="color: var(--amber-gold); font-size: 1.6rem;">WP Master</h3>
+            <p class="card-desc">الاحترافية العالية، حل المشاكل باستقلالية، وبناء وتأمين متجر إلكتروني متكامل.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: RESTAURANT ANALOGY -->
+    <div class="slide" data-slide="3" data-title="تشبيه المطعم">
+      <div class="slide-content-center">
+        <span class="slide-tag"><i class="fa-solid fa-lightbulb"></i> تشبيه مبسط للمبتدئين</span>
+        <h2 class="projector-title">الموقع الإلكتروني = مطعم حقيقي!</h2>
+        <p class="projector-subtitle" style="margin-bottom: 2rem;">
+          كيف تصل صفحات الويب إلى شاشتك في ثوانٍ معدودة؟
+        </p>
+
+        <div class="diagram-flow" style="gap: 1.5rem;">
+          <div class="diagram-node" style="padding: 1.5rem 2rem;">
+            <i class="fa-solid fa-user" style="font-size: 2.5rem; color: var(--wp-blue);"></i>
+            <h3 style="margin-top: 0.75rem; font-size: 1.35rem;">الزائر</h3>
+            <p style="color: var(--text-muted); font-size: 1rem;">الزبون في الصالة</p>
+          </div>
+          <div class="diagram-arrow" style="font-size: 2rem;"><i class="fa-solid fa-arrow-left"></i></div>
+          <div class="diagram-node" style="padding: 1.5rem 2rem;">
+            <i class="fa-brands fa-chrome" style="font-size: 2.5rem; color: var(--amber-gold);"></i>
+            <h3 style="margin-top: 0.75rem; font-size: 1.35rem;">المتصفح</h3>
+            <p style="color: var(--text-muted); font-size: 1rem;">النادل الذي ينقل الطلب</p>
+          </div>
+          <div class="diagram-arrow" style="font-size: 2rem;"><i class="fa-solid fa-arrow-left"></i></div>
+          <div class="diagram-node" style="padding: 1.5rem 2rem;">
+            <i class="fa-solid fa-server" style="font-size: 2.5rem; color: var(--rose-accent);"></i>
+            <h3 style="margin-top: 0.75rem; font-size: 1.35rem;">الخادم Server</h3>
+            <p style="color: var(--text-muted); font-size: 1rem;">المطبخ الذي يُجهّز الصفحة</p>
+          </div>
+          <div class="diagram-arrow" style="font-size: 2rem;"><i class="fa-solid fa-arrow-left"></i></div>
+          <div class="diagram-node" style="padding: 1.5rem 2rem;">
+            <i class="fa-solid fa-database" style="font-size: 2.5rem; color: var(--emerald-green);"></i>
+            <h3 style="margin-top: 0.75rem; font-size: 1.35rem;">الداتابيز والملفات</h3>
+            <p style="color: var(--text-muted); font-size: 1rem;">المكونات والوصفات</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: CLIENT VS SERVER -->
+    <div class="slide" data-slide="4" data-title="Client مقابل Server">
+      <div class="slide-content-box">
+        <span class="slide-tag"><i class="fa-solid fa-arrows-split-up-and-left"></i> أساسيات الشبكات</span>
+        <h2 class="projector-title">ما الفرق بين الـ Client والـ Server؟</h2>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr; margin-top: 1.5rem;">
+          <div class="card" style="border-top: 5px solid var(--wp-blue);">
+            <div class="card-icon"><i class="fa-solid fa-laptop"></i></div>
+            <h3 class="card-title" style="font-size: 1.6rem; color: var(--wp-blue);">العميل (Client)</h3>
+            <ul style="padding-right: 1.5rem; font-size: 1.15rem; color: var(--text-secondary); line-height: 2;">
+              <li>الجهاز الذي تستخدمه لتصفح الويب (لابتوب، هاتف، أو متصفح).</li>
+              <li>يرسل ما يُسمى بـ <strong>Request (الطلب)</strong> للخادم.</li>
+              <li>يقوم بترجمة الـ HTML و CSS وتنسيق الصفحة أمامك.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-top: 5px solid var(--rose-accent);">
+            <div class="card-icon" style="color: var(--rose-accent);"><i class="fa-solid fa-server"></i></div>
+            <h3 class="card-title" style="font-size: 1.6rem; color: var(--rose-accent);">الخادم (Server)</h3>
+            <ul style="padding-right: 1.5rem; font-size: 1.15rem; color: var(--text-secondary); line-height: 2;">
+              <li>حاسوب قوي متصل بالإنترنت على مدار الساعة بدون انقطاع.</li>
+              <li>يستقبل الطلب ويرد بـ <strong>Response (الاستجابة)</strong>.</li>
+              <li>يحتوي على ملفات ووردبريس، الصور، وقاعدة بيانات المقالات.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: 4 PILLARS OF WEB -->
+    <div class="slide" data-slide="5" data-title="الأركان الأربعة للويب">
+      <div class="slide-content-box">
+        <span class="slide-tag"><i class="fa-solid fa-network-wired"></i> البنية التحتية</span>
+        <h2 class="projector-title">الأركان الأربعة لتواجد أي موقع على الإنترنت</h2>
+
+        <div class="cards-grid" style="margin-top: 1.5rem;">
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-hashtag"></i></div>
+            <h3 class="card-title" style="font-size: 1.35rem;">1. عنوان الـ IP</h3>
+            <p class="card-desc" style="font-size: 1.05rem;"><strong>إحداثيات المبنى:</strong> رقم فريد يميز كل سيرفر على الإنترنت (مثل <code>192.0.2.1</code>).</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-globe"></i></div>
+            <h3 class="card-title" style="font-size: 1.35rem;">2. اسم النطاق (Domain)</h3>
+            <p class="card-desc" style="font-size: 1.05rem;"><strong>اسم اللافتة:</strong> الاسم السهل الذي يحفظه الناس بدلاً من الأرقام الصعبة (مثل <code>google.com</code>).</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--amber-gold);"><i class="fa-solid fa-address-book"></i></div>
+            <h3 class="card-title" style="font-size: 1.35rem;">3. نظام الـ DNS</h3>
+            <p class="card-desc" style="font-size: 1.05rem;"><strong>دليل الهاتف:</strong> المترجم الذكي الذي يحول اسم الدومين إلى عنوان الـ IP الخاص بالسيرفر.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-cloud"></i></div>
+            <h3 class="card-title" style="font-size: 1.35rem;">4. الاستضافة (Hosting)</h3>
+            <p class="card-desc" style="font-size: 1.05rem;"><strong>الأرض المستأجرة:</strong> المساحة الفعلية على السيرفر التي تخزن ملفات الموقع لتكون متاحة للجميع.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: HARD CODING VS CMS -->
+    <div class="slide" data-slide="6" data-title="البرمجة من الصفر أم CMS؟">
+      <div class="slide-content-box">
+        <span class="slide-tag"><i class="fa-solid fa-scale-balanced"></i> مقارنة حاسمة</span>
+        <h2 class="projector-title">بناء الموقع من الصفر (Hard Coding) أم نظام إدارة المحتوى (CMS)؟</h2>
+
+        <table class="comparison-table" style="font-size: 1.1rem; margin-top: 1.5rem;">
+          <thead>
+            <tr>
+              <th style="font-size: 1.2rem;">وجه المقارنة</th>
+              <th style="font-size: 1.2rem;">البرمجة من الصفر (Hard Coding)</th>
+              <th style="font-size: 1.2rem; color: var(--wp-blue);">نظام إدارة المحتوى (CMS - ووردبريس)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>طريقة البناء</strong></td>
+              <td>كتابة كل سطر برمجي يدويًا</td>
+              <td>واجهة مرئية ومكونات جاهزة وقوالب ذكية</td>
+            </tr>
+            <tr>
+              <td><strong>الوقت والتكلفة</strong></td>
+              <td>أسابيع أو شهور وتكلفة مرتفعة جدًا</td>
+              <td>إطلاق موقع متكامل واحترافي في ساعات قليلة</td>
+            </tr>
+            <tr>
+              <td><strong>تعديل المحتوى</strong></td>
+              <td>يتطلب مطورًا محترفًا لتغيير أي نص أو صورة</td>
+              <td>يستطيع صاحب الموقع التعديل بنقرة زر وبكل سهولة</td>
+            </tr>
+            <tr>
+              <td><strong>الحصة السوقية</strong></td>
+              <td>تطبيقات الويب المخصصة والمعقدة</td>
+              <td><strong>أكثر من 40% من مواقع الويب حول العالم!</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: WORDPRESS.COM VS WORDPRESS.ORG -->
+    <div class="slide" data-slide="7" data-title="WordPress.com أم WordPress.org؟">
+      <div class="slide-content-box">
+        <span class="slide-tag"><i class="fa-solid fa-code-fork"></i> التمييز الجوهري</span>
+        <h2 class="projector-title">WordPress.com مقابل WordPress.org</h2>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr; margin-top: 1.5rem;">
+          <div class="card" style="border-top: 5px solid var(--wp-blue);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h3 class="card-title" style="font-size: 1.75rem; color: var(--wp-blue);">WordPress.com</h3>
+              <span class="xp-badge">الخدمة السحابية المستضافة</span>
+            </div>
+            <ul style="padding-right: 1.5rem; font-size: 1.15rem; color: var(--text-secondary); line-height: 2;">
+              <li>منصة متكاملة تتولى الاستضافة والأمان والتحديثات.</li>
+              <li>خطة مجانية فورية بدون الحاجة لشراء سيرفر أو دومين.</li>
+              <li>محرر Gutenberg متوفر مباشرة لإنشاء الصفحات والمقالات.</li>
+              <li><strong>هدفنا اليوم الأول:</strong> التدرب السريع دون أي عقبات تقنية.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-top: 5px solid var(--ai-purple);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h3 class="card-title" style="font-size: 1.75rem; color: var(--ai-purple);">WordPress.org</h3>
+              <span class="xp-badge" style="color: var(--ai-purple); border-color: var(--ai-purple);">البرنامج المفتوح المصدر الحر</span>
+            </div>
+            <ul style="padding-right: 1.5rem; font-size: 1.15rem; color: var(--text-secondary); line-height: 2;">
+              <li>البرنامج المستقل الكامل الذي تحمله وتثبته أينما تريد.</li>
+              <li>تحكم بنسبة 100% وإمكانية تثبيت أي قالب أو إضافة (Elementor).</li>
+              <li>يتطلب استضافة خاصة أو بيئة محلية على لابتوبك (LocalWP).</li>
+              <li><strong>مسارنا للتدريب من اليوم الثاني حتى اليوم السادس!</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: CLASSROOM INTERACTIVE QUIZ -->
+    <div class="slide" data-slide="8" data-title="اختبار تفاعلي أمام الطلاب">
+      <div class="slide-content-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span class="slide-tag"><i class="fa-solid fa-circle-question"></i> اختبار جماعي تفاعلي</span>
+          <span class="xp-badge"><i class="fa-solid fa-trophy"></i> +20 XP لمن يجيب</span>
+        </div>
+        <h2 class="projector-title" style="font-size: clamp(2rem, 4.5vh, 3.2rem);">اختبر معلوماتك (انقر لإظهار الإجابة النموذجية)</h2>
+
+        <div style="margin-top: 1.5rem;">
+          <div class="classroom-qa-card" onclick="this.classList.toggle('open')">
+            <div class="classroom-question">
+              <span>1. من الذي يرسل الـ Request ومن الذي يرسل الـ Response؟</span>
+              <i class="fa-solid fa-chevron-down" style="color: var(--wp-blue);"></i>
+            </div>
+            <div class="classroom-answer">
+              ✓ المتصفح (الـ Client) هو من يرسل الطلب Request، بينما الخادم (الـ Server) هو من يرسل الاستجابة Response.
+            </div>
+          </div>
+
+          <div class="classroom-qa-card" onclick="this.classList.toggle('open')">
+            <div class="classroom-question">
+              <span>2. ما وظيفة الـ DNS عند كتابة عنوان موقع في المتصفح؟</span>
+              <i class="fa-solid fa-chevron-down" style="color: var(--wp-blue);"></i>
+            </div>
+            <div class="classroom-answer">
+              ✓ يترجم اسم النطاق المفهوم للبشر (مثل google.com) إلى عنوان الـ IP الرقمي الخاص بالسيرفر.
+            </div>
+          </div>
+
+          <div class="classroom-qa-card" onclick="this.classList.toggle('open')">
+            <div class="classroom-question">
+              <span>3. ما الفرق بين اسم النطاق (Domain) والاستضافة (Hosting)؟</span>
+              <i class="fa-solid fa-chevron-down" style="color: var(--wp-blue);"></i>
+            </div>
+            <div class="classroom-answer">
+              ✓ النطاق هو الاسم أو العنوان، بينما الاستضافة هي المساحة التخزينية التي تضم ملفات الموقع وقاعدة البيانات.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: PROMPT 1 STUDENT DISPLAY -->
+    <div class="slide" data-slide="9" data-title="Prompt 1: هوية المشروع">
+      <div class="slide-content-box">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="slide-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> تطبيق الذكاء الاصطناعي #1</span>
+          <span class="xp-badge" style="color: var(--ai-purple); border-color: var(--ai-purple);">ChatGPT Prompt</span>
+        </div>
+        <h2 class="projector-title" style="font-size: clamp(1.8rem, 4vh, 2.8rem);">Prompt 1: توليد اسم وهوية وشعار المشروع</h2>
+
+        <div class="student-prompt-card">
+          <div class="student-prompt-header">
+            <button class="copy-btn" onclick="copyPrompt(this)">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt الآن</span>
+            </button>
+            <span style="font-family: var(--font-code); color: #c084fc; font-weight: 700;">PROMPT_BRAND_IDENTITY.TXT</span>
+          </div>
+          <div class="student-prompt-text">أنت مستشار متخصص في بناء العلامات التجارية والمواقع الإلكترونية للمبتدئين.
+
+أريد بناء موقع إلكتروني باستخدام WordPress، وهذه معلومات مشروعي:
+- المجال: <span class="prompt-var">[مثال: التصميم الجرافيكي أو خدمات التعليم]</span>
+- الجمهور المستهدف: <span class="prompt-var">[مثال: أصحاب المشروعات الصغيرة أو الطلاب]</span>
+- المشكلة التي أحلها: <span class="prompt-var">[مثال: مساعدة الشركات في تحسين هويتها البصرية]</span>
+- اللغة الأساسية للموقع: <span class="prompt-var">[العربية / الإنجليزية]</span>
+- أسلوب العلامة التجارية: <span class="prompt-var">[احترافي / عصري / ودود / فاخر]</span>
+
+نفّذ المهام التالية:
+1. اقترح 10 أسماء قصيرة وسهلة التذكر للمشروع مع شرح ميزة كل اسم.
+2. اختر أفضل 3 أسماء ووضح سبب ترشيحها.
+3. اقترح 5 شعارات نصية Slogans لكل اسم من الأسماء الثلاثة.
+4. اقترح لونًا رئيسيًا ولونًا مساعدًا لكل اسم مع أكواد الـ HEX.
+5. اقترح وصفًا تعريفيًا للموقع لا يتجاوز 30 كلمة.
+6. أنشئ جدولاً يوضح الاسم والشعار والجمهور والميزة الأساسية.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: PROMPT 2 SITE MAP -->
+    <div class="slide" data-slide="10" data-title="Prompt 2: خريطة الموقع">
+      <div class="slide-content-box">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="slide-tag"><i class="fa-solid fa-sitemap"></i> تطبيق الذكاء الاصطناعي #2</span>
+          <span class="xp-badge" style="color: var(--ai-purple); border-color: var(--ai-purple);">ChatGPT Prompt</span>
+        </div>
+        <h2 class="projector-title" style="font-size: clamp(1.8rem, 4vh, 2.8rem);">Prompt 2: تخطيط هيكل وخريطة صفحات الموقع</h2>
+
+        <div class="student-prompt-card">
+          <div class="student-prompt-header">
+            <button class="copy-btn" onclick="copyPrompt(this)">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt الآن</span>
+            </button>
+            <span style="font-family: var(--font-code); color: #c084fc; font-weight: 700;">PROMPT_SITEMAP.TXT</span>
+          </div>
+          <div class="student-prompt-text">أنت خبير في تخطيط تجربة المستخدم UX وتصميم مواقع WordPress للمبتدئين.
+
+أريد تخطيط موقع لمشروع:
+- اسم المشروع: <span class="prompt-var">[اسم المشروع]</span>
+- مجال المشروع: <span class="prompt-var">[المجال]</span>
+- الجمهور المستهدف: <span class="prompt-var">[الجمهور]</span>
+- الهدف الأساسي من الموقع: <span class="prompt-var">[عرض أعمال / الحصول على عملاء / تقديم خدمات / نشر مقالات]</span>
+
+اقترح خريطة موقع مبسطة ومنظمة تناسب بناء موقع على WordPress.com ومحرر Gutenberg.
+
+المخرجات المطلوبة:
+1. الصفحات الأساسية التي ينبغي إنشاؤها أولاً (Home, About, ...).
+2. الهدف التسويقي من كل صفحة.
+3. الأقسام المقترحة داخل كل صفحة.
+4. العناصر التي ينبغي وضعها في القائمة الرئيسية Navigation.
+5. الإجراء الأساسي الذي نريد من الزائر اتخاذه Call-to-Action.
+6. ترتيب عملي للبناء خلال يوم تدريبي واحد دون أي تعقيد.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: GUTENBERG BLOCKS OVERVIEW -->
+    <div class="slide" data-slide="11" data-title="مكونات Gutenberg الأساسية">
+      <div class="slide-content-box">
+        <span class="slide-tag"><i class="fa-solid fa-shapes"></i> محرر المكونات Gutenberg</span>
+        <h2 class="projector-title">المكونات الأساسية الستة لبناء أي صفحة</h2>
+
+        <div class="cards-grid" style="margin-top: 1.5rem;">
+          <div class="card">
+            <h3 class="card-title" style="color: var(--wp-blue); font-size: 1.35rem;"><i class="fa-solid fa-heading"></i> Heading (العنوان)</h3>
+            <p class="card-desc">H1 لعنوان الصفحة الرئيسي، H2 للأقسام الرئيسية، و H3 للبطاقات الفرعية.</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title" style="color: var(--emerald-green); font-size: 1.35rem;"><i class="fa-solid fa-paragraph"></i> Paragraph (الفقرة)</h3>
+            <p class="card-desc">لكتابة النصوص والشروحات. فقرات قصيرة (3-4 أسطر) لسهولة القراءة والراحة البصرية.</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title" style="color: var(--rose-accent); font-size: 1.35rem;"><i class="fa-solid fa-image"></i> Cover مقابل Image</h3>
+            <p class="card-desc"><strong>Cover:</strong> صورة أو فيديو كخلفية يُكتب نص وزر فوقها &nbsp;|&nbsp; <strong>Image:</strong> لصورة عادية ضمن السياق.</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title" style="color: var(--ai-purple); font-size: 1.35rem;"><i class="fa-solid fa-table-columns"></i> Columns (الأعمدة)</h3>
+            <p class="card-desc">لتقسيم الصفحة إلى عمودين أو ثلاثة (نص وصورة بجانبه) وتتحول تلقائيًا لعمود على الجوال.</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title" style="color: var(--amber-gold); font-size: 1.35rem;"><i class="fa-solid fa-toggle-on"></i> Buttons (الأزرار)</h3>
+            <p class="card-desc">زر الإجراء الرئيسي (CTA). استخدم نصًا دقيقًا ومباشرًا (مثل «تواصل معنا» أو «اطلب استشارتك»).</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title" style="color: var(--cyber-teal); font-size: 1.35rem;"><i class="fa-solid fa-arrows-up-down"></i> Spacer (المسافة)</h3>
+            <p class="card-desc">لإضافة متنفس ومساحة بيضاء بين الأقسام لمنع تلاصق العناصر وازدحام الصفحة.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 12: PROMPT 3 HOME PAGE CONTENT -->
+    <div class="slide" data-slide="12" data-title="Prompt 3: محتوى الرئيسية">
+      <div class="slide-content-box">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="slide-tag"><i class="fa-solid fa-house"></i> محتوى الصفحة الرئيسية</span>
+          <span class="xp-badge" style="color: var(--ai-purple); border-color: var(--ai-purple);">ChatGPT Prompt</span>
+        </div>
+        <h2 class="projector-title" style="font-size: clamp(1.8rem, 4vh, 2.8rem);">Prompt 3: كتابة محتوى الصفحة الرئيسية بالكامل</h2>
+
+        <div class="student-prompt-card">
+          <div class="student-prompt-header">
+            <button class="copy-btn" onclick="copyPrompt(this)">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt الآن</span>
+            </button>
+            <span style="font-family: var(--font-code); color: #c084fc; font-weight: 700;">PROMPT_HOMEPAGE.TXT</span>
+          </div>
+          <div class="student-prompt-text">أنت كاتب محتوى UX ومتخصص في كتابة النصوص التسويقية المقنعة لمواقع WordPress.
+
+اكتب محتوى صفحة رئيسية كامل لموقع بالمواصفات التالية:
+- اسم المشروع: <span class="prompt-var">[اسم المشروع]</span>
+- المجال: <span class="prompt-var">[المجال]</span>
+- الجمهور المستهدف: <span class="prompt-var">[الجمهور]</span>
+- الخدمة أو القيمة الأساسية: <span class="prompt-var">[ماذا تقدم؟]</span>
+- أسلوب الصياغة: <span class="prompt-var">[احترافي / مبسط / ودود]</span>
+
+رتب المحتوى في 5 أقسام رئيسية:
+1. Hero Section: عنوان رئيسي جذاب، وصف مختصر، ونص الزر الرئيسي CTA.
+2. قسم المشكلة: توضيح الصعوبة التي يواجهها العميل بأسلوب متعاطف.
+3. قسم الفوائد أو الخدمات: 3 خدمات مع شرح موجز لكل خدمة.
+4. قسم الثقة: لماذا يختارنا العميل؟ (دون اختلاق شهادات أو أرقام وهمية).
+5. دعوة أخيرة لاتخاذ إجراء CTA مع عنوان وزر ختامي.
+
+ملاحظة: اقترح أمام كل قسم نوع الـ Gutenberg Block المناسب له (Heading, Columns, Cover, Buttons).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 13: CHALLENGE 1 - SPEED BUILD (WITH LIVE COUNTDOWN TIMER!) -->
+    <div class="slide" data-slide="13" data-title="تحدي Speed Build (مؤقت حي)">
+      <div class="slide-content-center">
+        <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.5rem;">
+          <span class="hero-badge" style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #f87171;">
+            <i class="fa-solid fa-stopwatch"></i> تحدي عملي سريع (Speed Build)
+          </span>
+          <span class="xp-badge" style="color: #ef4444; border-color: #ef4444;"><i class="fa-solid fa-bolt"></i> +30 XP</span>
+        </div>
+
+        <h2 class="projector-title" style="font-size: clamp(2rem, 4.5vh, 3.5rem);">بناء أول قسم Hero Section على Gutenberg</h2>
+        <p class="projector-subtitle">
+          المهمة: افتح صفحة جديدة وأنشئ قسم Hero (عنوان H1 + وصف + زر إجراء + صورة Cover) واحفظ الصفحة!
+        </p>
+
+        <!-- Live Classroom Timer Widget -->
+        <div class="countdown-widget" id="timerWidget">
+          <div class="timer-display" id="timerDisplay">10:00</div>
+          <div class="timer-controls">
+            <button class="timer-btn timer-btn-start" id="startTimerBtn" onclick="toggleTimer()">
+              <i class="fa-solid fa-play" id="playIcon"></i> <span id="timerBtnText">ابدأ التحدي</span>
+            </button>
+            <button class="timer-btn timer-btn-reset" onclick="resetTimer(10)">
+              <i class="fa-solid fa-rotate-left"></i> إعادة ضبط (10 د)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 14: CHALLENGE 2 - BUG HUNTER -->
+    <div class="slide" data-slide="14" data-title="تحدي صائد الأخطاء Bug Hunter">
+      <div class="slide-content-center">
+        <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.5rem;">
+          <span class="hero-badge" style="background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399;">
+            <i class="fa-solid fa-bug"></i> تحدي المراجعة (Bug Hunter)
+          </span>
+          <span class="xp-badge" style="color: #10b981; border-color: #10b981;"><i class="fa-solid fa-trophy"></i> +40 XP</span>
+        </div>
+
+        <h2 class="projector-title" style="font-size: clamp(2rem, 4.5vh, 3.5rem);">تبادل الأجهزة: صائد الأخطاء!</h2>
+        <p class="projector-subtitle" style="margin-bottom: 2rem;">
+          تبادل لابتوبك مع زميلك لمدة 12 دقيقة، وساعده في فحص موقعه واكتشاف 3 نقاط تحسين:
+        </p>
+
+        <div class="cards-grid" style="max-width: 1050px; text-align: right;">
+          <div class="card">
+            <h3 class="card-title" style="color: var(--rose-accent); font-size: 1.35rem;"><i class="fa-solid fa-link-slash"></i> 1. فحص الروابط والأزرار</h3>
+            <p class="card-desc">هل الزر يقود لصفحة صحيحة أم رابط فارغ أو خطأ 404؟</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title" style="color: var(--amber-gold); font-size: 1.35rem;"><i class="fa-solid fa-mobile-screen"></i> 2. فحص تجاوب الجوال</h3>
+            <p class="card-desc">هل الصور ضخمة زيادة عن اللزوم؟ هل العناوين تظهر بشكل جميل على الموبايل؟</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title" style="color: var(--cyber-teal); font-size: 1.35rem;"><i class="fa-solid fa-spell-check"></i> 3. وضوح الرسالة</h3>
+            <p class="card-desc">هل فهمت الخدمة في 5 ثوانٍ؟ هل توجد نصوص Lorem Ipsum متبقية؟</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 15: FINAL DAY 1 WRAP-UP & CELEBRATION -->
+    <div class="slide" data-slide="15" data-title="ختام اليوم الأول والاحتفال">
+      <div class="slide-content-center">
+        <i class="fa-solid fa-trophy" style="font-size: 4rem; color: var(--emerald-green); margin-bottom: 1rem; filter: drop-shadow(0 0 25px rgba(16,185,129,0.5));"></i>
+        <h2 class="projector-title" style="font-size: clamp(2.5rem, 6vh, 4.5rem);">مبروك! أنجزت اليوم الأول بنجاح!</h2>
+        <p class="projector-subtitle" style="margin-bottom: 2rem;">
+          حققت اليوم لقب <strong style="color: var(--emerald-green);">WP Explorer</strong> وحصلت على موقع حي منشور على الإنترنت ومقال أول وهوية متكاملة.
+        </p>
+
+        <div class="card" style="max-width: 800px; padding: 1.5rem 2.5rem; background: linear-gradient(135deg, rgba(56,88,233,0.15), rgba(139,92,246,0.15)); border: 2px solid var(--border-highlight); text-align: center;">
+          <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem; color: #fff;">استعدوا لليوم الثاني!</h3>
+          <p style="font-size: 1.15rem; color: var(--text-secondary); margin: 0;">
+            سننتقل غدًا إلى البيئة المحلية الاحترافية <strong>LocalWP</strong>، وسنتعلم هندسة الصفحات البيعية المتقدمة بواسطة <strong>Elementor</strong>!
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- End Deck -->
+
+  <!-- FLOATING BOTTOM CONTROLS FOR INSTRUCTOR / PRESENTER -->
+  <div class="projector-controls">
+    <button class="control-icon-btn" id="prevBtn" title="السابق (السهم الأيمن)">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+    
+    <div class="slide-page-badge" id="slidePageBadge">1 / 16</div>
+
+    <button class="control-icon-btn" id="nextBtn" title="التالي (السهم الأيسر أو مسافة)">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <div style="width: 1px; height: 24px; background: rgba(255,255,255,0.2);"></div>
+
+    <button class="control-icon-btn" id="jumpBtn" title="فهرس الشرائح">
+      <i class="fa-solid fa-list"></i>
+    </button>
+
+    <button class="control-icon-btn" id="themeBtn" title="تبديل الوضع الليلي / النهاري">
+      <i class="fa-solid fa-moon" id="themeIcon"></i>
+    </button>
+
+    <button class="control-icon-btn" id="fullscreenBtn" title="ملء الشاشة">
+      <i class="fa-solid fa-expand"></i>
+    </button>
+  </div>
+
+  <!-- SLIDES QUICK JUMP DRAWER -->
+  <div class="jump-drawer" id="jumpDrawer">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <h3 style="margin: 0; font-size: 1.25rem;"><i class="fa-solid fa-list"></i> فهرس الشرائح</h3>
+      <button class="control-icon-btn" id="closeJumpBtn" style="font-size: 1.1rem; width: 32px; height: 32px;">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div id="jumpList"></div>
+  </div>
+
+  <!-- PRESENTATION LOGIC -->
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const totalSlides = slides.length;
+    let currentSlide = 0;
+
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const slidePageBadge = document.getElementById('slidePageBadge');
+    const progressBar = document.getElementById('progressBar');
+    const toastNotice = document.getElementById('toastNotice');
+
+    const jumpBtn = document.getElementById('jumpBtn');
+    const closeJumpBtn = document.getElementById('closeJumpBtn');
+    const jumpDrawer = document.getElementById('jumpDrawer');
+    const jumpList = document.getElementById('jumpList');
+
+    const themeBtn = document.getElementById('themeBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+    // Idle Timer to hide controls
+    let idleTimeout;
+    function resetIdleTimer() {
+      document.body.classList.remove('idle-cursor');
+      clearTimeout(idleTimeout);
+      idleTimeout = setTimeout(() => {
+        document.body.classList.add('idle-cursor');
+      }, 4000);
+    }
+    document.addEventListener('mousemove', resetIdleTimer);
+    document.addEventListener('keydown', resetIdleTimer);
+
+    // Initialize Presentation
+    function init() {
+      buildJumpList();
+      goTo(0);
+      setupEvents();
+      initTheme();
+    }
+
+    function goTo(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+
+      slides.forEach((s, i) => s.classList.toggle('active', i === index));
+      currentSlide = index;
+
+      slidePageBadge.textContent = `${currentSlide + 1} / ${totalSlides}`;
+      progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+
+      // Update active in jump list
+      const items = jumpList.querySelectorAll('.jump-item');
+      items.forEach((item, i) => item.classList.toggle('active', i === currentSlide));
+    }
+
+    function next() {
+      if (currentSlide < totalSlides - 1) goTo(currentSlide + 1);
+    }
+
+    function prev() {
+      if (currentSlide > 0) goTo(currentSlide - 1);
+    }
+
+    function buildJumpList() {
+      jumpList.innerHTML = '';
+      slides.forEach((slide, i) => {
+        const title = slide.getAttribute('data-title') || `شريحة ${i + 1}`;
+        const item = document.createElement('div');
+        item.className = `jump-item ${i === 0 ? 'active' : ''}`;
+        item.innerHTML = `<span style="font-family: var(--font-code); color: var(--wp-blue);">#${i + 1}</span> ${title}`;
+        item.addEventListener('click', () => {
+          goTo(i);
+          jumpDrawer.classList.remove('open');
+        });
+        jumpList.appendChild(item);
+      });
+    }
+
+    // Prompt Copy Helper
+    window.copyPrompt = function(btn) {
+      const card = btn.closest('.student-prompt-card');
+      const text = card.querySelector('.student-prompt-text').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerHTML;
+        btn.classList.add('copied');
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> تم النسخ!';
+        toastNotice.classList.add('show');
+        setTimeout(() => {
+          toastNotice.classList.remove('show');
+          btn.classList.remove('copied');
+          btn.innerHTML = orig;
+        }, 2200);
+      });
+    };
+
+    // Live Classroom Countdown Timer
+    let timerDuration = 10 * 60; // 10 minutes default
+    let timerRemaining = timerDuration;
+    let timerInterval = null;
+    let isTimerRunning = false;
+
+    window.toggleTimer = function() {
+      if (isTimerRunning) {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        document.getElementById('playIcon').className = 'fa-solid fa-play';
+        document.getElementById('timerBtnText').textContent = 'استئناف';
+      } else {
+        isTimerRunning = true;
+        document.getElementById('playIcon').className = 'fa-solid fa-pause';
+        document.getElementById('timerBtnText').textContent = 'إيقاف مؤقت';
+        timerInterval = setInterval(() => {
+          if (timerRemaining > 0) {
+            timerRemaining--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            document.getElementById('playIcon').className = 'fa-solid fa-play';
+            document.getElementById('timerBtnText').textContent = 'انتهى الوقت!';
+            alert('انتهت الـ 10 دقائق لتحدي Speed Build! حان وقت فحص المواقع 🎉');
+          }
+        }, 1000);
+      }
+    };
+
+    window.resetTimer = function(minutes) {
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      timerDuration = minutes * 60;
+      timerRemaining = timerDuration;
+      document.getElementById('playIcon').className = 'fa-solid fa-play';
+      document.getElementById('timerBtnText').textContent = 'ابدأ التحدي';
+      updateTimerDisplay();
+    };
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(timerRemaining / 60);
+      const secs = timerRemaining % 60;
+      document.getElementById('timerDisplay').textContent = 
+        `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    // Keyboard and Event Listeners
+    function setupEvents() {
+      prevBtn.addEventListener('click', prev);
+      nextBtn.addEventListener('click', next);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        if (e.key === 'ArrowLeft' || e.key === ' ' || e.key === 'PageDown') {
+          e.preventDefault();
+          next();
+        } else if (e.key === 'ArrowRight' || e.key === 'PageUp') {
+          e.preventDefault();
+          prev();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          goTo(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          goTo(totalSlides - 1);
+        } else if (e.key.toLowerCase() === 'f') {
+          toggleFullScreen();
+        } else if (e.key.toLowerCase() === 'j') {
+          jumpDrawer.classList.toggle('open');
+        } else if (e.key === 'Escape') {
+          jumpDrawer.classList.remove('open');
+        }
+      });
+
+      jumpBtn.addEventListener('click', () => jumpDrawer.classList.add('open'));
+      closeJumpBtn.addEventListener('click', () => jumpDrawer.classList.remove('open'));
+      themeBtn.addEventListener('click', toggleTheme);
+      fullscreenBtn.addEventListener('click', toggleFullScreen);
+    }
+
+    // Theme Management
+    function initTheme() {
+      const savedTheme = localStorage.getItem('slides_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const newTheme = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('slides_theme', newTheme);
+      updateThemeIcon(newTheme);
+    }
+
+    function updateThemeIcon(theme) {
+      themeIcon.className = theme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

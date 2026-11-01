@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اليوم الثاني: بيئة LocalWP، احتراف Elementor، وبناء الموقع الشخصي | AI-Powered WordPress Bootcamp</title>
+  
+  <!-- Font Awesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Shared Theme Palette & Design System -->
+  <link rel="stylesheet" href="theme-palette.css">
+
+  <style>
+    .hero-glow {
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, rgba(56, 88, 233, 0.1) 50%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      pointer-events: none;
+      filter: blur(45px);
+    }
+
+    .slide-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1220px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Flexbox & Box Model Visual Demonstrations */
+    .box-model-demo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #f59e0b18;
+      border: 2px dashed #f59e0b;
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      position: relative;
+      margin: 1rem auto;
+      max-width: 650px;
+      width: 100%;
+    }
+    .box-model-label {
+      position: absolute;
+      top: 6px;
+      right: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #f59e0b;
+      font-family: var(--font-code);
+    }
+    .box-border-demo {
+      background: #3b82f618;
+      border: 2px solid #3b82f6;
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      position: relative;
+      width: 88%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .box-border-label {
+      position: absolute;
+      top: 4px;
+      right: 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #3b82f6;
+      font-family: var(--font-code);
+    }
+    .box-padding-demo {
+      background: #10b98118;
+      border: 2px dashed #10b981;
+      border-radius: 4px;
+      padding: 1rem;
+      position: relative;
+      width: 86%;
+      display: flex;
+      justify-content: center;
+    }
+    .box-padding-label {
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #10b981;
+      font-family: var(--font-code);
+    }
+    .box-content-demo {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-medium);
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-weight: 800;
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    .flex-preview-box {
+      background: var(--bg-card);
+      border: 2px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      gap: 0.75rem;
+      min-height: 120px;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+    .flex-item {
+      background: var(--wp-blue);
+      color: #fff;
+      font-weight: 700;
+      font-family: var(--font-code);
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Countdown Widget in Slides */
+    .slide-timer-box {
+      background: rgba(15, 23, 42, 0.95);
+      border: 2px solid var(--wp-blue);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 0 35px rgba(56, 88, 233, 0.25);
+    }
+    .slide-timer-display {
+      font-family: var(--font-code);
+      font-size: clamp(3rem, 7vh, 5rem);
+      font-weight: 900;
+      color: #38bdf8;
+      letter-spacing: 3px;
+    }
+
+    /* Checklist items */
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 0.85rem;
+      margin-top: 1rem;
+    }
+    .check-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .check-item:hover {
+      border-color: var(--emerald-green);
+      background: var(--bg-card-hover);
+    }
+    .check-item.done {
+      border-color: var(--emerald-green);
+      color: var(--text-primary);
+      background: rgba(16, 185, 129, 0.08);
+    }
+    .check-item.done i {
+      color: var(--emerald-green);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBar"></div>
+  </div>
+
+  <!-- Top Action Controls -->
+  <div class="top-actions-bar">
+    <button class="action-pill-btn" id="themeToggleBtn" title="تبديل وضع الألوان (Dark/Light)">
+      <i class="fa-solid fa-moon" id="themeIcon"></i>
+      <span id="themeText">الوضع الليلي</span>
+    </button>
+    <button class="action-pill-btn" id="overviewBtn" title="نظرة عامة على الشرائح (O)">
+      <i class="fa-solid fa-grip"></i>
+      <span>فهرس الشرائح</span>
+    </button>
+    <button class="action-pill-btn" id="notesToggleBtn" title="ملاحظات المدرب (N)">
+      <i class="fa-solid fa-chalkboard-user"></i>
+      <span>ملاحظات الشرح</span>
+    </button>
+    <button class="action-pill-btn" id="fullscreenBtn" title="ملء الشاشة (F)">
+      <i class="fa-solid fa-expand"></i>
+    </button>
+  </div>
+
+  <!-- Toast Copy Notification -->
+  <div class="toast-notice" id="toastNotice">
+    <i class="fa-solid fa-circle-check"></i> تم نسخ الـ Prompt بنجاح إلى الحافظة!
+  </div>
+
+  <!-- Main Slides Deck -->
+  <div class="deck" id="deck">
+
+    <!-- =====================================================================
+         SLIDE 0: TITLE & WELCOME
+         ===================================================================== -->
+    <div class="slide active" data-slide="0" data-title="مقدمة اليوم الثاني">
+      <div class="hero-glow"></div>
+      <div class="slide-inner" style="text-align: center;">
+        <span class="slide-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> اليوم الثاني من 6 أيام تدريبية</span>
+        <h1 class="slide-title" style="justify-content: center; font-size: clamp(2rem, 5vh, 3.6rem); margin: 1.25rem 0 0.5rem;">
+          بيئة LocalWP، احتراف Elementor، وبناء الموقع الشخصي
+        </h1>
+        <p class="slide-subtitle" style="font-size: clamp(1.1rem, 2.2vh, 1.45rem); max-width: 850px; margin: 0 auto 2rem;">
+          الانتقال من مرحلة استكشاف ووردبريس إلى بيئة التطوير المحلية الاحترافية، والتحكم الكامل في تصميم وتخصيص معرض أعمالك الشخصي (Personal Portfolio).
+        </p>
+
+        <div class="cards-grid" style="max-width: 960px; margin: 0 auto;">
+          <div class="card" style="align-items: center; text-align: center;">
+            <div class="card-icon"><i class="fa-solid fa-server"></i></div>
+            <h3 class="card-title">بيئة العمل</h3>
+            <p class="card-desc">LocalWP + استضافة محلية خاصة بك 100%</p>
+          </div>
+          <div class="card" style="align-items: center; text-align: center;">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-layer-group"></i></div>
+            <h3 class="card-title">أداة البناء</h3>
+            <p class="card-desc">Elementor Free + Flexbox Containers</p>
+          </div>
+          <div class="card" style="align-items: center; text-align: center;">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-id-card"></i></div>
+            <h3 class="card-title">المشروع المستهدف</h3>
+            <p class="card-desc">موقع معرض أعمال شخصي متكامل (Portfolio)</p>
+          </div>
+          <div class="card" style="align-items: center; text-align: center;">
+            <div class="card-icon" style="color: var(--amber-gold);"><i class="fa-solid fa-trophy"></i></div>
+            <h3 class="card-title">نقاط التحدي</h3>
+            <p class="card-desc">حتى 250 XP خلال تحديي اليوم</p>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"افتتاح اليوم الثاني","script":"أهلاً بكم في اليوم الثاني من المعسكر. اليوم ننتقل نقلة نوعية من المنصة السحابية WordPress.com إلى بيئة التطوير الحقيقية على جهاز كل متدرب عبر LocalWP، وسنتعلم Elementor لبناء أول موقع شخصي احترافي متكامل.","notes":["الترحيب بالطلاب واسترجاع إنجازات اليوم الأول","توضيح أن اليوم بداية العمل الاحترافي على الأجهزة المحلية","التأكيد على أن كل طالب سينتهي بموقع شخصي حقيقي"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 1: DAY 2 LEARNING OUTCOMES
+         ===================================================================== -->
+    <div class="slide" data-slide="1" data-title="أهداف ومخرجات اليوم الثاني">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-bullseye"></i> مخرجات التعلم</span>
+            <h2 class="slide-title">ماذا سيتعلم وينجز الطالب بنهاية اليوم؟</h2>
+          </div>
+          <span class="xp-badge"><i class="fa-solid fa-star"></i> 250 XP متاح</span>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-laptop-code"></i></div>
+            <h3 class="card-title">1. بيئة LocalWP المحلية</h3>
+            <p class="card-desc">تثبيت LocalWP وإنشاء موقع WordPress محلي، وفهم ملفات <code>wp-content</code> وقاعدة البيانات.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-palette"></i></div>
+            <h3 class="card-title">2. الهوية البصرية بالـ AI</h3>
+            <p class="card-desc">استخراج لوحة ألوان متناسقة بأكواد HEX وخطوط مناسبة وصياغة نبذة شخصية (Bio) قوية ومقنعة.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-table-columns"></i></div>
+            <h3 class="card-title">3. ثورة Elementor Containers</h3>
+            <p class="card-desc">إتقان التخطيط الحديث بـ Flexbox (اتجاه الصف والعمود Row/Col)، والفرق الجوهري بين Padding و Margin.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--amber-gold);"><i class="fa-solid fa-briefcase"></i></div>
+            <h3 class="card-title">4. إطلاق الـ Personal Portfolio</h3>
+            <p class="card-desc">بناء Hero Section، معرض مشاريع، قسم مهارات وخدمات، زر تحميل الـ CV، وضبط تجاوب الجوال بنسبة 100%.</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.25rem; background: rgba(56, 88, 233, 0.08); border: 1px solid var(--wp-blue); border-radius: var(--radius-md); padding: 0.9rem 1.25rem; display: flex; align-items: center; gap: 0.75rem;">
+          <i class="fa-solid fa-circle-check" style="color: var(--emerald-green); font-size: 1.3rem;"></i>
+          <p style="font-size: 0.95rem; margin: 0;"><strong>المشروع الأساسي:</strong> موقع شخصي متكامل قابل للتطوير والعرض، يعتمد على قالب Astra أو Kadence وإضافة Elementor المجانية فقط دون أدوات مدفوعة.</p>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"مخرجات اليوم الثاني","script":"هذه هي المحاور الأربعة الكبرى لليوم. كل متدرب سيبني بنفسه بيئة العمل، ويستعين بالـ AI كمستشار تصميم، ويبني موقعه الشخصي خطوة بخطوة.","notes":["التشديد على فهم الفلسفة وليس فقط الضغط على الأزرار","توضيح أن كل شيء ينفذ بالنسخة المجانية Free"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 2: PORTFOLIO TARGET ANATOMY
+         ===================================================================== -->
+    <div class="slide" data-slide="2" data-title="تشريح الموقع الشخصي Portfolio">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-sitemap"></i> تشريح المشروع</span>
+            <h2 class="slide-title">تشريح الموقع الشخصي المستهدف (Personal Portfolio)</h2>
+          </div>
+          <span class="slide-subtitle">الأقسام الأساسية الأربعة</span>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card" style="border-top: 4px solid var(--wp-blue);">
+            <div class="card-icon"><i class="fa-solid fa-id-badge"></i></div>
+            <h3 class="card-title" style="color: var(--wp-blue);">1. الـ Hero Section</h3>
+            <ul style="padding-right: 1.25rem; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8;">
+              <li>صورة شخصية احترافية أو رمز بصري.</li>
+              <li>عنوان رئيسي محدد (من أنت؟ وماذا تقدم؟).</li>
+              <li>وصف قصير في سطرين.</li>
+              <li><strong>زر تحميل السيرة الذاتية (Download CV)</strong> وزر تواصل معي.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--ai-purple);">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-wand-magic"></i></div>
+            <h3 class="card-title" style="color: var(--ai-purple);">2. المهارات والخدمات</h3>
+            <ul style="padding-right: 1.25rem; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8;">
+              <li>3 إلى 6 مهارات وخدمات حقيقية تستطيع إثباتها.</li>
+              <li>بطاقات أيقونات (Icon Boxes) منسقة بانتظام.</li>
+              <li>وصف موجز يوضح فائدة المهارة للعميل أو الشركة.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--emerald-green);">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-images"></i></div>
+            <h3 class="card-title" style="color: var(--emerald-green);">3. معرض الأعمال (Grid)</h3>
+            <ul style="padding-right: 1.25rem; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8;">
+              <li>عرض 3 مشاريع أو نماذج أعمال سابقة أو تدريبية.</li>
+              <li>صورة معاينة للمشروع + عنوان واضح.</li>
+              <li>نبذة عن دورك والأدوات المستخدمة.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--amber-gold);">
+            <div class="card-icon" style="color: var(--amber-gold);"><i class="fa-solid fa-envelope-open-text"></i></div>
+            <h3 class="card-title" style="color: var(--amber-gold);">4. قسم التواصل (Contact)</h3>
+            <ul style="padding-right: 1.25rem; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8;">
+              <li>بريد إلكتروني مباشر عبر رابط <code>mailto:</code>.</li>
+              <li>روابط الشبكات المهنية (LinkedIn, GitHub, Behance).</li>
+              <li>دعوة صريحة ومحفزة للتعاون.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"تشريح الموقع الشخصي المستهدف","script":"هذا هو المخطط الهندسي لصفحتنا اليوم. نبدأ بالواجهة الجذابة Hero ثم إبراز القيمة بالمهارات، ثم الإثبات بمعرض الأعمال، ونختم بفتح باب التواصل المباشر.","notes":["التأكيد على أن الهدف هو إبراز القيمة وليس استعراض تصاميم فارغة","التركيز على أن الأقسام الأربعة تغطي كل ما يحتاجه مسؤولو التوظيف"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 3: TIMELINE
+         ===================================================================== -->
+    <div class="slide" data-slide="3" data-title="الجدول الزمني لليوم الثاني">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-timeline"></i> إدارة الوقت</span>
+            <h2 class="slide-title">الجدول الزمني المرن (جلستان تدريبيتان)</h2>
+          </div>
+          <span class="slide-subtitle">6 ساعات و35 دقيقة شاملة الاستراحات والتحديات</span>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="card" style="border-right: 4px solid var(--wp-blue);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h3 class="card-title" style="color: var(--wp-blue);">الجلسة 1: بيئة العمل والهوية</h3>
+              <span class="xp-badge">3 ساعات و30 د</span>
+            </div>
+            <ul style="padding-right: 1.25rem; font-size: 0.925rem; color: var(--text-secondary); line-height: 1.9;">
+              <li><strong>09:00 - 10:00:</strong> مراجعة ومفهوم الاستضافة المحلية LocalWP.</li>
+              <li><strong>10:00 - 10:45:</strong> تثبيت LocalWP وإنشاء أول موقع محلي.</li>
+              <li><strong>11:00 - 11:35:</strong> ملفات الموقع ومجلد <code>wp-content</code> وقاعدة البيانات.</li>
+              <li><strong>11:35 - 12:15:</strong> تنظيف الموقع وتثبيت Astra و Elementor + الهوية البصرية بالـ AI.</li>
+              <li><strong>12:15 - 12:30:</strong> تحدي الهوية البصرية (Brand Identity Sprint).</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-right: 4px solid var(--ai-purple);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h3 class="card-title" style="color: var(--ai-purple);">الجلسة 2: احتراف Elementor والبناء</h3>
+              <span class="xp-badge" style="color: var(--ai-purple); border-color: var(--ai-purple);">3 ساعات و05 د</span>
+            </div>
+            <ul style="padding-right: 1.25rem; font-size: 0.925rem; color: var(--text-secondary); line-height: 1.9;">
+              <li><strong>12:30 - 13:40:</strong> واجهة Elementor وفلسفة Containers ومفهوم Flexbox والمسافات.</li>
+              <li><strong>13:55 - 14:35:</strong> بناء الـ Hero Section وزر السيرة الذاتية والصورة.</li>
+              <li><strong>14:35 - 15:05:</strong> بناء المهارات ومعرض الأعمال وقسم التواصل.</li>
+              <li><strong>15:05 - 15:25:</strong> فحص تجاوب الشاشات وتحدي Portfolio Speed Build.</li>
+              <li><strong>15:25 - 15:35:</strong> التقييم، لوحة الشرف، وتوزيع النقاط.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"الجدول الزمني لليوم الثاني","script":"اليوم مقسم إلى محطتين رئيسيتين: الصباح لتثبيت بيئة العمل وتجهيز الهوية البصرية، وبعد الظهر للبناء العملي المكثف في Elementor وتحدي السرعة.","notes":["التأكد من جاهزية ملفات تثبيت LocalWP على فلاشات في حال بطء الإنترنت","إعطاء وقت كافٍ لاستكشاف ملفات wp-content"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 4: WHY LOCALWP?
+         ===================================================================== -->
+    <div class="slide" data-slide="4" data-title="لماذا نحتاج LocalWP؟">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-server"></i> الاستضافة المحلية</span>
+            <h2 class="slide-title">لماذا نحتاج إلى LocalWP؟ وداعًا لدفع الاستضافات للتجربة!</h2>
+          </div>
+          <span class="slide-subtitle">بيئة تدريب آمنة 100% على حاسوبك</span>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <h3 class="card-title">1. بيئة آمنة للتعلم</h3>
+            <p class="card-desc">أشبه بساحة تدريب خاصة لقيادة السيارة: جرّب، أخطئ، احذف، وأعد البناء بحرية تامة دون خوف من تعطل موقع مباشر.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-bolt"></i></div>
+            <h3 class="card-title">2. سرعة فائقة في البناء</h3>
+            <p class="card-desc">الملفات وقاعدة البيانات تعمل مباشرة من قرص التخزين بجهازك، فلا يوجد أي بطء ناتج عن سرعة الإنترنت أو السيرفرات البعيدة.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-puzzle-piece"></i></div>
+            <h3 class="card-title">3. تجربة بلا قيود</h3>
+            <p class="card-desc">تثبيت أي قالب أو إضافة ووردبريس واختبارها فورًا؛ لن تدفع دولارًا واحدًا لشراء استضافة أثناء مرحلة التطوير.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--amber-gold);"><i class="fa-solid fa-code"></i></div>
+            <h3 class="card-title">4. وصول مباشر للملفات</h3>
+            <p class="card-desc">إمكانية فتح ملفات الموقع بالكامل وتعديلها وفهم البنية الحقيقية للملفات البرمجية وقاعدة بيانات MySQL.</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 1rem; background: var(--bg-card); border-right: 4px solid var(--amber-gold); padding: 0.85rem 1.25rem; border-radius: var(--radius-sm);">
+          <p style="margin: 0; font-size: 0.95rem; color: var(--text-secondary);">⚠️ <strong>تنبيه للمتدرب:</strong> الموقع المحلي يعمل على جهازك فقط (عبر <code>localhost</code> أو رابط محلي مثل <code>mysite.local</code>) ولا يستطيع أي شخص على الإنترنت زيارته تلقائيًا حتى نقوم برفعه لاحقًا.</p>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"أهمية LocalWP","script":"نوضح للمتدربين لماذا يعتبر LocalWP المعيار الذهبي للمطورين والمصممين حول العالم. بدلاً من دفع اشتراكات استضافة شهرياً، يمكنك بناء عشرات المواقع مجاناً على جهازك.","notes":["تشبيه LocalWP بورشة العمل المغلقة أو معمل التجارب","التأكيد على أن الموقع لا يظهر للعامة"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 5: TRIPLE COMPARISON
+         ===================================================================== -->
+    <div class="slide" data-slide="5" data-title="المقارنة الثلاثية">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-code-compare"></i> إزالة اللبس</span>
+            <h2 class="slide-title">المقارنة الحاسمة: WordPress.com مقابل WordPress.org مقابل LocalWP</h2>
+          </div>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>وجه المقارنة</th>
+              <th>WordPress.com</th>
+              <th>WordPress.org</th>
+              <th>LocalWP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>طبيعة الأداة</strong></td>
+              <td>منصة سحابية متكاملة ومستضافة</td>
+              <td>البرنامج المفتوح المصدر الحر</td>
+              <td>برنامج لتشغيل WordPress على جهازك</td>
+            </tr>
+            <tr>
+              <td><strong>مكان الملفات</strong></td>
+              <td>على خوادم شركة أوتوماتيك</td>
+              <td>على خادم استضافة أنت تختاره وتديره</td>
+              <td>مخزنة في مجلدات حاسوبك الشخصي</td>
+            </tr>
+            <tr>
+              <td><strong>الحرية والتحكم</strong></td>
+              <td>مقيدة بالخطة المشترك بها</td>
+              <td>تحكم مطلق 100% في كل سطر وملف</td>
+              <td>تحكم مطلق 100% بدون أي تكاليف</td>
+            </tr>
+            <tr>
+              <td><strong>الهدف التدريبي</strong></td>
+              <td>مدخل سريع للتعلم (اليوم الأول)</td>
+              <td>النظام المعتمد لمواقع العملاء</td>
+              <td><strong>بيئة العمل الأساسية من اليوم 2 حتى 6</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"المقارنة الثلاثية","script":"هذا الجدول يزيل اللبس المتكرر لدى الطلاب بين المنصة والبرنامج وبيئة التطوير المحلية. LocalWP هو ببساطة وسيلة تشغيل WordPress.org على اللابتوب.","notes":["مراجعة الجدول سطر بسطر","التأكد من فهم كل طالب أين تقع ملفاته اليوم"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 6: LOCALWP SETUP & CREATING FIRST SITE
+         ===================================================================== -->
+    <div class="slide" data-slide="6" data-title="إنشاء أول موقع على LocalWP">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-play"></i> خطوة بخطوة</span>
+            <h2 class="slide-title">إنشاء أول موقع محلي على جهازك في 5 خطوات</h2>
+          </div>
+          <span class="xp-badge"><i class="fa-solid fa-star"></i> +30 XP</span>
+        </div>
+
+        <div class="diagram-flow" style="gap: 1.25rem;">
+          <div class="diagram-node">
+            <div style="font-size: 1.5rem; font-weight: 900; color: var(--wp-blue);">1</div>
+            <h4 style="margin: 0.35rem 0;">Create a new site</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">انقر على الزر الأخضر داخل LocalWP</p>
+          </div>
+          <div class="diagram-arrow"><i class="fa-solid fa-arrow-left"></i></div>
+          <div class="diagram-node">
+            <div style="font-size: 1.5rem; font-weight: 900; color: var(--wp-blue);">2</div>
+            <h4 style="margin: 0.35rem 0;">اسم الموقع</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">اكتب اسمك: <code>amr-portfolio</code></p>
+          </div>
+          <div class="diagram-arrow"><i class="fa-solid fa-arrow-left"></i></div>
+          <div class="diagram-node">
+            <div style="font-size: 1.5rem; font-weight: 900; color: var(--wp-blue);">3</div>
+            <h4 style="margin: 0.35rem 0;">البيئة (Preferred)</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">اختر الإعدادات الموصى بها تلقائيًا</p>
+          </div>
+          <div class="diagram-arrow"><i class="fa-solid fa-arrow-left"></i></div>
+          <div class="diagram-node">
+            <div style="font-size: 1.5rem; font-weight: 900; color: var(--wp-blue);">4</div>
+            <h4 style="margin: 0.35rem 0;">بيانات الدخول</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">اسم المستخدم وكلمة المرور للمدير</p>
+          </div>
+          <div class="diagram-arrow"><i class="fa-solid fa-arrow-left"></i></div>
+          <div class="diagram-node" style="border-color: var(--emerald-green);">
+            <div style="font-size: 1.5rem; font-weight: 900; color: var(--emerald-green);"><i class="fa-solid fa-check"></i></div>
+            <h4 style="margin: 0.35rem 0;">Start Site & WP Admin</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">تشغيل الموقع والدخول للوحة التحكم</p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 1.5rem;">
+          <h4 style="color: var(--text-primary); margin-bottom: 0.4rem;"><i class="fa-solid fa-key" style="color: var(--amber-gold);"></i> ملاحظة أمنية وتدريبية:</h4>
+          <p class="card-desc" style="margin: 0;">بما أن الموقع محلي على جهازك، استخدم بيانات دخول بسيطة تتذكرها (مثل: اسمك وكلمة مرور سهلة للتدريب)، وتذكر ألا تشارك كلمات مرورك الشخصية أو الحساسة على الشاشات المشتركة.</p>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"إنشاء أول موقع محلي","script":"قم بتنفيذ الخطوات على شاشة العرض مباشرة، ثم امنح الطلاب 10 دقائق لإنشاء مواقعهم بأسمائهم. ساعد من تواجهه رسائل الصلاحيات أو الجدار الناري Firewall.","notes":["التأكد من اختيار اسم مناسب للموقع","تذكير الطلاب بتدوين كلمة المرور التي اختاروها"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 7: INSIDE WP: FILES & DATABASE
+         ===================================================================== -->
+    <div class="slide" data-slide="7" data-title="بنية ووردبريس: الملفات وقاعدة البيانات">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-folder-tree"></i> الهندسة المعمارية</span>
+            <h2 class="slide-title">ماذا يوجد داخل ووردبريس؟ الملفات وقاعدة البيانات</h2>
+          </div>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-file-code"></i></div>
+            <h3 class="card-title">1. ملفات النظام البرمجية</h3>
+            <ul style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8;">
+              <li>الملفات الأساسية المكتوبة بلغة PHP لتشغيل النظام.</li>
+              <li>ملف الإعدادات الأساسي <code>wp-config.php</code>.</li>
+              <li>مجلد <code>wp-content</code> (المكان الوحيد الذي نعمل داخله!).</li>
+              <li>ملفات القوالب والإضافات والصور والملفات المرفوعة.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-database"></i></div>
+            <h3 class="card-title">2. قاعدة البيانات (Database - MySQL)</h3>
+            <ul style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8;">
+              <li>الفهرس الذكي والمخزن الرقمي لكل النصوص والمعلومات.</li>
+              <li>تحفظ محتوى المقالات والصفحات وعناوينها.</li>
+              <li>تحفظ بيانات المستخدمين وصلاحياتهم وإعدادات الموقع.</li>
+              <li>تحفظ خيارات التصميم وروابط الصور والتعليقات.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="margin-top: 1rem; text-align: center; background: var(--bg-card); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); font-size: 0.95rem;">
+          💡 <strong>معادلة تشغيل أي صفحة:</strong> الملفات (الهيكل البرمجي) + قاعدة البيانات (المحتوى والنصوص) = الصفحة الجاهزة المعروضة في المتصفح!
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"الملفات وقاعدة البيانات","script":"اشرح للطلاب كيف يتكامل الطرفان: لو حذفت قاعدة البيانات تبقى لديك ملفات بلا محتوى، ولو حذفت الملفات تبقى لديك نصوص بلا محرك يعرضها.","notes":["شرح دور زر Go to site folder في LocalWP","توضيح أن التعديل على قاعدة البيانات يتم عبر لوحة التحكم وليس يدوياً"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 8: WP-CONTENT ANATOMY
+         ===================================================================== -->
+    <div class="slide" data-slide="8" data-title="جولة داخل مجلد wp-content">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-folder-open"></i> قلب الموقع</span>
+            <h2 class="slide-title">جولة استكشافية داخل مجلد <code>wp-content</code></h2>
+          </div>
+          <span class="slide-subtitle">المجلد الأهم في حياة أي مطور ووردبريس</span>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: repeat(3, 1fr);">
+          <div class="card" style="border-top: 4px solid var(--wp-blue);">
+            <div class="card-icon"><i class="fa-solid fa-paintbrush"></i></div>
+            <h3 class="card-title" style="color: var(--wp-blue);">/themes</h3>
+            <p class="card-desc"><strong>مجلد القوالب:</strong> يحتوي على ملفات القوالب المثبتة (مثل Astra, Kadence, Twenty Twenty-Four). يحدد مظهر الموقع العام وتخطيط الهيدر والفوتر.</p>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--ai-purple);">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-plug"></i></div>
+            <h3 class="card-title" style="color: var(--ai-purple);">/plugins</h3>
+            <p class="card-desc"><strong>مجلد الإضافات:</strong> يضم أدوات زيادة الوظائف (مثل Elementor, WooCommerce, Forms). كل إضافة تثبتها يتم تخزين ملفاتها هنا بمجلد مستقل.</p>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--emerald-green);">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+            <h3 class="card-title" style="color: var(--emerald-green);">/uploads</h3>
+            <p class="card-desc"><strong>مجلد الوسائط المرفوعة:</strong> المكان الذي تُخزن فيه جميع الصور والشعارات وملفات PDF التي ترفعها عبر مكتبة الوسائط، مرتبة بالسنة والشهر.</p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 1.25rem; background: rgba(239, 68, 68, 0.08); border-color: rgba(239, 68, 68, 0.3);">
+          <p style="margin: 0; font-size: 0.95rem; color: #f87171;">⛔ <strong>القاعدة الذهبية لمطوري الويب:</strong> لا تقم مطلقًا بتعديل ملفات <code>wp-admin</code> أو <code>wp-includes</code> أو ملفات ووردبريس الأساسية يدويًا؛ أي تخصيص نجريه يكون داخل مجلد القالب أو الإضافات أو عبر لوحة التحكم فقط!</p>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"مجلد wp-content","script":"افتح أمام الطلاب مجلد wp-content عبر LocalWP وشاهدهم كيف يتعرفون على أسماء القوالب والإضافات كملفات حقيقية على أجهزتهم، لكسر حاجز الخوف من بنية الملفات.","notes":["عرض فتح المجلد من LocalWP عبر النقر على مسار الموقع","تأكيد أن مجلد uploads يتنظم تلقائياً بالسنة والشهر"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 9: SITE CLEANUP & SETTINGS
+         ===================================================================== -->
+    <div class="slide" data-slide="9" data-title="تنظيف الموقع وضبط الإعدادات">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-broom"></i> ترتيب وتجهيز</span>
+            <h2 class="slide-title">تنظيف ووردبريس وضبط الإعدادات الأساسية الأربعة</h2>
+          </div>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card">
+            <h4 class="card-title" style="color: var(--rose-accent);"><i class="fa-solid fa-trash-can"></i> 1. حذف المحتوى التجريبي</h4>
+            <p class="card-desc">حذف المقال التجريبي (Hello world!) والصفحة التجريبية (Sample Page) لتبدأ على أرضية نظيفة دون بقايا عشوائية.</p>
+          </div>
+
+          <div class="card">
+            <h4 class="card-title" style="color: var(--wp-blue);"><i class="fa-solid fa-gear"></i> 2. الإعدادات العامة (General)</h4>
+            <p class="card-desc">ضبط اسم الموقع (Site Title) والشعار الترويجي (Tagline)، وتحديد لغة الموقع والمنطقة الزمنية الصحيحة.</p>
+          </div>
+
+          <div class="card">
+            <h4 class="card-title" style="color: var(--emerald-green);"><i class="fa-solid fa-book-open"></i> 3. إعدادات القراءة (Reading)</h4>
+            <p class="card-desc">تحديد أن الصفحة الرئيسية تعرض صفحة ثابتة (A static page) بمجرد إنشائها بدلاً من عرض أحدث المقالات.</p>
+          </div>
+
+          <div class="card">
+            <h4 class="card-title" style="color: var(--amber-gold);"><i class="fa-solid fa-link"></i> 4. الروابط الدائمة (Permalinks)</h4>
+            <p class="card-desc"><strong>خطوة حاسمة لـ SEO:</strong> تغيير صيغة الروابط من الافتراضي المشوه إلى صيغة عنوان المقال <strong>(Post name)</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"تنظيف ووردبريس وضبط الإعدادات","script":"هذه الإعدادات الأربعة هي طقس إلزامي لكل موقع ووردبريس جديد. ركز بشكل خاص على خيار Permalinks لتحويل الروابط إلى Post name لتكون نظيفة ومقروءة لمحركات البحث.","notes":["تنفيذ حذف مقال Hello world فوراً على الشاشة","شرح سبب اختيار Post name"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 10: THEME & ELEMENTOR INSTALLATION
+         ===================================================================== -->
+    <div class="slide" data-slide="10" data-title="تثبيت قالب Astra و Elementor">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-download"></i> الأدوات الأساسية</span>
+            <h2 class="slide-title">تثبيت القالب الخفيف وإضافة Elementor Free</h2>
+          </div>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="card" style="border-top: 4px solid var(--wp-blue);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h3 class="card-title" style="color: var(--wp-blue);">1. قالب Astra (أو Kadence)</h3>
+              <span class="xp-badge">القالب المعتمد</span>
+            </div>
+            <ul style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.9;">
+              <li>قالب فائق الخفة والسرعة ومتوافق بنسبة 100% مع Elementor.</li>
+              <li>خطوات التثبيت: <code>Appearance → Themes → Add New Theme</code>.</li>
+              <li>ابحث عن <strong>Astra</strong>، ثم اضغط <strong>Install</strong> ثم <strong>Activate</strong>.</li>
+              <li>يمنحنا هيكلاً نظيفاً وتحكماً في الهيدر والفوتر.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--rose-accent);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h3 class="card-title" style="color: var(--rose-accent);">2. إضافة Elementor Free</h3>
+              <span class="xp-badge" style="color: var(--rose-accent); border-color: var(--rose-accent);">أداة البناء</span>
+            </div>
+            <ul style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.9;">
+              <li>أشهر محرر بصري مرئي لبناء وتصميم صفحات الويب عالمياً.</li>
+              <li>خطوات التثبيت: <code>Plugins → Add New Plugin</code>.</li>
+              <li>ابحث عن <strong>Elementor Website Builder</strong>، ثبته وفعّله.</li>
+              <li>سنستخدم النسخة الرسمية المجانية دون الحاجة إلى Elementor Pro.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"تثبيت القالب وElementor","script":"وجه الطلاب لتثبيت Astra أولاً ثم Elementor. نبههم إلى تجاهل أي نوافذ منبثقة تطلب الترقية إلى Pro أو إنشاء حساب مدفوع.","notes":["التأكد من تفعيل الإضافة لدى جميع المتدربين","التشديد على استخدام النسخة المجانية فقط"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 11: PROMPT 1 BRAND IDENTITY
+         ===================================================================== -->
+    <div class="slide" data-slide="11" data-title="Prompt 1: الهوية البصرية بالـ AI">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> حقيبة أوامر الذكاء الاصطناعي</span>
+            <h2 class="slide-title">Prompt 1: استخراج الهوية البصرية الكاملة لموقعك الشخصي</h2>
+          </div>
+          <span class="xp-badge"><i class="fa-solid fa-star"></i> AI Brand Designer</span>
+        </div>
+
+        <div class="prompt-container">
+          <div class="prompt-header">
+            <div class="prompt-window-dots">
+              <span class="prompt-dot dot-red"></span>
+              <span class="prompt-dot dot-yellow"></span>
+              <span class="prompt-dot dot-green"></span>
+            </div>
+            <div class="prompt-header-rtl">
+              <span class="prompt-badge">AI PROMPT #1</span>
+              <span class="prompt-title-badge">لوحة الألوان والخطوط والأزرار</span>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this)">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt</span>
+            </button>
+          </div>
+          <div class="prompt-content">Act as a professional UI/UX designer and brand strategist.
+I am building a personal portfolio website using WordPress, the free Astra theme, and Elementor Free.
+
+My details:
+- Name: <span class="prompt-var">[اسمك الكامل]</span>
+- Profession: <span class="prompt-var">[تخصصك، مثلاً: UI/UX Designer أو Front-End Developer أو Graphic Designer]</span>
+- Target audience: <span class="prompt-var">[الجمهور: أصحاب شركات توظيف، عملاء مستقلين، شركات تقنية]</span>
+- Personality: <span class="prompt-var">[Modern / Friendly / Professional / Creative]</span>
+- Preferred style: <span class="prompt-var">[Minimalist / Bold / Tech-focused]</span>
+
+Create a practical visual identity with:
+1. One primary color with its HEX code.
+2. One secondary color with its HEX code.
+3. One accent color for CTA buttons.
+4. One light background color and one dark background color.
+5. One readable text color.
+6. A suitable heading font and body font (Google Fonts available in Elementor).
+7. A short explanation of why the choices work together.
+8. Suggested button colors and hover colors.
+9. Accessibility advice for text contrast (WCAG standard).
+
+Return the result as a compact table. Prefer free, widely available fonts and simple implementation in Elementor Free. Do not invent paid features or assume Elementor Pro is installed.</div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"Prompt 1: الهوية البصرية","script":"ينسخ الطالب هذا الأمر ويضع اسمه وتخصصه، ليحصل خلال ثوانٍ على لوحة ألوان دقيقة بأكواد HEX وخطوط متناسقة يطبقها مباشرة داخل مشروعه.","notes":["توضيح معنى أكواد HEX وكيفية نسخها","التأكيد على اختيار ألوان ذات تباين عالٍ ومقروء"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 12: PROMPT 2 BIO & SERVICES
+         ===================================================================== -->
+    <div class="slide" data-slide="12" data-title="Prompt 2: كتابة الـ Bio والخدمات">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-pen-fancy"></i> صياغة المحتوى</span>
+            <h2 class="slide-title">Prompt 2: كتابة الـ Bio، العناوين، والخدمات بأسلوب احترافي</h2>
+          </div>
+          <span class="xp-badge"><i class="fa-solid fa-star"></i> Personal Bio Copywriter</span>
+        </div>
+
+        <div class="prompt-container">
+          <div class="prompt-header">
+            <div class="prompt-window-dots">
+              <span class="prompt-dot dot-red"></span>
+              <span class="prompt-dot dot-yellow"></span>
+              <span class="prompt-dot dot-green"></span>
+            </div>
+            <div class="prompt-header-rtl">
+              <span class="prompt-badge">AI PROMPT #2</span>
+              <span class="prompt-title-badge">محتوى السيرة والمهارات ونصوص الأزرار</span>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this)">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt</span>
+            </button>
+          </div>
+          <div class="prompt-content">Act as a professional personal-brand copywriter.
+Write portfolio website content using only the truthful information below.
+
+- Name: <span class="prompt-var">[اسمك]</span>
+- Current status: <span class="prompt-var">[Student / Recent Graduate / Junior Professional]</span>
+- Field: <span class="prompt-var">[مجال تخصصك]</span>
+- Real skills: <span class="prompt-var">[اذكر 3 إلى 5 مهارات حقيقية تجيدها]</span>
+- Relevant projects: <span class="prompt-var">[وصف مختصر لمشروع حقيقي أو تدريبي نفذته]</span>
+- Target audience: <span class="prompt-var">[Recruiters / Clients]</span>
+- Preferred tone: <span class="prompt-var">[Friendly / Professional / Confident]</span>
+
+Provide:
+1. Three Hero headlines, each under 12 words.
+2. Three short supporting descriptions, each under 35 words.
+3. One About Me paragraph, 60–90 words.
+4. Three service descriptions, each 20–35 words.
+5. A short Contact section invitation.
+6. Three CTA button labels (e.g., Download Resume, Contact Me).
+7. Suggested English copy with an optional Arabic version.
+
+Important: Do not invent work experience, fake clients, certifications, achievements, or qualifications. If information is missing, ask me rather than making it up. Keep the writing natural, specific, and suitable for a beginner's portfolio.</div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"Prompt 2: محتوى الـ Bio والخدمات","script":"هذا الأمر يمنح الطالب نصوصاً حقيقية وصادقة لمعرض أعماله دون مبالغات أو أرقام وهمية، ويوفر عليه الحيرة في كتابة المقدمة ونصوص الأزرار.","notes":["التشديد على الصدق وعدم اختلاق سنوات خبرة وهمية","استخدام النصوص المولدة في ملء أقسام الموقع في الجلسة التالية"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 13: CHALLENGE 1 BRAND IDENTITY SPRINT
+         ===================================================================== -->
+    <div class="slide" data-slide="13" data-title="تحدي Brand Identity Sprint">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag" style="background: rgba(239,68,68,0.15); color: #f87171; border-color: rgba(239,68,68,0.3);"><i class="fa-solid fa-stopwatch"></i> التحدي الأول: 10 دقائق</span>
+            <h2 class="slide-title">التحدي الأول: سباق الهوية البصرية (Brand Identity Sprint)</h2>
+          </div>
+          <span class="xp-badge" style="color: #ef4444; border-color: #ef4444;"><i class="fa-solid fa-bolt"></i> +100 XP</span>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 2fr 1fr;">
+          <div class="card">
+            <h3 class="card-title" style="color: var(--wp-blue);">المهمة المطلوبة (10 دقائق)</h3>
+            <ol style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 2;">
+              <li>(دقيقتان): تحديد التخصص والجمهور المستهدف.</li>
+              <li>(4 دقائق): تشغيل Prompt الهوية وتوليد ألوان HEX وخطوط القالب.</li>
+              <li>(دقيقتان): توليد واختيار عنوان Hero و Bio قصير من سطرين.</li>
+              <li>(دقيقتان): حفظ أكواد الألوان والنصوص في ملف ملاحظات جاهز للتطبيق!</li>
+            </ol>
+            <div style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--emerald-green); font-weight: 700;">
+              معايير التحكيم: تناسق الألوان (25 XP) + وضوح الخطوط (20 XP) + قوة الـ Bio (25 XP) + الجاهزية للتطبيق (20 XP) + الالتزام بالوقت (10 XP).
+            </div>
+          </div>
+
+          <div class="slide-timer-box" id="timerBox1">
+            <div class="slide-timer-display" id="sprintTimerDisplay">10:00</div>
+            <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+              <button class="action-pill-btn" style="background: var(--emerald-green); color: #fff;" onclick="toggleSprintTimer(this)">
+                <i class="fa-solid fa-play"></i> ابدأ المؤقت
+              </button>
+              <button class="action-pill-btn" onclick="resetSprintTimer()">
+                <i class="fa-solid fa-rotate-left"></i> إعادة ضبط
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"تحدي Brand Identity Sprint","script":"أطلق التحدي وشغّل المؤقت على الشاشة. شجع الطلاب على اتخاذ قرارات سريعة وتثبيت الأكواد دون تردد.","notes":["التجول بين الطلاب والتأكد من حفظ أكواد الألوان HEX في ملف خارجي","منح 100 XP كاملة لكل من يُنهي الهوية في الوقت المحدد"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 14: SESSION 1 CHECKLIST
+         ===================================================================== -->
+    <div class="slide" data-slide="14" data-title="قائمة تحقق الجلسة الأولى">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-list-check"></i> جاهزية الانتقال</span>
+            <h2 class="slide-title">قائمة تحقق نهاية الجلسة الأولى (اضغط لتأكيد الإنجاز)</h2>
+          </div>
+          <span class="xp-badge"><i class="fa-solid fa-check-double"></i> 7 / 7 شروط</span>
+        </div>
+
+        <p class="slide-subtitle" style="margin-bottom: 1rem;">
+          تأكد من إتمام جميع العناصر التالية قبل أن ننتقل لبناء الموقع داخل محرر Elementor:
+        </p>
+
+        <div class="checklist-grid">
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>1. إنشاء موقع محلي وتشغيله بنجاح داخل LocalWP</span>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>2. فتح لوحة التحكم WP Admin والواجهة الأمامية</span>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>3. استكشاف مجلد wp-content وفهم وظيفة themes وplugins</span>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>4. ضبط الروابط الدائمة Permalinks إلى Post name</span>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>5. تثبيت وتفعيل قالب Astra أو Kadence</span>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>6. تثبيت وتفعيل إضافة Elementor Free الرسمية</span>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>7. حفظ لوحة الألوان والخطوط والـ Bio في ملف ملاحظات</span>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"قائمة تحقق الجلسة الأولى","script":"هذه الشريحة التفاعلية تتيح للمدرب مراجعة النقاط مع القاعة نقطة بنقطة. انقر على كل بند لتلوينه بالأخضر والتأكد من جاهزية الجميع قبل استراحة الغداء والانتقال لـ Elementor.","notes":["التأكد من اكتمال التثبيتات لدى كل طالب دون استثناء","حل أي عطل فردي قبل بدء الجلسة الثانية"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 15: SESSION 2: ELEMENTOR PHILOSOPHY & INTERFACE
+         ===================================================================== -->
+    <div class="slide" data-slide="15" data-title="الجلسة 2: واجهة Elementor">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-shapes"></i> الجلسة الثانية: احتراف البناء</span>
+            <h2 class="slide-title">مرحبًا بك في عالم Elementor ومحرره البصري</h2>
+          </div>
+          <span class="slide-subtitle">مدة الجلسة: 3 ساعات و05 دقائق</span>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-table-cells"></i></div>
+            <h3 class="card-title">لوحة الأدوات (Widgets Panel)</h3>
+            <p class="card-desc">صندوق الأدوات على الجانب: يحتوي على العناوين، الصور، الأزرار، الحاويات، والأيقونات للسحب والإفلات.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-desktop"></i></div>
+            <h3 class="card-title">مساحة العمل (Live Canvas)</h3>
+            <p class="card-desc">المسرح المباشر: ترى تصميمك كما سيراه الزائر تمامًا، مع إمكانية التعديل والكتابة المباشرة في الصفحة.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-sitemap"></i></div>
+            <h3 class="card-title">لوحة الملاحة (Navigator)</h3>
+            <p class="card-desc"><strong>أهم ميزة للتحكم الاحترافي:</strong> شجرة مرئية تعرض جميع الحاويات والعناصر وتسمح بإعادة ترتيبها وتسميتها بدقة.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="color: var(--amber-gold);"><i class="fa-solid fa-mobile-screen"></i></div>
+            <h3 class="card-title">المعاينة المتجاوبة (Responsive)</h3>
+            <p class="card-desc">زر شريط الأدوات السفلي للتبديل بين شاشة الكمبيوتر، التابلت، وشاشة الهاتف لضبط المقاسات لكل جهاز.</p>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"واجهة Elementor","script":"نبدأ الجلسة الثانية بتعريف واجهة محرر Elementor. ركز على أهمية لوحة الـ Navigator، لأن الطلاب يميلون لنسيانها مما يجعل تحديد الحاويات المتداخلة صعباً عليهم.","notes":["فتح صفحة تجريبية بـ Elementor على الشاشة","شرح وظيفة زر Update السفلي لحفظ التعديلات"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 16: MODERN CONTAINERS PHILOSOPHY
+         ===================================================================== -->
+    <div class="slide" data-slide="16" data-title="فلسفة الحاويات الحديثة Containers">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-box-open"></i> ثورة التخطيط الحديث</span>
+            <h2 class="slide-title">فلسفة الحاويات الحديثة (Elementor Flexbox Containers)</h2>
+          </div>
+        </div>
+
+        <p class="slide-subtitle" style="margin-bottom: 1.25rem;">
+          وداعًا لنظام الأقسام والأعمدة القديم (Sections & Columns) المعقد والثقيل؛ أصبح معيار ووردبريس الحديث هو <strong>Flexbox Container</strong>!
+        </p>
+
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <h3 class="card-title">1. صندوق داخل صندوق</h3>
+            <p class="card-desc">الحاوية Container هي صندوق تنظيمي يجمع بداخله العناصر، ويمكن وضع حاوية داخل حاوية أخرى بمرونة مطلقة.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-gauge-high"></i></div>
+            <h3 class="card-title">2. كود أنظف وسرعة أعلى</h3>
+            <p class="card-desc">تقلل أكواد الـ DOM بنسبة تزيد عن 40%، مما يجعل الموقع أخف في التحميل وأسرع في استجابة المتصفح.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-arrows-split-up-and-left"></i></div>
+            <h3 class="card-title">3. تحكم في اتجاه العناصر</h3>
+            <p class="card-desc">يمكنك بضغطة زر تحويل ترتيب العناصر من أفقي (جنباً إلى جنب) إلى رأسي (فوق بعضها البعض) بكل سلاسة.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--amber-gold);"><i class="fa-solid fa-mobile"></i></div>
+            <h3 class="card-title">4. استجابة مثالية للشاشات</h3>
+            <p class="card-desc">تتكيف الحاويات مع شاشات الهواتف تلقائياً عن طريق خاصية Wrap دون الحاجة لإنشاء عناصر مكررة.</p>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"فلسفة الحاويات Containers","script":"اشرح للطلاب أن الإصدارات الحديثة من Elementor تعتمد كلياً على Containers المبنية على تقنية CSS Flexbox، وأن فهم هذا المبدأ يجعلهم محترفين حقيقيين في تصميم الويب.","notes":["تشبيه الحاوية بصندوق تخزين الأدوات","توضيح أن الأقسام القديمة Sections أصبحت من الماضي"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 17: FLEXBOX DIRECTIONS & ALIGNMENT
+         ===================================================================== -->
+    <div class="slide" data-slide="17" data-title="إتقان Flexbox: الاتجاهات والمحاذاة">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-arrows-up-down-left-right"></i> قوة Flexbox</span>
+            <h2 class="slide-title">إتقان التخطيط: الاتجاهات، المحاذاة، والـ Gap</h2>
+          </div>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="card">
+            <h4 class="card-title" style="color: var(--wp-blue);"><i class="fa-solid fa-arrows-left-right"></i> Direction: Row (أفقي)</h4>
+            <p class="card-desc">تترتب العناصر أفقيًا بجانب بعضها البعض (مثل: عمود النص بجانب عمود الصورة في الـ Hero).</p>
+            <div class="flex-preview-box" style="flex-direction: row; justify-content: space-around;">
+              <div class="flex-item">عنصر 1</div>
+              <div class="flex-item">عنصر 2</div>
+              <div class="flex-item">عنصر 3</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4 class="card-title" style="color: var(--ai-purple);"><i class="fa-solid fa-arrows-up-down"></i> Direction: Column (رأسي)</h4>
+            <p class="card-desc">تترتب العناصر رأسيًا فوق بعضها البعض (مثل: العنوان يليه الوصف ثم الزر).</p>
+            <div class="flex-preview-box" style="flex-direction: column; align-items: stretch; justify-content: center;">
+              <div class="flex-item" style="padding: 0.35rem;">العنوان الرئيسي</div>
+              <div class="flex-item" style="padding: 0.35rem; background: var(--ai-purple);">الفقرة الوصفية</div>
+              <div class="flex-item" style="padding: 0.35rem; background: var(--emerald-green);">زر الإجراء</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 1rem;">
+          <div class="card" style="padding: 0.85rem 1.15rem;">
+            <h4 style="font-size: 1rem; color: var(--emerald-green); margin-bottom: 0.25rem;">Justify Content</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">توزيع العناصر على <strong>المحور الرئيسي</strong> (Start, Center, End, Space Between).</p>
+          </div>
+          <div class="card" style="padding: 0.85rem 1.15rem;">
+            <h4 style="font-size: 1rem; color: var(--amber-gold); margin-bottom: 0.25rem;">Align Items</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">محاذاة العناصر على <strong>المحور العرضي</strong> (محاذاة عمودية في Row أو أفقية في Col).</p>
+          </div>
+          <div class="card" style="padding: 0.85rem 1.15rem;">
+            <h4 style="font-size: 1rem; color: var(--rose-accent); margin-bottom: 0.25rem;">Gaps (المسافات البينية)</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">تحديد مسافة ثابتة وموحدة بالبكسل بين جميع العناصر التابعة للحاوية بنقرة واحدة.</p>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"إتقان Flexbox في Elementor","script":"أظهر للطلاب عملياً كيف تتغير الحاوية من Row إلى Column بنقرة زر واحدة وكيف يؤثر ذلك على مظهر الصفحة.","notes":["التشديد على دور Gap في الاستغناء عن استخدام هوامش عشوائية","توضيح أن Row على الديسكتوب يتحول إلى Column على الموبايل"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 18: PADDING VS MARGIN
+         ===================================================================== -->
+    <div class="slide" data-slide="18" data-title="الفرق بين Padding و Margin">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-ruler-combined"></i> أسرار المسافات</span>
+            <h2 class="slide-title">الفرق الحاسم بين Padding و Margin (نموذج الصندوق Box Model)</h2>
+          </div>
+        </div>
+
+        <div class="box-model-demo">
+          <span class="box-model-label">MARGIN (الهامش الخارجي: يبعد الصندوق عن العناصر المجاورة)</span>
+          <div class="box-border-demo">
+            <span class="box-border-label">BORDER (حدود الصندوق)</span>
+            <div class="box-padding-demo">
+              <span class="box-padding-label">PADDING (الحشوة الداخلية: تبعد النص عن حدود الصندوق)</span>
+              <div class="box-content-demo">
+                CONTENT (المحتوى: النص أو الصورة أو الزر)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr; margin-top: 1rem;">
+          <div class="card" style="padding: 1rem;">
+            <h4 style="color: var(--emerald-green); font-size: 1.1rem; margin-bottom: 0.35rem;"><i class="fa-solid fa-arrows-to-dot"></i> Padding (الحشوة الداخلية)</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">المسافة بين المحتوى الداخلي وحدود العنصر. عندما تزيد الـ Padding، يتسع الصندوق ويكبر لون الخلفية الداخلي.</p>
+          </div>
+          <div class="card" style="padding: 1rem;">
+            <h4 style="color: var(--amber-gold); font-size: 1.1rem; margin-bottom: 0.35rem;"><i class="fa-solid fa-arrows-split-up-and-left"></i> Margin (الهامش الخارجي)</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">المسافة التي تفصل العنصر من الخارج عما يجاوره من عناصر أخرى في الصفحة. لا يتأثر بلون خلفية الصندوق.</p>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"Padding مقابل Margin","script":"أكثر خطأ يقع فيه المبتدئون هو الخلط بين Padding و Margin. استخدم تشبيه الغرفة: الحشوة Padding هي المساحة بينك وبين جدران غرفتك، والهامش Margin هو المسافة بين منزلك ومنزل جارك.","notes":["تطبيق مباشر في Elementor لتوضيح كيف يؤثر كل منهما على لون الخلفية","شرح أن الأزرار تحتاج دائماً إلى Padding مريح"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 19: PROMPT 3 WIREFRAME PLANNER
+         ===================================================================== -->
+    <div class="slide" data-slide="19" data-title="Prompt 3: تخطيط الهيكل قبل البناء">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-compass-drafting"></i> التخطيط الهندسي</span>
+            <h2 class="slide-title">Prompt 3: تخطيط هيكل الصفحة (Wireframe Planner) بـ Containers</h2>
+          </div>
+          <span class="xp-badge"><i class="fa-solid fa-star"></i> UX Architect</span>
+        </div>
+
+        <div class="prompt-container">
+          <div class="prompt-header">
+            <div class="prompt-window-dots">
+              <span class="prompt-dot dot-red"></span>
+              <span class="prompt-dot dot-yellow"></span>
+              <span class="prompt-dot dot-green"></span>
+            </div>
+            <div class="prompt-header-rtl">
+              <span class="prompt-badge">AI PROMPT #3</span>
+              <span class="prompt-title-badge">مخطط حاويات Elementor Free</span>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this)">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt</span>
+            </button>
+          </div>
+          <div class="prompt-content">Act as a senior web designer who specializes in beginner-friendly WordPress websites.
+I will build a personal portfolio using WordPress, Astra or Kadence, and Elementor Free.
+
+My details:
+- Profession: <span class="prompt-var">[تخصصك]</span>
+- Target audience: <span class="prompt-var">[جمهورك المستهدف]</span>
+- Visual style: <span class="prompt-var">[Minimal / Modern / Tech]</span>
+- Brand colors: <span class="prompt-var">[أكواد الـ HEX لألوانك التي استخرجتها في الخطوة السابقة]</span>
+
+Create a one-page portfolio wireframe containing:
+1. Header and navigation links.
+2. Hero section with headline, description, portrait image, and CV button.
+3. About section.
+4. Skills and services section.
+5. Three project cards grid.
+6. Contact section with direct email link.
+7. Footer.
+
+For each section, specify:
+- Container hierarchy (Parent container vs Child containers).
+- Direction: Row or Column.
+- Suggested content width and Gap suggestions in pixels.
+- Padding and Margin values for clean spacing.
+- Mobile layout behavior (how it stacks on mobile).
+- Which widgets to use from Elementor Free (Heading, Text Editor, Button, Icon Box, Image).
+
+Use standard Containers and free widgets only. Avoid Pro-only widgets. Return the answer in a structured table followed by a step-by-step build sequence.</div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"Prompt 3: تخطيط هيكل الصفحة","script":"هذا الـ Prompt يحول الطالب من شخص يجرب عشوائياً إلى مهندس ينفذ مخططاً واضحاً يحدد له اتجاه كل Container والمقاسات بالبكسل.","notes":["تشجيع الطلاب على فتح Navigator ومطابقة أسماء الحاويات مع المخطط","التأكيد على ضبط المسافات الموصى بها"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 20: BUILDING THE HERO SECTION
+         ===================================================================== -->
+    <div class="slide" data-slide="20" data-title="بناء الـ Hero Section وزر السيرة الذاتية">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-star"></i> الواجهة الرئيسية</span>
+            <h2 class="slide-title">بناء الـ Hero Section، صورة البورتريه، وزر السيرة الذاتية</h2>
+          </div>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1.2fr 1fr;">
+          <div class="card">
+            <h3 class="card-title" style="color: var(--wp-blue);">خطوات بناء قسم الـ Hero في Elementor</h3>
+            <ol style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 2;">
+              <li>أضف <strong>Parent Container</strong> رئيسية باتجاه <strong>Row</strong>، واضبط الـ Min Height على <code>80vh</code>.</li>
+              <li>أنشئ <strong>Child Container</strong> يمنى للنصوص وأخرى يسرى للصورة.</li>
+              <li>في حاوية النصوص: أضف Heading (الاسم والتخصص) + Text Editor (الوصف) + حاوية داخلية باتجاه Row للأزرار.</li>
+              <li>في حاوية الصورة: أضف ودجت Image، اختر صورة شخصية واضحة، واضبط Border Radius لتدوير الحواف.</li>
+              <li><strong>زر تحميل الـ CV:</strong> ارفع ملف الـ PDF إلى Media Library، انسخ رابطه وضعه داخل حقل رابط الزر!</li>
+            </ol>
+          </div>
+
+          <div class="card" style="align-items: center; justify-content: center; text-align: center; background: rgba(56, 88, 233, 0.05); border: 2px dashed var(--wp-blue);">
+            <div style="width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--wp-blue); display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; background: var(--bg-card);">
+              <i class="fa-solid fa-user-tie" style="font-size: 3rem; color: var(--wp-blue);"></i>
+            </div>
+            <h4 style="margin: 0; font-size: 1.2rem;">توازن النص والصورة</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.35rem 0 0.85rem;">نسبة 50% / 50% على الكمبيوتر تتحول إلى 100% فوق بعضها على الهاتف</p>
+            <span class="xp-badge" style="color: var(--emerald-green); border-color: var(--emerald-green);"><i class="fa-solid fa-file-pdf"></i> زر CV مرتبط بملف PDF فعلي</span>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"بناء الـ Hero Section","script":"نفذ الخطوات خطوة بخطوة أمام الطلاب. ركز على كيفية رفع ملف السيرة الذاتية بصيغة PDF ونسخ الرابط المباشر له من مكتبة الوسائط ووضعه في الزر.","notes":["التأكد من اختبار زر تحميل الـ CV بعد نشره للتأكد من أنه يفتح الملف","ملاحظة تجنب استخدام صور ضخمة الحجم لتفادي بطء الصفحة"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 21: SKILLS & SERVICES SECTION
+         ===================================================================== -->
+    <div class="slide" data-slide="21" data-title="قسم المهارات والخدمات">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-tools"></i> استعراض القدرات</span>
+            <h2 class="slide-title">بناء قسم المهارات والخدمات (Skills & Services)</h2>
+          </div>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-layer-group"></i></div>
+            <h3 class="card-title">1. حاوية رئيسية 3 أعمدة</h3>
+            <p class="card-desc">أنشئ Container رئيسية باتجاه Row وفعّل خيار <strong>Wrap</strong> حتى تلتف البطاقات تلقائياً لشاشات الجوال.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-cube"></i></div>
+            <h3 class="card-title">2. استخدام ودجت Icon Box</h3>
+            <p class="card-desc">استخدم ودجت Icon Box المجاني، أو اصنع بطاقتك الخاصة بجمع Icon + Heading + Text داخل حاوية صغيرة.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <h3 class="card-title">3. توحيد الهوية والظلال</h3>
+            <p class="card-desc">امنح كل بطاقة لون خلفية ناعم، وBorder خفيف، وظل Box Shadow رقيق يرتفع عند التمرير (Hover).</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="color: var(--amber-gold);"><i class="fa-solid fa-chart-line"></i></div>
+            <h3 class="card-title">4. بطاقات مهارة حقيقية</h3>
+            <p class="card-desc"><strong>تجنب فخ الـ 99%:</strong> لا تضع أشرطة تقدم بنسب عشوائية؛ اعرض المهارة مع سطرين يوضحان كيف تفيد بها العميل.</p>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"قسم المهارات والخدمات","script":"وجه الطلاب لكتابة 3 مهارات حقيقية يملكونها. نبههم إلى تجنب وضع نسب مئوية خيالية مثل (HTML 99%) لأن مسؤولي التوظيف يعتبرون ذلك علامة سلبية.","notes":["شرح كيفية نسخ تنسيق الحاوية عبر Copy Style ولصقه في باقي البطاقات","تثبيت مسافات Gap موحدة"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 22: PROMPT 5 PROJECT SHOWCASE
+         ===================================================================== -->
+    <div class="slide" data-slide="22" data-title="Prompt 5: كتابة محتوى معرض الأعمال">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-folder-plus"></i> توثيق الإنجازات</span>
+            <h2 class="slide-title">Prompt 5: إنشاء بطاقات معرض الأعمال (Project Showcase)</h2>
+          </div>
+          <span class="xp-badge"><i class="fa-solid fa-star"></i> Portfolio Strategist</span>
+        </div>
+
+        <div class="prompt-container">
+          <div class="prompt-header">
+            <div class="prompt-window-dots">
+              <span class="prompt-dot dot-red"></span>
+              <span class="prompt-dot dot-yellow"></span>
+              <span class="prompt-dot dot-green"></span>
+            </div>
+            <div class="prompt-header-rtl">
+              <span class="prompt-badge">AI PROMPT #5</span>
+              <span class="prompt-title-badge">محتوى بطاقات المشاريع</span>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this)">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt</span>
+            </button>
+          </div>
+          <div class="prompt-content">Act as a portfolio content strategist.
+My field is <span class="prompt-var">[مجال تخصصك، مثلاً: WordPress Design أو Graphic Design]</span>.
+My project details: <span class="prompt-var">[وصف مختصر لمشروع حقيقي أو مشروع تدريبي نفذته في الكورس]</span>.
+
+Create 3 project cards for my portfolio website. For each project, provide:
+1. A short, specific title (e.g., Creative Coffee Brand Identity / Tech E-Commerce Website).
+2. A one-sentence summary explaining the problem solved.
+3. My role and contribution (e.g., Wireframing, Elementor Build, Visual Design).
+4. Tools actually used (e.g., WordPress, Figma, Elementor, Canva).
+5. Three technologies or skills demonstrated.
+6. A CTA label (e.g., View Project Details / Live Demo).
+7. Suggested screenshot or image mockup concept.
+
+Do not claim fake commercial clients or exaggerated revenue outcomes. If the project is a training/practice project, frame it proudly as a comprehensive case study. Keep the copy punchy and suitable for a card layout.</div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"Prompt 5: بطاقات المشاريع","script":"يساعد هذا الأمر الطالب على صياغة مشاريع الكورس (مثل موقع اليوم الأول ومشروع اليوم الحالي) كدراسات حالة حقيقية مقنعة على موقعه.","notes":["التشديد على تسمية المشاريع التدريبية بأسلوب احترافي Case Study","استخدام الصور المولدة أو لقطات الشاشة كأغلفة للمشاريع"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 23: PORTFOLIO GRID & CONTACT SECTION
+         ===================================================================== -->
+    <div class="slide" data-slide="23" data-title="معرض الأعمال وقسم التواصل">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-envelope"></i> الإنهاء والتواصل</span>
+            <h2 class="slide-title">بناء شبكة المشاريع وقسم تواصل معي (Contact Me)</h2>
+          </div>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1.2fr 1fr;">
+          <div class="card">
+            <h3 class="card-title" style="color: var(--emerald-green);"><i class="fa-solid fa-grip"></i> شبكة المشاريع (Portfolio Grid)</h3>
+            <ul style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.9;">
+              <li>حاوية تضم 3 بطاقات مشاريع متناسقة الارتفاع تمامًا.</li>
+              <li>كل بطاقة تحتوي على: صورة معاينة + عنوان H3 + نبذة قصيرة + وسم الأدوات المستخدمة (مثل <code>WordPress</code>).</li>
+              <li>زر للانتقال للمشروع أو عرض التفاصيل.</li>
+              <li>تنفيذ يدوي بـ Containers في النسخة المجانية يغنيك تمامًا عن أي إضافة مدفوعة!</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title" style="color: var(--amber-gold);"><i class="fa-solid fa-paper-plane"></i> قسم التواصل المباشر</h3>
+            <ul style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.9;">
+              <li>عنوان محفز: «هل لديك مشروع؟ دعنا نعمل معًا».</li>
+              <li>بريد إلكتروني مباشر عبر رابط <code>mailto:myemail@example.com</code>.</li>
+              <li>أيقونات الشبكات المهنية (LinkedIn, GitHub, Behance).</li>
+              <li>لا داعي لتعقيد البدايات بنماذج معقدة إذا كانت النسخة المجانية تفي بالغرض!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"معرض الأعمال والتواصل","script":"اشرح للطلاب كيفية عمل رابط mailto: حتى يفتح برنامج البريد مباشرة لدى الزائر عند النقر عليه.","notes":["التأكد من أن جميع الروابط تعمل ولا تترك فراغات (#)","تأكيد تناسق ارتفاع بطاقات المشاريع"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 24: RESPONSIVE DESIGN & MOBILE OPTIMIZATION
+         ===================================================================== -->
+    <div class="slide" data-slide="24" data-title="التصميم المتجاوب واختبار الموبايل">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-mobile-screen"></i> التجاوب الكامل</span>
+            <h2 class="slide-title">التصميم المتجاوب (Responsive Design): أكثر من 70% يتصفحون بهواتفهم!</h2>
+          </div>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-arrows-turn-to-dots"></i></div>
+            <h3 class="card-title">1. قلب اتجاه الحاوية</h3>
+            <p class="card-desc">الحاويات الأفقية (Row) في الديسكتوب يجب تحويلها إلى اتجاه عمودي (Column) على شاشة الهاتف حتى لا تنضغط النصوص.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-text-height"></i></div>
+            <h3 class="card-title">2. تقليص أحجام الخطوط</h3>
+            <p class="card-desc">عناوين H1 الكبيرة (مثل 48px) يجب تعديلها على الهاتف لتصبح (28px - 32px) حتى لا تخرج عن حدود الشاشة.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-arrows-left-right-to-line"></i></div>
+            <h3 class="card-title">3. خفض الـ Padding الجانبي</h3>
+            <p class="card-desc">المسافات الجانبية الكبيرة (مثل 80px) تضيع مساحة شاشة الهاتف الصغيرة؛ اضبطها لتصبح 15px إلى 20px فقط.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="color: var(--amber-gold);"><i class="fa-solid fa-eye"></i></div>
+            <h3 class="card-title">4. إخفاء العناصر غير الضرورية</h3>
+            <p class="card-desc">استخدم تبويب Advanced → Responsive لإخفاء العناصر الثانوية المعطلة لتجربة التصفح على الشاشات الصغيرة.</p>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"التصميم المتجاوب","script":"افتح وضع Responsive Mode في Elementor وبدّل بين شاشات الديسكتوب والتابلت والموبايل، وشاهد كيف تصبح الصفحة احترافية بدون أي خلل في التنسيق.","notes":["تنبيه الطلاب بأن التعديل في وضع الموبايل لا يؤثر على الديسكتوب في Elementor","اختبار الأزرار لتكون سهلة النقر بالإبهام"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 25: PROMPT 4 & 6 UX REVIEW & AI CSS ASSISTANT
+         ===================================================================== -->
+    <div class="slide" data-slide="25" data-title="Prompts 4 & 6: فحص الـ UX والمساعد البرمجي">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-code"></i> الذكاء الاصطناعي المتقدم</span>
+            <h2 class="slide-title">Prompts 4 & 6: مراجعة تجربة المستخدم والمساعد البرمجي CSS</h2>
+          </div>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr;">
+          <!-- Prompt 4 -->
+          <div class="card" style="padding: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span class="prompt-badge">PROMPT #4: فحص الـ UX</span>
+              <button class="copy-btn" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;" onclick="copyInnerPrompt(this, 'p4')">
+                <i class="fa-regular fa-copy"></i> نسخ
+              </button>
+            </div>
+            <div id="p4" style="font-size: 0.825rem; color: var(--code-text); background: var(--code-bg); padding: 0.75rem; border-radius: var(--radius-sm); max-height: 200px; overflow-y: auto; white-space: pre-wrap;">Act as a UX reviewer. Review my portfolio design specification:
+[Paste Your Page Structure, Brand Colors, and Main Headlines]
+
+Evaluate:
+1. Clarity of the main headline.
+2. Visual hierarchy & readability.
+3. CTA visibility (CV & Contact buttons).
+4. Color contrast compliance.
+5. Mobile usability risks.
+6. Three high-impact improvements I can implement right now in Elementor Free.
+
+Explain recommendations in simple, actionable steps without suggesting paid plugins.</div>
+          </div>
+
+          <!-- Prompt 6 -->
+          <div class="card" style="padding: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span class="prompt-badge" style="color: var(--emerald-green); border-color: var(--emerald-green); background: rgba(16,185,129,0.1);">PROMPT #6: كود CSS مخصص</span>
+              <button class="copy-btn" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;" onclick="copyInnerPrompt(this, 'p6')">
+                <i class="fa-regular fa-copy"></i> نسخ
+              </button>
+            </div>
+            <div id="p6" style="font-size: 0.825rem; color: var(--code-text); background: var(--code-bg); padding: 0.75rem; border-radius: var(--radius-sm); max-height: 200px; overflow-y: auto; white-space: pre-wrap;">Act as a WordPress front-end developer.
+I need a small custom CSS enhancement for my portfolio using Elementor Free.
+
+Desired effect: [Hover Effect / Card Shadow Glow / Button Animation / Smooth Float]
+Brand colors: [Your HEX Colors]
+Target CSS class: [my-portfolio-card]
+
+Requirements:
+- Standard CSS only (no external JS or Pro plugins).
+- Responsive on mobile.
+- Explain step-by-step where to paste it in WordPress (e.g. Appearance -> Customize -> Additional CSS).
+- Explain each rule in plain Arabic.</div>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"Prompts 4 و 6 للمراجعة والـ CSS","script":"أمر المراجعة يعطي الطالب تقييماً نقدياً فورياً لتصميمه، وأمر الـ CSS يمكنه من إضافة لمسات جمالية خفيفة بدون الحاجة للنسخة المدفوعة من Elementor.","notes":["شرح مكان وضع الكود في Appearance -> Customize -> Additional CSS","تنبيه الطلاب لعدم استخدام أكواد CSS عشوائية دون فهمها"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 26: CHALLENGE 2 PORTFOLIO SPEED BUILD
+         ===================================================================== -->
+    <div class="slide" data-slide="26" data-title="التحدي الثاني: Portfolio Speed Build">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag" style="background: rgba(239,68,68,0.15); color: #f87171; border-color: rgba(239,68,68,0.3);"><i class="fa-solid fa-stopwatch"></i> التحدي الأكبر: 20 دقيقة</span>
+            <h2 class="slide-title">التحدي الثاني: بناء الموقع الشخصي (Portfolio Speed Build)</h2>
+          </div>
+          <span class="xp-badge" style="color: #ef4444; border-color: #ef4444;"><i class="fa-solid fa-bolt"></i> +150 XP</span>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 2fr 1fr;">
+          <div class="card">
+            <h3 class="card-title" style="color: var(--wp-blue);">المهمة العملية (خلال 20 دقيقة)</h3>
+            <ol style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 2;">
+              <li>(5 دقائق): إنشاء هيكل الحاويات Containers الرئيسي للـ Hero والقسم التالي.</li>
+              <li>(5 دقائق): إضافة العنوان، الوصف، والصورة الشخصية وتطبيق ألوان الهوية.</li>
+              <li>(5 دقائق): إضافة زر تحميل السيرة الذاتية وربطه برابط ملف PDF صالح.</li>
+              <li>(5 دقائق): ضبط المسافات وفحص التجاوب وحفظ التعديلات في شاشة الهاتف!</li>
+            </ol>
+            <div style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--emerald-green); font-weight: 700;">
+              معايير الفوز: بنية Containers سليمة (30 XP) + وضوح العناوين والوصف (30 XP) + زر CV يعمل فعليًا (30 XP) + التجاوب الكامل على الجوال (40 XP) + حفظ الصفحة (20 XP).
+            </div>
+          </div>
+
+          <div class="slide-timer-box" id="timerBox2">
+            <div class="slide-timer-display" id="speedTimerDisplay">20:00</div>
+            <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+              <button class="action-pill-btn" style="background: var(--emerald-green); color: #fff;" onclick="toggleSpeedTimer(this)">
+                <i class="fa-solid fa-play"></i> انطلاق التحدي!
+              </button>
+              <button class="action-pill-btn" onclick="resetSpeedTimer()">
+                <i class="fa-solid fa-rotate-left"></i> إعادة ضبط
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"تحدي Portfolio Speed Build","script":"هذا هو ذروة تطبيق اليوم الثاني. شغل المؤقت لعشرين دقيقة، وشجع الطلاب على التركيز في إنهاء الـ Hero وزر الـ CV والتأكد من فحص الهاتف.","notes":["التجول للمساعدة الفورية في مشاكل المحاذاة أو الروابط المكسورة","التأكيد على أن الزر يجب أن يعمل فعلياً للحصول على نقاط الـ XP"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 27: FINAL CHECKLIST & WRAP-UP
+         ===================================================================== -->
+    <div class="slide" data-slide="27" data-title="قائمة تسليم اليوم الثاني والخاتمة">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-award"></i> مبروك الإنجاز</span>
+            <h2 class="slide-title">قائمة تسليم الموقع الشخصي ومعايير النجاح</h2>
+          </div>
+          <span class="xp-badge"><i class="fa-solid fa-trophy"></i> مجموع اليومين: حتى 440 XP</span>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+          <div class="card">
+            <h4 class="card-title"><i class="fa-solid fa-check-circle" style="color: var(--emerald-green);"></i> بيئة العمل</h4>
+            <p class="card-desc">موقع محلي يعمل باستقرار على LocalWP ولوحة الإدارة متاحة بضغطة زر.</p>
+          </div>
+
+          <div class="card">
+            <h4 class="card-title"><i class="fa-solid fa-check-circle" style="color: var(--emerald-green);"></i> قالب Astra و Elementor</h4>
+            <p class="card-desc">تثبيت وتفعيل الأدوات وضبط الروابط الدائمة Permalinks.</p>
+          </div>
+
+          <div class="card">
+            <h4 class="card-title"><i class="fa-solid fa-check-circle" style="color: var(--emerald-green);"></i> Hero Section متكامل</h4>
+            <p class="card-desc">عنوان مميز، سيرة مختصرة، صورة بورتريه، وزر سيرة ذاتية يعمل برابط صحيح.</p>
+          </div>
+
+          <div class="card">
+            <h4 class="card-title"><i class="fa-solid fa-check-circle" style="color: var(--emerald-green);"></i> التجاوب الكامل</h4>
+            <p class="card-desc">الموقع يعمل ويبدو متناسقاً على الهاتف والكمبيوتر بنفس الجودة والوضوح.</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.25rem; text-align: center; background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(56,88,233,0.15)); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-highlight);">
+          <h3 style="margin-bottom: 0.35rem; font-size: 1.4rem;">🌟 مبروك! لقد ارتقيت إلى مرتبة <span style="color: var(--ai-purple);">AI Page Crafter</span> اليوم!</h3>
+          <p style="margin: 0; color: var(--text-secondary); font-size: 0.95rem;">
+            استعدوا لليوم الثالث: سننتقل من الموقع الشخصي إلى <strong>صفحات الهبوط البيعية (Landing Pages)</strong> وسيكولوجية التحويل والـ AI Copywriting!
+          </p>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"ختام اليوم الثاني والتقييم","script":"اختم اليوم بالاحتفال بإنجاز كل متدرب وبناء موقعه الشخصي محلياً لأول مرة، واعرض بعض أعمال الطلاب المتميزة على الشاشة الرئيسية لتحفيز الجميع.","notes":["تسجيل نقاط اليوم الثاني في لوحة الشرف","تذكير الطلاب بالواجب المنزلي: تحسين المحتوى والتأكد من أخذ نسخة احتياطية"]}
+      </script>
+    </div>
+
+  </div> <!-- End Deck -->
+
+  <!-- Bottom Navigation Controls Bar -->
+  <div class="controls-bottom-bar">
+    <button class="nav-btn" id="prevBtn" title="الشريحة السابقة (السهم الأيمن أو Up)">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+    <div class="slide-counter" id="slideCounter">1 / 28</div>
+    <button class="nav-btn" id="nextBtn" title="الشريحة التالية (السهم الأيسر أو المسافة)">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+  </div>
+
+  <!-- Speaker Notes Drawer -->
+  <div class="notes-drawer" id="notesDrawer">
+    <div class="notes-drawer-header">
+      <h3 style="margin: 0; color: var(--wp-blue); font-size: 1.15rem;"><i class="fa-solid fa-chalkboard-user"></i> ملاحظات الشرح للمدرب</h3>
+      <button class="action-pill-btn" id="closeNotesBtn" style="padding: 0.2rem 0.6rem;">
+        <i class="fa-solid fa-xmark"></i> إغلاق
+      </button>
+    </div>
+    <div id="notesBody">
+      <h4 id="notesTitle" style="color: var(--text-primary); margin-bottom: 0.4rem;"></h4>
+      <p id="notesScript" style="color: var(--text-secondary); line-height: 1.7; margin-bottom: 0.75rem; font-size: 0.95rem;"></p>
+      <div id="notesBullets" style="font-size: 0.875rem; color: var(--emerald-green);"></div>
+    </div>
+  </div>
+
+  <!-- Overview Grid Modal -->
+  <div class="overview-modal" id="overviewModal">
+    <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; width: 100%; margin: 0 auto;">
+      <h2 style="margin: 0;"><i class="fa-solid fa-grip"></i> فهرس شرائح اليوم الثاني</h2>
+      <button class="action-pill-btn" id="closeOverviewBtn">
+        <i class="fa-solid fa-xmark"></i> إغلاق الفهرس
+      </button>
+    </div>
+    <div class="overview-grid" id="overviewGrid" style="max-width: 1200px; width: 100%; margin: 1.5rem auto 0;"></div>
+  </div>
+
+  <!-- Presentation Engine Script -->
+  <script>
+    const deck = document.getElementById('deck');
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const slideCounter = document.getElementById('slideCounter');
+    const progressBar = document.getElementById('progressBar');
+    
+    // Notes & Overview Elements
+    const notesDrawer = document.getElementById('notesDrawer');
+    const notesToggleBtn = document.getElementById('notesToggleBtn');
+    const closeNotesBtn = document.getElementById('closeNotesBtn');
+    const notesTitle = document.getElementById('notesTitle');
+    const notesScript = document.getElementById('notesScript');
+    const notesBullets = document.getElementById('notesBullets');
+
+    const overviewModal = document.getElementById('overviewModal');
+    const overviewBtn = document.getElementById('overviewBtn');
+    const closeOverviewBtn = document.getElementById('closeOverviewBtn');
+    const overviewGrid = document.getElementById('overviewGrid');
+
+    // Theme Elements
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const toastNotice = document.getElementById('toastNotice');
+
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+
+    function init() {
+      buildOverviewGrid();
+      goTo(0);
+      setupEventListeners();
+      initTheme();
+    }
+
+    function goTo(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+
+      currentSlide = index;
+      updateUI();
+      updateNotes();
+    }
+
+    function next() {
+      if (currentSlide < totalSlides - 1) goTo(currentSlide + 1);
+    }
+
+    function prev() {
+      if (currentSlide > 0) goTo(currentSlide - 1);
+    }
+
+    function updateUI() {
+      slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+      const progressPercent = ((currentSlide + 1) / totalSlides) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      const thumbs = overviewGrid.querySelectorAll('.overview-thumb');
+      thumbs.forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === currentSlide);
+      });
+    }
+
+    function updateNotes() {
+      const activeSlide = slides[currentSlide];
+      const notesScriptTag = activeSlide.querySelector('.slide-notes');
+      if (notesScriptTag) {
+        try {
+          const data = JSON.parse(notesScriptTag.textContent);
+          notesTitle.textContent = data.title || `شريحة ${currentSlide + 1}`;
+          notesScript.textContent = data.script || 'لا يوجد نص للشرح في هذه الشريحة.';
+          
+          if (data.notes && Array.isArray(data.notes)) {
+            notesBullets.innerHTML = '<ul style="margin: 0; padding-right: 1.25rem;">' + 
+              data.notes.map(n => `<li style="margin-bottom: 0.25rem;">${n}</li>`).join('') + 
+              '</ul>';
+          } else {
+            notesBullets.innerHTML = '';
+          }
+        } catch (e) {
+          notesTitle.textContent = `شريحة ${currentSlide + 1}`;
+          notesScript.textContent = notesScriptTag.textContent;
+          notesBullets.innerHTML = '';
+        }
+      } else {
+        notesTitle.textContent = `شريحة ${currentSlide + 1}`;
+        notesScript.textContent = 'لا توجد ملاحظات مسجلة لهذه الشريحة.';
+        notesBullets.innerHTML = '';
+      }
+    }
+
+    function buildOverviewGrid() {
+      overviewGrid.innerHTML = '';
+      slides.forEach((slide, i) => {
+        const title = slide.getAttribute('data-title') || `شريحة ${i + 1}`;
+        const thumb = document.createElement('div');
+        thumb.className = `overview-thumb ${i === 0 ? 'active' : ''}`;
+        thumb.innerHTML = `
+          <div class="overview-thumb-num">#${i + 1}</div>
+          <div class="overview-thumb-title">${title}</div>
+        `;
+        thumb.addEventListener('click', () => {
+          goTo(i);
+          overviewModal.classList.remove('open');
+        });
+        overviewGrid.appendChild(thumb);
+      });
+    }
+
+    // Prompt Copy Helper
+    window.copyPrompt = function(btn) {
+      const container = btn.closest('.prompt-container');
+      const content = container.querySelector('.prompt-content').innerText;
+      navigator.clipboard.writeText(content).then(() => {
+        showCopyToast(btn);
+      });
+    };
+
+    window.copyInnerPrompt = function(btn, elementId) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        showCopyToast(btn);
+      });
+    };
+
+    function showCopyToast(btn) {
+      const originalHTML = btn.innerHTML;
+      btn.classList.add('copied');
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> <span>تم النسخ!</span>';
+
+      toastNotice.classList.add('show');
+      setTimeout(() => {
+        toastNotice.classList.remove('show');
+        btn.classList.remove('copied');
+        btn.innerHTML = originalHTML;
+      }, 2000);
+    }
+
+    // Timers Logic for Challenges
+    let sprintTime = 10 * 60;
+    let sprintInterval = null;
+    let isSprintRunning = false;
+
+    window.toggleSprintTimer = function(btn) {
+      if (isSprintRunning) {
+        clearInterval(sprintInterval);
+        isSprintRunning = false;
+        btn.innerHTML = '<i class="fa-solid fa-play"></i> استئناف';
+      } else {
+        isSprintRunning = true;
+        btn.innerHTML = '<i class="fa-solid fa-pause"></i> إيقاف مؤقت';
+        sprintInterval = setInterval(() => {
+          if (sprintTime > 0) {
+            sprintTime--;
+            const mins = Math.floor(sprintTime / 60);
+            const secs = sprintTime % 60;
+            document.getElementById('sprintTimerDisplay').textContent = 
+              `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+          } else {
+            clearInterval(sprintInterval);
+            isSprintRunning = false;
+            btn.innerHTML = '<i class="fa-solid fa-flag-checkered"></i> انتهى الوقت!';
+            alert('انتهت الـ 10 دقائق لتحدي Brand Identity Sprint! 🎉');
+          }
+        }, 1000);
+      }
+    };
+
+    window.resetSprintTimer = function() {
+      clearInterval(sprintInterval);
+      isSprintRunning = false;
+      sprintTime = 10 * 60;
+      document.getElementById('sprintTimerDisplay').textContent = '10:00';
+    };
+
+    let speedTime = 20 * 60;
+    let speedInterval = null;
+    let isSpeedRunning = false;
+
+    window.toggleSpeedTimer = function(btn) {
+      if (isSpeedRunning) {
+        clearInterval(speedInterval);
+        isSpeedRunning = false;
+        btn.innerHTML = '<i class="fa-solid fa-play"></i> استئناف';
+      } else {
+        isSpeedRunning = true;
+        btn.innerHTML = '<i class="fa-solid fa-pause"></i> إيقاف مؤقت';
+        speedInterval = setInterval(() => {
+          if (speedTime > 0) {
+            speedTime--;
+            const mins = Math.floor(speedTime / 60);
+            const secs = speedTime % 60;
+            document.getElementById('speedTimerDisplay').textContent = 
+              `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+          } else {
+            clearInterval(speedInterval);
+            isSpeedRunning = false;
+            btn.innerHTML = '<i class="fa-solid fa-flag-checkered"></i> انتهى التحدي!';
+            alert('انتهت الـ 20 دقيقة لتحدي Portfolio Speed Build! حان وقت فحص المواقع 🚀');
+          }
+        }, 1000);
+      }
+    };
+
+    window.resetSpeedTimer = function() {
+      clearInterval(speedInterval);
+      isSpeedRunning = false;
+      speedTime = 20 * 60;
+      document.getElementById('speedTimerDisplay').textContent = '20:00';
+    };
+
+    // Keyboard & Events
+    function setupEventListeners() {
+      prevBtn.addEventListener('click', prev);
+      nextBtn.addEventListener('click', next);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        if (e.key === 'ArrowLeft' || e.key === ' ' || e.key === 'PageDown') {
+          e.preventDefault();
+          next();
+        } else if (e.key === 'ArrowRight' || e.key === 'PageUp') {
+          e.preventDefault();
+          prev();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          goTo(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          goTo(totalSlides - 1);
+        } else if (e.key.toLowerCase() === 'o') {
+          overviewModal.classList.toggle('open');
+        } else if (e.key.toLowerCase() === 'n') {
+          notesDrawer.classList.toggle('open');
+        } else if (e.key.toLowerCase() === 'f') {
+          toggleFullScreen();
+        } else if (e.key === 'Escape') {
+          overviewModal.classList.remove('open');
+          notesDrawer.classList.remove('open');
+        }
+      });
+
+      overviewBtn.addEventListener('click', () => overviewModal.classList.add('open'));
+      closeOverviewBtn.addEventListener('click', () => overviewModal.classList.remove('open'));
+      notesToggleBtn.addEventListener('click', () => notesDrawer.classList.toggle('open'));
+      closeNotesBtn.addEventListener('click', () => notesDrawer.classList.remove('open'));
+      fullscreenBtn.addEventListener('click', toggleFullScreen);
+      themeToggleBtn.addEventListener('click', toggleTheme);
+    }
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('slides_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeButton(savedTheme);
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const newTheme = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('slides_theme', newTheme);
+      updateThemeButton(newTheme);
+    }
+
+    function updateThemeButton(theme) {
+      if (theme === 'dark') {
+        themeIcon.className = 'fa-solid fa-moon';
+        themeText.textContent = 'الوضع الليلي';
+      } else {
+        themeIcon.className = 'fa-solid fa-sun';
+        themeText.textContent = 'الوضع النهاري';
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

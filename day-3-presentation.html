@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اليوم الثالث: هندسة صفحات الهبوط وكتابة المحتوى بالـ AI (شاشة العرض للطلاب)</title>
+  
+  <!-- Font Awesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Shared Theme Palette -->
+  <link rel="stylesheet" href="theme-palette.css">
+
+  <style>
+    :root {
+      --slide-padding: clamp(2rem, 5vh, 4rem) clamp(2rem, 6vw, 5rem);
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      overflow: hidden;
+      cursor: default;
+      user-select: none;
+    }
+
+    /* Auto-hide UI during presentation when inactive */
+    body.idle-cursor {
+      cursor: none;
+    }
+    body.idle-cursor .projector-controls {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+    }
+
+    .projector-deck {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .slide {
+      padding: var(--slide-padding);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .slide-content-box {
+      max-width: 1250px;
+      width: 100%;
+      margin: 0 auto;
+      text-align: right;
+    }
+
+    .slide-content-center {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(139, 92, 246, 0.15);
+      color: #c084fc;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      padding: 0.5rem 1.25rem;
+      border-radius: var(--radius-full);
+      font-size: clamp(0.9rem, 1.5vh, 1.15rem);
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 0 25px rgba(139, 92, 246, 0.25);
+    }
+
+    .projector-title {
+      font-size: clamp(2.2rem, 5.5vh, 4.2rem);
+      line-height: 1.2;
+      font-weight: 900;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .projector-subtitle {
+      font-size: clamp(1.15rem, 2.5vh, 1.75rem);
+      color: var(--text-secondary);
+      max-width: 950px;
+      line-height: 1.6;
+    }
+
+    .projector-controls {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-full);
+      padding: 0.4rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      z-index: 1000;
+      transition: all 0.4s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      direction: ltr;
+    }
+
+    .control-icon-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.25rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .control-icon-btn:hover {
+      background: var(--wp-blue);
+      color: #fff;
+      transform: scale(1.1);
+    }
+
+    .slide-page-badge {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      direction: rtl;
+      padding: 0 0.5rem;
+    }
+
+    /* Live Countdown Widget */
+    .countdown-widget {
+      background: rgba(15, 23, 42, 0.95);
+      border: 2px solid var(--wp-blue);
+      border-radius: var(--radius-lg);
+      padding: 2rem 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 50px rgba(56, 88, 233, 0.35);
+      margin-top: 1.5rem;
+    }
+    .timer-display {
+      font-family: var(--font-code);
+      font-size: clamp(3.5rem, 10vh, 6.5rem);
+      font-weight: 900;
+      color: #38bdf8;
+      text-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
+      letter-spacing: 4px;
+    }
+    .timer-controls {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+    .timer-btn {
+      padding: 0.6rem 1.6rem;
+      border-radius: var(--radius-full);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all var(--transition-fast);
+      border: none;
+    }
+    .timer-btn-start {
+      background: var(--emerald-green);
+      color: #fff;
+    }
+    .timer-btn-start:hover {
+      background: #059669;
+      transform: scale(1.05);
+    }
+    .timer-btn-reset {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-primary);
+    }
+    .timer-btn-reset:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* Student Prompt Card */
+    .student-prompt-card {
+      background: var(--code-bg);
+      border: 2px solid var(--code-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      margin: 1.5rem 0;
+      text-align: right;
+    }
+    .student-prompt-header {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--code-border);
+      direction: ltr;
+    }
+    .student-prompt-text {
+      padding: 1.5rem 2rem;
+      font-size: clamp(0.95rem, 1.8vh, 1.2rem);
+      line-height: 1.8;
+      color: #f1f5f9;
+      max-height: clamp(240px, 45vh, 480px);
+      overflow-y: auto;
+      white-space: pre-wrap;
+      direction: rtl;
+    }
+
+    /* Quick Jump Drawer */
+    .jump-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 380px;
+      height: 100vh;
+      background: var(--bg-secondary);
+      border-left: 2px solid var(--border-medium);
+      box-shadow: var(--shadow-lg);
+      z-index: 2000;
+      padding: 2rem 1.5rem;
+      transform: translateX(105%);
+      transition: transform var(--transition-smooth);
+      overflow-y: auto;
+    }
+    .jump-drawer.open {
+      transform: translateX(0);
+    }
+    .jump-item {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      margin-bottom: 0.5rem;
+      transition: all var(--transition-fast);
+      border: 1px solid transparent;
+    }
+    .jump-item:hover, .jump-item.active {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+      border-color: var(--wp-blue);
+    }
+    .jump-item.active {
+      font-weight: 700;
+      color: var(--wp-blue);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBar"></div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Projector Slides Deck -->
+  <main class="projector-deck">
+
+    <!-- ==========================================
+         SLIDE 0: TITLE & WELCOME
+         ========================================== -->
+    <section class="slide active" data-title="مقدمة اليوم الثالث">
+      <div class="slide-content-center">
+        <span class="hero-badge">
+          <i class="fa-solid fa-bullseye"></i> اليوم الثالث: معسكر ووردبريس المدعوم بالذكاء الاصطناعي
+        </span>
+        <h1 class="projector-title">
+          هندسة صفحات الهبوط عالية التحويل<br>
+          <span class="gradient-text">High-Converting Landing Pages & AI Copywriting</span>
+        </h1>
+        <p class="projector-subtitle">
+          من سيكولوجية الزائر إلى تحويل النقرة إلى قرار بيعي باستخدام ChatGPT ونماذج AIDA و PAS
+        </p>
+
+        <div style="display: flex; gap: 1rem; margin-top: 2.5rem;">
+          <div class="stat-box" style="padding: 1.25rem 2rem;">
+            <div class="stat-number">6</div>
+            <div class="stat-label">أقسام هيكلية أساسية</div>
+          </div>
+          <div class="stat-box" style="padding: 1.25rem 2rem;">
+            <div class="stat-number">2</div>
+            <div class="stat-label">نماذج كتابة إعلانية (AIDA / PAS)</div>
+          </div>
+          <div class="stat-box" style="padding: 1.25rem 2rem;">
+            <div class="stat-number">6</div>
+            <div class="stat-label">أوامر AI احترافية قابلة للنسخ</div>
+          </div>
+          <div class="stat-box" style="padding: 1.25rem 2rem;">
+            <div class="stat-number">250 XP</div>
+            <div class="stat-label">نقاط خبرة التحديات العملية</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 1: LEARNING OUTCOMES
+         ========================================== -->
+    <section class="slide" data-title="مخرجات اليوم الثالث">
+      <div class="slide-content-box">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <span class="hero-badge"><i class="fa-solid fa-graduation-cap"></i> مخرجات التعلم بنهاية الجلسة</span>
+          <h2 class="projector-title" style="font-size: 2.8rem;">ماذا ستتقن بنهاية اليوم الثالث؟</h2>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+          <div class="card" style="padding: 1.75rem;">
+            <div style="font-size: 2.5rem; color: #38bdf8; margin-bottom: 1rem;">
+              <i class="fa-solid fa-scale-balanced"></i>
+            </div>
+            <h3 style="font-size: 1.4rem; color: var(--text-primary); margin-bottom: 0.5rem;">التفكير الاستراتيجي</h3>
+            <p style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6;">
+              التمييز الدقيق بين الموقع العام وصفحة الهبوط، وتحديد <strong>هدف تحويل واحد (Conversion Goal)</strong> وزر إجراء لا يقبل اللبس.
+            </p>
+          </div>
+
+          <div class="card" style="padding: 1.75rem;">
+            <div style="font-size: 2.5rem; color: #a855f7; margin-bottom: 1rem;">
+              <i class="fa-solid fa-pen-nib"></i>
+            </div>
+            <h3 style="font-size: 1.4rem; color: var(--text-primary); margin-bottom: 0.5rem;">الكتابة الإعلانية بالـ AI</h3>
+            <p style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6;">
+              صياغة عناوين ومحتوى بيعي مقنع باستخدام نماذج <strong>AIDA</strong> و <strong>PAS</strong> والتفريق العملي بين الميزة والفائدة.
+            </p>
+          </div>
+
+          <div class="card" style="padding: 1.75rem;">
+            <div style="font-size: 2.5rem; color: #10b981; margin-bottom: 1rem;">
+              <i class="fa-solid fa-cubes"></i>
+            </div>
+            <h3 style="font-size: 1.4rem; color: var(--text-primary); margin-bottom: 0.5rem;">التنفيذ في Elementor</h3>
+            <p style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6;">
+              بناء أول قسمين (Hero + المشكلة والفوائد) بحاويات Flexbox نظيفة مع مراعاة كاملة للتجاوب وسرعة التصفح على الموبايل.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 2: WEBSITE VS LANDING PAGE
+         ========================================== -->
+    <section class="slide" data-title="الموقع العادي أم صفحة الهبوط؟">
+      <div class="slide-content-box">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <span class="hero-badge"><i class="fa-solid fa-code-compare"></i> المقارنة المحورية</span>
+          <h2 class="projector-title" style="font-size: 2.8rem;">الموقع التقليدي (Website) مقابل صفحة الهبوط (Landing Page)</h2>
+        </div>
+
+        <div class="comparison-container" style="margin-top: 1rem;">
+          <div class="comparison-column website-col" style="padding: 2rem;">
+            <div class="comparison-header" style="justify-content: center; font-size: 1.6rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+              <i class="fa-solid fa-globe"></i> الموقع التقليدي (Website)
+            </div>
+            <ul class="feature-list" style="font-size: 1.15rem; gap: 1rem;">
+              <li><i class="fa-solid fa-compass"></i> <strong>الهدف:</strong> استكشافي عام وتوفير معلومات شاملة عن المؤسسة.</li>
+              <li><i class="fa-solid fa-bars"></i> <strong>القوائم:</strong> قائمة تنقل علوية مليئة بالروابط والصفحات.</li>
+              <li><i class="fa-solid fa-route"></i> <strong>خيارات الزائر:</strong> مسارات خروج وتفرعات عديدة (تشتيت انتباه).</li>
+              <li><i class="fa-solid fa-chart-line"></i> <strong>معدل التحويل:</strong> منخفض عادة (بين 1% إلى 3%).</li>
+              <li><i class="fa-solid fa-users"></i> <strong>نوع الزائر:</strong> زائر يبحث، يتصفح، أو يقارن دون استعجال.</li>
+            </ul>
+          </div>
+
+          <div class="comparison-column landing-col" style="padding: 2rem; border-color: var(--emerald-green); background: rgba(16, 185, 129, 0.05);">
+            <div class="comparison-header" style="justify-content: center; font-size: 1.6rem; color: var(--emerald-green); margin-bottom: 1.5rem;">
+              <i class="fa-solid fa-bullseye"></i> صفحة الهبوط (Landing Page)
+            </div>
+            <ul class="feature-list" style="font-size: 1.15rem; gap: 1rem;">
+              <li><i class="fa-solid fa-check"></i> <strong>الهدف:</strong> إجراء واحد محدد فقط (شراء، تسجيل، حجز، تنزيل).</li>
+              <li><i class="fa-solid fa-ban" style="color: #ef4444;"></i> <strong>القوائم:</strong> لا توجد قائمة تنقل (No Navbar) لمنع الهروب!</li>
+              <li><i class="fa-solid fa-arrow-down-long"></i> <strong>خيارات الزائر:</strong> خياران فقط: تنفيذ الإجراء (CTA) أو المغادرة.</li>
+              <li><i class="fa-solid fa-rocket" style="color: #38bdf8;"></i> <strong>معدل التحويل:</strong> مرتفع جداً (بين 10% إلى 25%+).</li>
+              <li><i class="fa-solid fa-bullhorn"></i> <strong>نوع الزائر:</strong> قادم من إعلان ممول أو حملة تسويقية ذات نية واضحة.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 3: LANDING PAGE 6 BIG SECTIONS
+         ========================================== -->
+    <section class="slide" data-title="تشريح صفحة الهبوط: الأقسام الستة">
+      <div class="slide-content-box">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <span class="hero-badge"><i class="fa-solid fa-sitemap"></i> الهيكل المعماري الفائز</span>
+          <h2 class="projector-title" style="font-size: 2.8rem;">تشريح الأقسام الستة الكبرى لصفحة الهبوط</h2>
+          <p class="projector-subtitle" style="margin: 0 auto;">رحلة العميل الذهنية من الفضول إلى اتخاذ القرار</p>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+          <div class="card" style="border-top: 4px solid #38bdf8; padding: 1.25rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="font-weight: 900; font-size: 1.2rem; color: #38bdf8;">01. Hero Section</span>
+              <i class="fa-solid fa-star" style="color: #38bdf8;"></i>
+            </div>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5;">
+              القاعدة الذهبية لأول 5 ثوانٍ: عنوان رئيسي صادق، وعد صريح، زر CTA أولي، وصورة أو فيديو داعم.
+            </p>
+          </div>
+
+          <div class="card" style="border-top: 4px solid #ef4444; padding: 1.25rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="font-weight: 900; font-size: 1.2rem; color: #ef4444;">02. Pain Points</span>
+              <i class="fa-solid fa-heart-crack" style="color: #ef4444;"></i>
+            </div>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5;">
+              نقاط الألم والمشكلات الحقيقية: اجعل العميل يشعر أنك تفهم معاناته وتتحدث بلسانه اليومي.
+            </p>
+          </div>
+
+          <div class="card" style="border-top: 4px solid #10b981; padding: 1.25rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="font-weight: 900; font-size: 1.2rem; color: #10b981;">03. Solution & Benefits</span>
+              <i class="fa-solid fa-gem" style="color: #10b981;"></i>
+            </div>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5;">
+              الحل والفوائد الملموسة: لا تسرد الميزات التقنية الجافة، بل اشرح ما الذي سيتغير في حياة العميل.
+            </p>
+          </div>
+
+          <div class="card" style="border-top: 4px solid #f59e0b; padding: 1.25rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="font-weight: 900; font-size: 1.2rem; color: #f59e0b;">04. Social Proof</span>
+              <i class="fa-solid fa-users" style="color: #f59e0b;"></i>
+            </div>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5;">
+              أدلة الثقة: تقييمات، شهادات صادقة، أرقام حقيقية، أو نماذج أعمال سابقة تزيل الشك.
+            </p>
+          </div>
+
+          <div class="card" style="border-top: 4px solid #8b5cf6; padding: 1.25rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="font-weight: 900; font-size: 1.2rem; color: #8b5cf6;">05. FAQ Section</span>
+              <i class="fa-solid fa-circle-question" style="color: #8b5cf6;"></i>
+            </div>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5;">
+              الأسئلة الشائعة: الرد الاستباقي على أهم 5 اعتراضات تدور في عقل الزائر وتمنعه من الشراء.
+            </p>
+          </div>
+
+          <div class="card" style="border-top: 4px solid #ec4899; padding: 1.25rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="font-weight: 900; font-size: 1.2rem; color: #ec4899;">06. Final CTA</span>
+              <i class="fa-solid fa-hand-pointer" style="color: #ec4899;"></i>
+            </div>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5;">
+              الدعوة الأخيرة للعمل: تلخيص العرض، ضمان خالي من المخاطرة (ضمان استرداد)، وزر CTA رئيسي بارز.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 4: FEATURES VS BENEFITS
+         ========================================== -->
+    <section class="slide" data-title="الميزة مقابل الفائدة (Features vs Benefits)">
+      <div class="slide-content-box">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <span class="hero-badge"><i class="fa-solid fa-lightbulb"></i> السر النفسي في الإقناع</span>
+          <h2 class="projector-title" style="font-size: 2.8rem;">لا تبع الميزة (Feature).. بع الفائدة (Benefit)!</h2>
+          <p class="projector-subtitle" style="margin: 0 auto;">الناس لا يشترون سريرًا مريحًا.. بل يشترون 8 ساعات من النوم الهادئ بلا ألم ظهر!</p>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+          <div class="card" style="padding: 2rem; border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.04);">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
+              <span style="width: 36px; height: 36px; border-radius: 50%; background: #ef4444; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900;">✕</span>
+              <h3 style="font-size: 1.5rem; color: #ef4444; margin: 0;">الميزة (Feature) - لغة التقنيين</h3>
+            </div>
+            <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+              تصف <strong>ما يحتويه المنتج</strong> أو مواصفاته الهندسية والمادية الجافة:
+            </p>
+            <ul style="font-size: 1.05rem; line-height: 2; color: var(--text-primary); padding-right: 1.25rem;">
+              <li>"مساحة تخزين سحابي 100 جيجابايت"</li>
+              <li>"الموقع مبني بـ Elementor Flexbox Containers"</li>
+              <li>"كورس مسجل مدته 25 ساعة تدريبية"</li>
+              <li>"شاشة بدقة 4K OLED ومعدل 120Hz"</li>
+            </ul>
+          </div>
+
+          <div class="card" style="padding: 2rem; border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.05);">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
+              <span style="width: 36px; height: 36px; border-radius: 50%; background: #10b981; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900;">✓</span>
+              <h3 style="font-size: 1.5rem; color: #10b981; margin: 0;">الفائدة (Benefit) - لغة العميل</h3>
+            </div>
+            <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+              تصف <strong>ما الذي تفعله الميزة لحياة العميل</strong> وكيف توفر وقته أو تزيد أرباحه:
+            </p>
+            <ul style="font-size: 1.05rem; line-height: 2; color: var(--text-primary); padding-right: 1.25rem;">
+              <li>"احتفظ بجميع ذكرياتك وصورك العائلية دون قلق نفاد المساحة"</li>
+              <li>"موقع يفتح كالبرق على هواتف عملائك ولا يخسر أي عملية بيع"</li>
+              <li>"امتلك مهارة بناء المواقع وابدأ عملك الحر في 6 أيام فقط"</li>
+              <li>"استمتع بتجربة ألعاب فائقة السلاسة تحمي عينيك من الإجهاد"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 5: AIDA & PAS FRAMEWORKS
+         ========================================== -->
+    <section class="slide" data-title="نماذج الإقناع: AIDA & PAS">
+      <div class="slide-content-box">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <span class="hero-badge"><i class="fa-solid fa-brain"></i> سيكولوجية صناعة القرار</span>
+          <h2 class="projector-title" style="font-size: 2.8rem;">نماذج الكتابة الإعلانية: AIDA و PAS</h2>
+          <p class="projector-subtitle" style="margin: 0 auto;">القوالب المعيارية العالمية لتحويل زوار المواقع إلى عملاء حقيقيين</p>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+          <!-- AIDA -->
+          <div class="card" style="padding: 1.75rem; border-top: 4px solid var(--wp-blue);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <h3 style="font-size: 1.5rem; color: var(--wp-blue); margin: 0;">نموذج AIDA (العناوين والـ Hero)</h3>
+              <span class="prompt-badge">Hero & Sales</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.85rem; font-size: 1.05rem;">
+              <div style="background: var(--bg-primary); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border-right: 3px solid #38bdf8;">
+                <strong>A - Attention (الانتباه):</strong> عنوان رئيسي قوي يوقف التمرير فوراً.
+              </div>
+              <div style="background: var(--bg-primary); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border-right: 3px solid #60a5fa;">
+                <strong>I - Interest (الاهتمام):</strong> وصف يشرح المشكلة أو الحل بنبرة تهم الزائر.
+              </div>
+              <div style="background: var(--bg-primary); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border-right: 3px solid #818cf8;">
+                <strong>D - Desire (الرغبة):</strong> إبراز الفوائد العاطفية والعملية للمنتج.
+              </div>
+              <div style="background: var(--bg-primary); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border-right: 3px solid #a855f7;">
+                <strong>A - Action (الإجراء):</strong> زر CTA محدد بصيغة الأمر الإيجابي الواضح.
+              </div>
+            </div>
+          </div>
+
+          <!-- PAS -->
+          <div class="card" style="padding: 1.75rem; border-top: 4px solid #ef4444;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <h3 style="font-size: 1.5rem; color: #ef4444; margin: 0;">نموذج PAS (قسم المشكلة والحل)</h3>
+              <span class="prompt-badge" style="color: #ef4444; border-color: #ef4444;">Pain & Relief</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 1.05rem;">
+              <div style="background: var(--bg-primary); padding: 1rem; border-radius: var(--radius-sm); border-right: 3px solid #ef4444;">
+                <strong style="color: #ef4444;">P - Problem (المشكلة):</strong><br>
+                تحديد الصعوبة الواقعية التي يعيشها العميل يومياً بلغة واضحة دون تعقيد.
+              </div>
+              <div style="background: var(--bg-primary); padding: 1rem; border-radius: var(--radius-sm); border-right: 3px solid #f59e0b;">
+                <strong style="color: #f59e0b;">A - Agitation (إثارة الأثر):</strong><br>
+                توضيح كلفة استمرار المشكلة (خسارة وقت، إحباط، تكاليف متزايدة) بواقعية دون تهويل.
+              </div>
+              <div style="background: var(--bg-primary); padding: 1rem; border-radius: var(--radius-sm); border-right: 3px solid #10b981;">
+                <strong style="color: #10b981;">S - Solution (الحل):</strong><br>
+                تقديم منتجك أو خدمتك كمسار الخلاص المباشر والآمن للتخلص من هذه المعاناة.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 6: PROMPT 1 MARKETING STRATEGY
+         ========================================== -->
+    <section class="slide" data-title="Prompt 1: الاستراتيجية التسويقية">
+      <div class="slide-content-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <div>
+            <span class="hero-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> حقيبة أوامر الذكاء الاصطناعي</span>
+            <h2 class="projector-title" style="font-size: 2.2rem; margin: 0;">Prompt 1: استراتيجية العميل والعرض والتحويل</h2>
+          </div>
+          <span class="badge" style="font-size: 1rem; padding: 0.5rem 1rem; border: 1px solid var(--wp-blue); color: #38bdf8;">AI Strategy Master</span>
+        </div>
+
+        <div class="student-prompt-card">
+          <div class="student-prompt-header">
+            <button class="copy-btn" onclick="copyPromptCard('prompt1_code')">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt بضغطة زر</span>
+            </button>
+            <span style="font-family: var(--font-code); color: #94a3b8; font-size: 0.95rem;">PROMPT #1 — MARKETING STRATEGY</span>
+          </div>
+          <div class="student-prompt-text" id="prompt1_code">أنت خبير في التسويق الرقمي وتصميم صفحات الهبوط البيعية عالية التحويل.
+
+أريد منك إعداد استراتيجية تسويقية مختصرة لصفحة هبوط خاصة بالمنتج أو الخدمة التالية:
+- اسم المنتج/الخدمة: [اسم المنتج، مثلاً: معسكر تصميم المواقع بالـ AI]
+- وصف المنتج: [وصف مختصر في سطرين]
+- السعر: [السعر أو اكتب غير محدد]
+- الجمهور المستهدف: [الجمهور بدقة، مثلاً: طلاب جامعيون وباحثون عن عمل حر]
+- المشكلة الأساسية: [المشكلة التي يعانون منها]
+- الميزة التنافسية الحقيقية: [ما يميزك حقاً]
+- هدف الصفحة: [شراء / تسجيل في دورة / حجز استشارة / طلب عرض سعر]
+
+المطلوب:
+1. وصف دقيق للعميل المثالي (Buyer Persona).
+2. تحديد أهم 3 مشكلات ونقاط ألم يواجهها (Pain Points).
+3. تحديد أهم 3 فوائد يقدمها المنتج مرتبطة بالمشكلات.
+4. كتابة عرض تسويقي واضح ومقنع (Unique Value Proposition).
+5. اقتراح هدف تحويل أساسي واحد قابل للملاحظة.
+6. اقتراح نص جذاب ومحدد لزر الدعوة لاتخاذ إجراء (CTA).
+7. تحديد أهم 3 اعتراضات ومخاوف قد تمنع العميل من اتخاذ القرار وكيفية الرد عليها.
+
+ملاحظة: لا تخترع معلومات أو أرقامًا غير موجودة. إذا كانت المعلومات غير كافية، اسألني قبل افتراضها.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 7: PROMPT 2 AIDA HEADLINES
+         ========================================== -->
+    <section class="slide" data-title="Prompt 2: عناوين AIDA البيعية">
+      <div class="slide-content-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <div>
+            <span class="hero-badge"><i class="fa-solid fa-pen-nib"></i> صياغة عناوين الـ Hero</span>
+            <h2 class="projector-title" style="font-size: 2.2rem; margin: 0;">Prompt 2: توليد 5 خيارات عناوين بيعية جذابة بنموذج AIDA</h2>
+          </div>
+          <span class="badge" style="font-size: 1rem; padding: 0.5rem 1rem; border: 1px solid var(--wp-blue); color: #38bdf8;">AIDA Copywriter</span>
+        </div>
+
+        <div class="student-prompt-card">
+          <div class="student-prompt-header">
+            <button class="copy-btn" onclick="copyPromptCard('prompt2_code')">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt بضغطة زر</span>
+            </button>
+            <span style="font-family: var(--font-code); color: #94a3b8; font-size: 0.95rem;">PROMPT #2 — AIDA HERO HEADLINES</span>
+          </div>
+          <div class="student-prompt-text" id="prompt2_code">تصرّف ككاتب إعلانات تسويقية محترف (Senior Copywriter) متخصص في صفحات الهبوط (Landing Pages).
+
+بيانات المشروع:
+- المنتج: [اسم المنتج أو الخدمة]
+- الجمهور المستهدف: [الجمهور]
+- المشكلة الأساسية: [المشكلة]
+- النتيجة الواقعية التي يساعد العرض على تحقيقها: [النتيجة]
+- الميزة التنافسية: [الميزة]
+- نبرة الكتابة: [احترافي / ودود / جريء / مبسط]
+- اللغة: العربية
+
+استخدم نموذج AIDA (Attention, Interest, Desire, Action) لإنشاء 5 خيارات مختلفة بالكامل لقسم الـ Hero، يتضمن كل خيار:
+1. Headline رئيسي واضح وجذاب من 8 إلى 12 كلمة.
+2. Subheadline يشرح القيمة في جملتين قصيرتين.
+3. نص زر CTA محدد وصريح.
+4. سطر يوضح سبب ملاءمة هذا الخيار للجمهور المستهدف.
+
+الشروط الإلزامية:
+- استخدم لغة عربية سليمة ومباشرة وتجنب الكليشيهات المبتذلة (مثل: الأفضل على الإطلاق / الحل السحري).
+- لا تقدم وعودًا خيالية غير قابلة للإثبات.
+- اجعل العنوان مفهومًا وقويًا بمفرده دون الحاجة لقراءة باقي الصفحة.
+
+في النهاية، رتّب الخيارات الخمسة حسب وضوح الرسالة وملاءمتها للجمهور.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 8: PROMPT 3 PAS COPYWRITING
+         ========================================== -->
+    <section class="slide" data-title="Prompt 3: صياغة المشكلة والحل بـ PAS">
+      <div class="slide-content-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <div>
+            <span class="hero-badge"><i class="fa-solid fa-heart-crack"></i> التعاطف مع معضلات العميل</span>
+            <h2 class="projector-title" style="font-size: 2.2rem; margin: 0;">Prompt 3: كتابة محتوى قسم المشكلة والحل بنموذج PAS</h2>
+          </div>
+          <span class="badge" style="font-size: 1rem; padding: 0.5rem 1rem; border: 1px solid var(--wp-blue); color: #38bdf8;">PAS Problem-Solver</span>
+        </div>
+
+        <div class="student-prompt-card">
+          <div class="student-prompt-header">
+            <button class="copy-btn" onclick="copyPromptCard('prompt3_code')">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt بضغطة زر</span>
+            </button>
+            <span style="font-family: var(--font-code); color: #94a3b8; font-size: 0.95rem;">PROMPT #3 — PAS SECTION WRITER</span>
+          </div>
+          <div class="student-prompt-text" id="prompt3_code">أنت Copywriter متخصص في كتابة نصوص صفحات الهبوط التي تبني التعاطف وتدفع للتحويل.
+
+اكتب محتوى متكامل لقسم المشكلة والحل باستخدام نموذج PAS:
+- Problem: المشكلة التي يعيشها العميل.
+- Agitation: أثر استمرار المشكلة على واقعه دون تهويل أو تخويف غير واقعي.
+- Solution: كيف يمثل منتجنا الحل المباشر المرتبط بفوائد ملموسة.
+
+بيانات مشروعي:
+- المنتج أو الخدمة: [اسم المنتج]
+- الجمهور المستهدف: [الجمهور]
+- المشكلة: [المشكلة الأساسية]
+- الأثر الواقعي لاستمرار المشكلة: [الأثر]
+- الحل الذي نقدمه: [الحل]
+- الفوائد الحقيقية: [الفوائد]
+
+المخرجات المطلوبة بالتنسيق التالي:
+1. عنوان رئيسي جذاب لقسم المشكلة (مثلاً: هل تواجه هذه الصعوبات؟).
+2. فقرة قصيرة تصف المشكلة بلغة العميل اليومية.
+3. ثلاث نقاط تمثل صعوبات واقعية محددة في شكل بطاقات.
+4. عنوان لقسم الحل.
+5. فقرة تشرح كيف يساعد المنتج في تجاوز الصعوبات.
+6. ثلاث فوائد رئيسية مرتبطة مباشرة بالمشكلات السابقة.
+7. نص CTA مناسب ختامي للقسم.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 9: PROMPT 4 FULL PAGE WIREFRAME
+         ========================================== -->
+    <section class="slide" data-title="Prompt 4: مخطط هيكل الصفحة الكاملة">
+      <div class="slide-content-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <div>
+            <span class="hero-badge"><i class="fa-solid fa-layer-group"></i> المخطط الهيكلي الكامل</span>
+            <h2 class="projector-title" style="font-size: 2.2rem; margin: 0;">Prompt 4: إنشاء مخطط كامل لأقسام صفحة الهبوط في Elementor</h2>
+          </div>
+          <span class="badge" style="font-size: 1rem; padding: 0.5rem 1rem; border: 1px solid var(--wp-blue); color: #38bdf8;">Full Page Architect</span>
+        </div>
+
+        <div class="student-prompt-card">
+          <div class="student-prompt-header">
+            <button class="copy-btn" onclick="copyPromptCard('prompt4_code')">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt بضغطة زر</span>
+            </button>
+            <span style="font-family: var(--font-code); color: #94a3b8; font-size: 0.95rem;">PROMPT #4 — UX WIREFRAME ARCHITECT</span>
+          </div>
+          <div class="student-prompt-text" id="prompt4_code">أنت خبير في UX Writing وتصميم صفحات الهبوط التسويقية ببرنامج WordPress و Elementor Free.
+
+أنشئ مخططًا كاملاً لصفحة هبوط للمشروع التالي:
+- المنتج: [اسم المنتج]
+- الجمهور: [الجمهور]
+- هدف التحويل: [الهدف]
+- تفاصيل العرض: [تفاصيل العرض]
+- الأسلوب البصري: [Modern / Clean / Tech]
+- أهم الفوائد: [الفوائد]
+
+نظّم الصفحة بالأقسام الستة التالية بالترتيب:
+1. Hero Section: عنوان، وصف، CTA، فكرة العنصر البصري.
+2. Pain Points: ثلاث مشكلات واقعية.
+3. Solution & Benefits: الحل وثلاث فوائد.
+4. Social Proof: نوع دليل الثقة المقترح (بديل صادق إذا لم تتوفر شهادات حقيقية).
+5. FAQ: خمسة أسئلة وأجوبة تزيل التردد.
+6. Final CTA: عنوان ختامي وزر تحويل واضح.
+
+لكل قسم من الأقسام، حدد:
+- عنوان القسم والنص المقترح.
+- الهدف التسويقي من القسم.
+- الاقتراح البصري ونوع الـ Container المطلوب في Elementor Free.
+- ملاحظة تصميمية لضمان قراءة ممتازة على شاشات الهواتف.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 10: PROMPTS 5 & 6 IMAGES & REVIEW
+         ========================================== -->
+    <section class="slide" data-title="Prompts 5 & 6: الصور والمراجعة النقدية">
+      <div class="slide-content-box">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <span class="hero-badge"><i class="fa-solid fa-wand-magic"></i> أدوات الذكاء الاصطناعي التكميلية</span>
+          <h2 class="projector-title" style="font-size: 2.4rem;">Prompts 5 & 6: توليد الصور بالـ AI والمراجعة قبل النشر</h2>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+          <!-- Prompt 5 -->
+          <div class="card" style="padding: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span class="prompt-badge">PROMPT #5: صورة الـ Hero</span>
+              <button class="copy-btn" onclick="copyPromptCard('prompt5_code')">
+                <i class="fa-regular fa-copy"></i> نسخ
+              </button>
+            </div>
+            <div id="prompt5_code" style="font-family: var(--font-code); font-size: 0.85rem; background: var(--code-bg); padding: 1rem; border-radius: var(--radius-sm); max-height: 280px; overflow-y: auto; color: #f1f5f9; white-space: pre-wrap; direction: ltr; text-align: left;">I need a professional marketing hero image for a landing page:
+- Product/Service: [Your Product]
+- Target Audience: [Audience]
+- Visual Style: [Minimalist / Modern 3D / Editorial / Photorealistic]
+- Main Colors: [Your HEX Colors]
+- Placement: [Right side of text / Hero Background]
+- Aspect ratio: [16:9 or 4:3]
+
+Write a detailed English prompt for an AI image generator (e.g., Microsoft Designer / Midjourney).
+Rules: Clean composition, professional lighting, copy-space on the left for text overlay, strictly NO text, NO letters, NO brand logos, and NO clutter.</div>
+          </div>
+
+          <!-- Prompt 6 -->
+          <div class="card" style="padding: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span class="prompt-badge" style="color: var(--emerald-green); border-color: var(--emerald-green);">PROMPT #6: المراجعة التسويقية (CRO)</span>
+              <button class="copy-btn" onclick="copyPromptCard('prompt6_code')">
+                <i class="fa-regular fa-copy"></i> نسخ
+              </button>
+            </div>
+            <div id="prompt6_code" style="font-size: 0.85rem; background: var(--code-bg); padding: 1rem; border-radius: var(--radius-sm); max-height: 280px; overflow-y: auto; color: #f1f5f9; white-space: pre-wrap; direction: rtl; text-align: right;">أنت مراجع متخصص في محتوى صفحات الهبوط وتحسين معدل التحويل (CRO Reviewer).
+
+راجع النص التالي:
+[الصق محتوى صفحة الهبوط هنا]
+
+قيّم المحتوى من 1 إلى 5 في المعايير التالية:
+1. وضوح العنوان وقوته في أول 5 ثوانٍ.
+2. فهم الجمهور للقيمة والفائدة الحقيقية.
+3. قوة زر الـ CTA وصراحته.
+4. سهولة القراءة والتصفح على الهاتف.
+5. الصدق وقابلية إثبات الادعاءات.
+
+ثم حدد أهم 3 نقاط ضعف واقترح تعديلًا عمليًا لكل منها، وأعد كتابة النسخة المحسنة الجاهزة للنشر.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 11: CHALLENGE 1 PROMPT BATTLE (15 MIN)
+         ========================================== -->
+    <section class="slide" data-title="التحدي الأول: Prompt Battle">
+      <div class="slide-content-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <span class="hero-badge" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
+              <i class="fa-solid fa-bolt"></i> تحدي تفاعلي سريع
+            </span>
+            <h2 class="projector-title" style="font-size: 2.8rem; margin: 0;">التحدي الأول: معركة الأوامر (Prompt Battle)</h2>
+          </div>
+          <span class="badge" style="font-size: 1.2rem; padding: 0.6rem 1.4rem; border: 2px solid #ef4444; color: #ef4444; font-weight: 900;">
+            <i class="fa-solid fa-trophy"></i> +100 XP
+          </span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem; align-items: center;">
+          <div class="card" style="padding: 2rem;">
+            <h3 style="font-size: 1.4rem; color: var(--wp-blue); margin-bottom: 1rem;">
+              المهمة: ابتكر أقوى عنوان بيعي وعرض تسويقي لصفحتك!
+            </h3>
+            <ol style="font-size: 1.1rem; line-height: 2.2; color: var(--text-primary); padding-right: 1.5rem;">
+              <li>(3 دقائق): تحديد الجمهور والمشكلة والميزة الأساسية لمشروعك.</li>
+              <li>(5 دقائق): تشغيل Prompt AIDA أو PAS لإنتاج 3 خيارات عناوين بالذكاء الاصطناعي.</li>
+              <li>(4 دقائق): اختيار النسخة الأقوى وتعديل زر الـ CTA ليكون محدداً ومباشراً.</li>
+              <li>(3 دقائق): مشاركة العنوان النهائي لتقييمه ونيل نقاط الـ XP!</li>
+            </ol>
+            <div style="margin-top: 1rem; padding: 0.85rem; background: rgba(16, 185, 129, 0.1); border-radius: var(--radius-sm); border: 1px solid var(--emerald-green); font-size: 0.95rem; color: var(--emerald-green); font-weight: 700;">
+              معايير التقييم: وضوح العنوان (30 XP) + جاذبية الفائدة الحقيقية (25 XP) + تحديد زر الإجراء (20 XP) + جودة صياغة الـ Prompt (25 XP).
+            </div>
+          </div>
+
+          <div class="countdown-widget">
+            <div style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 700;">الوقت المتبقي للتحدي</div>
+            <div class="timer-display" id="timerDisplay1">15:00</div>
+            <div class="timer-controls">
+              <button class="timer-btn timer-btn-start" onclick="toggleTimer(1, 15)">
+                <i class="fa-solid fa-play" id="playIcon1"></i>
+                <span id="timerBtnText1">ابدأ التحدي (15 د)</span>
+              </button>
+              <button class="timer-btn timer-btn-reset" onclick="resetTimer(1, 15)">
+                <i class="fa-solid fa-rotate-left"></i>
+                <span>إعادة ضبط</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 12: ELEMENTOR BUILD PLAN
+         ========================================== -->
+    <section class="slide" data-title="خطة البناء العملي في Elementor">
+      <div class="slide-content-box">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <span class="hero-badge"><i class="fa-solid fa-laptop-code"></i> التطبيق العملي الفعلي</span>
+          <h2 class="projector-title" style="font-size: 2.8rem;">خطة بناء أول قسمين في Elementor Free</h2>
+          <p class="projector-subtitle" style="margin: 0 auto;">معمارية Flexbox Containers النظيفة والجاهزة للتجاوب مع الهواتف</p>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+          <div class="card" style="padding: 2rem; border-top: 4px solid var(--wp-blue);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+              <h3 style="font-size: 1.5rem; color: var(--wp-blue); margin: 0;">القسم الأول: الـ Hero Section</h3>
+              <span class="badge" style="background: rgba(56, 189, 248, 0.1); color: #38bdf8;">Section #1</span>
+            </div>
+            <ul style="font-size: 1.05rem; line-height: 2; color: var(--text-secondary); padding-right: 1.25rem;">
+              <li><strong>Container رئيسي:</strong> الاتجاه Row (أفقي) على الديسكتوب، يتحول إلى Column على الموبايل.</li>
+              <li><strong>العمود الأيمن:</strong> عنوان رئيسي H1، وصف قصير، وزر CTA بحجم كبير ومسافة أمان واضحة.</li>
+              <li><strong>العمود الأيسر:</strong> صورة المنتج المولدة بالـ AI أو Mockup بجودة عالية وبنسبة 16:9.</li>
+              <li><strong>ارتفاع القسم:</strong> Min-Height: 85vh لملء الشاشة مع الهامش الداخلي 60px من الأعلى والأسفل.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="padding: 2rem; border-top: 4px solid var(--emerald-green);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+              <h3 style="font-size: 1.5rem; color: var(--emerald-green); margin: 0;">القسم الثاني: المشكلات والفوائد</h3>
+              <span class="badge" style="background: rgba(16, 185, 129, 0.1); color: var(--emerald-green);">Section #2</span>
+            </div>
+            <ul style="font-size: 1.05rem; line-height: 2; color: var(--text-secondary); padding-right: 1.25rem;">
+              <li><strong>عنوان القسم:</strong> H2 جذاب (مثال: "لماذا يفشل 80% في إطلاق مواقعهم؟").</li>
+              <li><strong>Container الحاوي:</strong> اتجاه Row مع خاصية Wrap وتوزيع مسافات Justify-Content: Space-Between.</li>
+              <li><strong>3 بطاقات تفاعلية:</strong> كل بطاقة في Container فرعي بعرض 31%، مع أيقونة معبرة، عنوان، وفقرة وصف.</li>
+              <li><strong>تأثير Hover:</strong> ظل ناعم وحركة صعود بمقدار 5px لجعل الصفحة حية وتفاعلية.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 13: CHALLENGE 2 SPEED BUILD (20 MIN)
+         ========================================== -->
+    <section class="slide" data-title="التحدي الثاني: Speed Build">
+      <div class="slide-content-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <span class="hero-badge" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
+              <i class="fa-solid fa-stopwatch"></i> التحدي الأكبر لليوم الثالث
+            </span>
+            <h2 class="projector-title" style="font-size: 2.8rem; margin: 0;">التحدي الثاني: بناء أول قسمين في Elementor</h2>
+          </div>
+          <span class="badge" style="font-size: 1.2rem; padding: 0.6rem 1.4rem; border: 2px solid #ef4444; color: #ef4444; font-weight: 900;">
+            <i class="fa-solid fa-fire"></i> +150 XP
+          </span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem; align-items: center;">
+          <div class="card" style="padding: 2rem;">
+            <h3 style="font-size: 1.4rem; color: var(--emerald-green); margin-bottom: 1rem;">
+              المهمة: ابنِ الـ Hero وقسم المشكلات/الفوائد في Elementor Free
+            </h3>
+            <ol style="font-size: 1.1rem; line-height: 2.2; color: var(--text-primary); padding-right: 1.5rem;">
+              <li>(3 دقائق): إنشاء صفحة جديدة في LocalWP باسم Landing Page وضبط القالب Elementor Canvas.</li>
+              <li>(7 دقائق): بناء وتنسيق الـ Hero Section بالعنوان والصورة وزر الـ CTA.</li>
+              <li>(7 دقائق): بناء قسم المشكلات أو الفوائد في 3 بطاقات متناسقة الهوامش.</li>
+              <li>(3 دقائق): فحص وضع الهاتف المحمول (Mobile Preview) وحفظ الصفحة!</li>
+            </ol>
+            <div style="margin-top: 1rem; padding: 0.85rem; background: rgba(56, 189, 248, 0.1); border-radius: var(--radius-sm); border: 1px solid #38bdf8; font-size: 0.95rem; color: #38bdf8; font-weight: 700;">
+              جوائز الإنجاز: اكتمال الـ Hero (40 XP) + جودة البطاقات (30 XP) + سلامة التجاوب (20 XP) + الالتزام بالوقت (60 XP).
+            </div>
+          </div>
+
+          <div class="countdown-widget">
+            <div style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 700;">الوقت المتبقي لتحدي البناء</div>
+            <div class="timer-display" id="timerDisplay2">20:00</div>
+            <div class="timer-controls">
+              <button class="timer-btn timer-btn-start" onclick="toggleTimer(2, 20)">
+                <i class="fa-solid fa-play" id="playIcon2"></i>
+                <span id="timerBtnText2">انطلاق التحدي! (20 د)</span>
+              </button>
+              <button class="timer-btn timer-btn-reset" onclick="resetTimer(2, 20)">
+                <i class="fa-solid fa-rotate-left"></i>
+                <span>إعادة ضبط</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 14: CHECKLIST & DAY 3 RECAP
+         ========================================== -->
+    <section class="slide" data-title="قائمة الفحص وخاتمة اليوم الثالث">
+      <div class="slide-content-box">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <span class="hero-badge"><i class="fa-solid fa-clipboard-check"></i> معايير الجودة والتسليم</span>
+          <h2 class="projector-title" style="font-size: 2.8rem;">قائمة فحص إطلاق صفحة الهبوط وتأكيد الإنجاز</h2>
+          <p class="projector-subtitle" style="margin: 0 auto;">تأكد من استيفاء هذه البنود قبل مغادرة القاعة اليوم!</p>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+          <div class="card" style="padding: 1.5rem; display: flex; align-items: flex-start; gap: 1rem;">
+            <i class="fa-solid fa-circle-check" style="font-size: 1.5rem; color: var(--emerald-green); margin-top: 0.2rem;"></i>
+            <div>
+              <h4 style="font-size: 1.2rem; color: var(--text-primary); margin-bottom: 0.25rem;">استراتيجية واضحة وهدف تحويل واحد</h4>
+              <p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0;">تحديد الجمهور بدقة، وغياب أي روابط خارجية تشتت انتباه الزائر.</p>
+            </div>
+          </div>
+
+          <div class="card" style="padding: 1.5rem; display: flex; align-items: flex-start; gap: 1rem;">
+            <i class="fa-solid fa-circle-check" style="font-size: 1.5rem; color: var(--emerald-green); margin-top: 0.2rem;"></i>
+            <div>
+              <h4 style="font-size: 1.2rem; color: var(--text-primary); margin-bottom: 0.25rem;">عناوين تسويقية بصيغة AIDA</h4>
+              <p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0;">عنوان رئيسي يفهم في 5 ثوانٍ، وزر CTA صريح وجذاب.</p>
+            </div>
+          </div>
+
+          <div class="card" style="padding: 1.5rem; display: flex; align-items: flex-start; gap: 1rem;">
+            <i class="fa-solid fa-circle-check" style="font-size: 1.5rem; color: var(--emerald-green); margin-top: 0.2rem;"></i>
+            <div>
+              <h4 style="font-size: 1.2rem; color: var(--text-primary); margin-bottom: 0.25rem;">التركيز على الفوائد الملموسة</h4>
+              <p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0;">صياغة المشكلات والحلول بلغة ما يجنيه العميل في حياته اليومية.</p>
+            </div>
+          </div>
+
+          <div class="card" style="padding: 1.5rem; display: flex; align-items: flex-start; gap: 1rem;">
+            <i class="fa-solid fa-circle-check" style="font-size: 1.5rem; color: var(--emerald-green); margin-top: 0.2rem;"></i>
+            <div>
+              <h4 style="font-size: 1.2rem; color: var(--text-primary); margin-bottom: 0.25rem;">بناء أول قسمين ومعاينة الهاتف</h4>
+              <p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0;">تنفيذ الـ Hero وقسم المشكلات في Elementor والتأكد التام من سلامة الموبايل.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 2.5rem; text-align: center;">
+          <div style="display: inline-block; padding: 1rem 2.5rem; background: rgba(56, 88, 233, 0.15); border: 1px solid var(--wp-blue); border-radius: var(--radius-full);">
+            <span style="font-size: 1.2rem; font-weight: 800; color: #38bdf8;">
+              <i class="fa-solid fa-rocket"></i> غداً في اليوم الرابع: النماذج التفاعلية، تكامل WhatsApp، وأدوات قياس التحويل المتقدمة!
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Floating Projector Controls -->
+  <nav class="projector-controls">
+    <button class="control-icon-btn" id="prevBtn" title="الشريحة السابقة (السهم الأيمن / PageUp)">
+      <i class="fa-solid fa-arrow-right"></i>
+    </button>
+    <div class="slide-page-badge" id="slideCounter">1 / 15</div>
+    <button class="control-icon-btn" id="nextBtn" title="الشريحة التالية (السهم الأيسر / Space / PageDown)">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <button class="control-icon-btn" id="jumpBtn" title="فهرس الشرائح السريع (J)">
+      <i class="fa-solid fa-list-ul"></i>
+    </button>
+    <button class="control-icon-btn" id="themeBtn" title="تبديل النمط (ليلي / نهاري)">
+      <i class="fa-solid fa-moon" id="themeIcon"></i>
+    </button>
+    <button class="control-icon-btn" id="fullscreenBtn" title="ملء الشاشة للعرض (F)">
+      <i class="fa-solid fa-expand"></i>
+    </button>
+  </nav>
+
+  <!-- Quick Jump Drawer -->
+  <aside class="jump-drawer" id="jumpDrawer">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-medium); padding-bottom: 0.75rem;">
+      <h3 style="margin: 0; font-size: 1.25rem; color: var(--text-primary);"><i class="fa-solid fa-compass"></i> فهرس الشرائح</h3>
+      <button class="control-icon-btn" id="closeJumpBtn" style="width: 32px; height: 32px;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="jumpList"></div>
+  </aside>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const progressBar = document.getElementById('progressBar');
+    const slideCounter = document.getElementById('slideCounter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const jumpDrawer = document.getElementById('jumpDrawer');
+    const jumpList = document.getElementById('jumpList');
+    const jumpBtn = document.getElementById('jumpBtn');
+    const closeJumpBtn = document.getElementById('closeJumpBtn');
+    const themeBtn = document.getElementById('themeBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+    // Idle timer for cinema auto-hiding controls
+    let idleTimeout;
+    function resetIdleTimer() {
+      document.body.classList.remove('idle-cursor');
+      clearTimeout(idleTimeout);
+      idleTimeout = setTimeout(() => {
+        document.body.classList.add('idle-cursor');
+      }, 4000);
+    }
+    window.addEventListener('mousemove', resetIdleTimer);
+    window.addEventListener('keydown', resetIdleTimer);
+
+    function init() {
+      buildJumpMenu();
+      updateSlide();
+      setupEvents();
+      initTheme();
+    }
+
+    function buildJumpMenu() {
+      jumpList.innerHTML = '';
+      slides.forEach((slide, idx) => {
+        const title = slide.getAttribute('data-title') || `شريحة ${idx + 1}`;
+        const item = document.createElement('div');
+        item.className = `jump-item ${idx === currentSlide ? 'active' : ''}`;
+        item.innerHTML = `<span style="font-family: var(--font-code); font-size: 0.85rem; opacity: 0.7;">${(idx + 1).toString().padStart(2, '0')}.</span> <span>${title}</span>`;
+        item.addEventListener('click', () => {
+          goTo(idx);
+          jumpDrawer.classList.remove('open');
+        });
+        jumpList.appendChild(item);
+      });
+    }
+
+    function updateSlide() {
+      slides.forEach((slide, idx) => {
+        slide.classList.toggle('active', idx === currentSlide);
+      });
+
+      const pct = ((currentSlide + 1) / totalSlides) * 100;
+      progressBar.style.width = `${pct}%`;
+      slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+
+      const jumpItems = jumpList.querySelectorAll('.jump-item');
+      jumpItems.forEach((item, idx) => {
+        item.classList.toggle('active', idx === currentSlide);
+      });
+    }
+
+    function next() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prev() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function goTo(index) {
+      if (index >= 0 && index < totalSlides) {
+        currentSlide = index;
+        updateSlide();
+      }
+    }
+
+    /* Toast Notification Helper */
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.animation = 'toastOut 0.3s forwards';
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+
+    /* 1-Click Copy Prompt Cards */
+    window.copyPromptCard = function(elementId) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const text = el.innerText || el.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('تم نسخ نص الـ Prompt بنجاح إلى الحافظة! 🎉');
+      }).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('تم نسخ نص الـ Prompt بنجاح! 🎉');
+      });
+    };
+
+    /* Dual Live Countdown Timers */
+    const timers = {
+      1: { remaining: 15 * 60, interval: null, running: false },
+      2: { remaining: 20 * 60, interval: null, running: false }
+    };
+
+    window.toggleTimer = function(id, defaultMins) {
+      const t = timers[id];
+      const playIcon = document.getElementById(`playIcon${id}`);
+      const btnText = document.getElementById(`timerBtnText${id}`);
+      const display = document.getElementById(`timerDisplay${id}`);
+
+      if (t.running) {
+        clearInterval(t.interval);
+        t.running = false;
+        playIcon.className = 'fa-solid fa-play';
+        btnText.textContent = 'استئناف';
+      } else {
+        t.running = true;
+        playIcon.className = 'fa-solid fa-pause';
+        btnText.textContent = 'إيقاف مؤقت';
+        t.interval = setInterval(() => {
+          if (t.remaining > 0) {
+            t.remaining--;
+            const m = Math.floor(t.remaining / 60);
+            const s = t.remaining % 60;
+            display.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+          } else {
+            clearInterval(t.interval);
+            t.running = false;
+            playIcon.className = 'fa-solid fa-play';
+            btnText.textContent = 'انتهى الوقت!';
+            alert(`انتهى وقت التحدي! 🎉 أحسنتم يا شباب.`);
+          }
+        }, 1000);
+      }
+    };
+
+    window.resetTimer = function(id, defaultMins) {
+      const t = timers[id];
+      clearInterval(t.interval);
+      t.running = false;
+      t.remaining = defaultMins * 60;
+      document.getElementById(`playIcon${id}`).className = 'fa-solid fa-play';
+      document.getElementById(`timerBtnText${id}`).textContent = `ابدأ التحدي (${defaultMins} د)`;
+      document.getElementById(`timerDisplay${id}`).textContent = `${defaultMins.toString().padStart(2, '0')}:00`;
+    };
+
+    function setupEvents() {
+      prevBtn.addEventListener('click', prev);
+      nextBtn.addEventListener('click', next);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        if (e.key === 'ArrowLeft' || e.key === ' ' || e.key === 'PageDown') {
+          e.preventDefault();
+          next();
+        } else if (e.key === 'ArrowRight' || e.key === 'PageUp') {
+          e.preventDefault();
+          prev();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          goTo(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          goTo(totalSlides - 1);
+        } else if (e.key.toLowerCase() === 'f') {
+          toggleFullScreen();
+        } else if (e.key.toLowerCase() === 'j') {
+          jumpDrawer.classList.toggle('open');
+        } else if (e.key === 'Escape') {
+          jumpDrawer.classList.remove('open');
+        }
+      });
+
+      jumpBtn.addEventListener('click', () => jumpDrawer.classList.add('open'));
+      closeJumpBtn.addEventListener('click', () => jumpDrawer.classList.remove('open'));
+      themeBtn.addEventListener('click', toggleTheme);
+      fullscreenBtn.addEventListener('click', toggleFullScreen);
+    }
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('slides_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const newTheme = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('slides_theme', newTheme);
+      updateThemeIcon(newTheme);
+    }
+
+    function updateThemeIcon(theme) {
+      themeIcon.className = theme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

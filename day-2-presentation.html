@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اليوم الثاني: AI-Powered WordPress Bootcamp (شاشة العرض للطلاب)</title>
+  
+  <!-- Font Awesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Shared Theme Palette -->
+  <link rel="stylesheet" href="theme-palette.css">
+
+  <style>
+    :root {
+      --slide-padding: clamp(2rem, 5vh, 4rem) clamp(2rem, 6vw, 5rem);
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      overflow: hidden;
+      cursor: default;
+    }
+
+    /* Auto-hide UI during presentation when inactive */
+    body.idle-cursor {
+      cursor: none;
+    }
+    body.idle-cursor .projector-controls {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+    }
+
+    .projector-deck {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .slide {
+      padding: var(--slide-padding);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .slide-content-box {
+      max-width: 1250px;
+      width: 100%;
+      margin: 0 auto;
+      text-align: right;
+    }
+
+    .slide-content-center {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(139, 92, 246, 0.15);
+      color: #c084fc;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      padding: 0.5rem 1.25rem;
+      border-radius: var(--radius-full);
+      font-size: clamp(0.9rem, 1.5vh, 1.15rem);
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 0 25px rgba(139, 92, 246, 0.25);
+    }
+
+    .projector-title {
+      font-size: clamp(2.2rem, 5.5vh, 4.2rem);
+      line-height: 1.2;
+      font-weight: 900;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .projector-subtitle {
+      font-size: clamp(1.15rem, 2.5vh, 1.75rem);
+      color: var(--text-secondary);
+      max-width: 950px;
+      line-height: 1.6;
+    }
+
+    .projector-controls {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-full);
+      padding: 0.4rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      z-index: 1000;
+      transition: all 0.4s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      direction: ltr;
+    }
+
+    .control-icon-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.25rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .control-icon-btn:hover {
+      background: var(--wp-blue);
+      color: #fff;
+      transform: scale(1.1);
+    }
+
+    .slide-page-badge {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      direction: rtl;
+      padding: 0 0.5rem;
+    }
+
+    /* Live Countdown Widget */
+    .countdown-widget {
+      background: rgba(15, 23, 42, 0.95);
+      border: 2px solid var(--wp-blue);
+      border-radius: var(--radius-lg);
+      padding: 2rem 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 50px rgba(56, 88, 233, 0.35);
+      margin-top: 1.5rem;
+    }
+    .timer-display {
+      font-family: var(--font-code);
+      font-size: clamp(3.5rem, 10vh, 6.5rem);
+      font-weight: 900;
+      color: #38bdf8;
+      text-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
+      letter-spacing: 4px;
+    }
+    .timer-controls {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+    .timer-btn {
+      padding: 0.6rem 1.6rem;
+      border-radius: var(--radius-full);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all var(--transition-fast);
+      border: none;
+    }
+    .timer-btn-start {
+      background: var(--emerald-green);
+      color: #fff;
+    }
+    .timer-btn-start:hover {
+      background: #059669;
+      transform: scale(1.05);
+    }
+    .timer-btn-reset {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-primary);
+    }
+    .timer-btn-reset:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* Student Prompt Card */
+    .student-prompt-card {
+      background: var(--code-bg);
+      border: 2px solid var(--code-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      margin: 1.5rem 0;
+      text-align: right;
+    }
+    .student-prompt-header {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--code-border);
+      direction: ltr;
+    }
+    .student-prompt-text {
+      padding: 1.5rem 2rem;
+      font-size: clamp(0.95rem, 1.8vh, 1.2rem);
+      line-height: 1.8;
+      color: #f1f5f9;
+      max-height: clamp(240px, 45vh, 480px);
+      overflow-y: auto;
+      white-space: pre-wrap;
+      direction: rtl;
+    }
+
+    /* Quick Jump Drawer */
+    .jump-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 380px;
+      height: 100vh;
+      background: var(--bg-secondary);
+      border-left: 2px solid var(--border-medium);
+      box-shadow: var(--shadow-lg);
+      z-index: 2000;
+      padding: 2rem 1.5rem;
+      transform: translateX(105%);
+      transition: transform var(--transition-smooth);
+      overflow-y: auto;
+    }
+    .jump-drawer.open {
+      transform: translateX(0);
+    }
+    .jump-item {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      transition: all var(--transition-fast);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+    }
+    .jump-item:hover, .jump-item.active {
+      background: var(--wp-blue);
+      color: #fff;
+      border-color: var(--wp-blue);
+      transform: translateX(-4px);
+    }
+
+    /* Box Model Visualization */
+    .box-model-demo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #f59e0b18;
+      border: 2px dashed #f59e0b;
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      position: relative;
+      margin: 1.25rem auto;
+      max-width: 750px;
+      width: 100%;
+    }
+    .box-border-demo {
+      background: #3b82f618;
+      border: 2px solid #3b82f6;
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      position: relative;
+      width: 88%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .box-padding-demo {
+      background: #10b98118;
+      border: 2px dashed #10b981;
+      border-radius: 4px;
+      padding: 1.15rem;
+      position: relative;
+      width: 86%;
+      display: flex;
+      justify-content: center;
+    }
+    .box-content-demo {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-medium);
+      padding: 0.75rem 2rem;
+      border-radius: 4px;
+      font-weight: 800;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBar"></div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notice" id="toastNotice">
+    <i class="fa-solid fa-circle-check"></i> تم نسخ الـ Prompt بنجاح!
+  </div>
+
+  <!-- MAIN SLIDES DECK -->
+  <div class="projector-deck" id="deck">
+
+    <!-- SLIDE 0: HERO INTRO -->
+    <div class="slide active" data-slide="0" data-title="شاشة البداية">
+      <div class="slide-content-center">
+        <span class="hero-badge">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> اليوم الثاني: AI-Powered WordPress Bootcamp
+        </span>
+        <h1 class="projector-title" style="font-size: clamp(2.3rem, 6vh, 4.5rem);">
+          بيئة LocalWP، احتراف Elementor، وبناء الموقع الشخصي
+        </h1>
+        <p class="projector-subtitle" style="margin-bottom: 2.5rem;">
+          انطلاق مرحلة التطوير الحقيقي على حاسوبك الشخصي وبناء معرض أعمالك الكامل (Personal Portfolio)
+        </p>
+        <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+          <div class="card" style="min-width: 210px; padding: 1.25rem 2rem; align-items: center;">
+            <i class="fa-solid fa-server" style="font-size: 2.2rem; color: var(--wp-blue); margin-bottom: 0.5rem;"></i>
+            <h3 style="margin: 0; font-size: 1.25rem;">بيئة LocalWP</h3>
+            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">استضافة محلية مجانية</p>
+          </div>
+          <div class="card" style="min-width: 210px; padding: 1.25rem 2rem; align-items: center;">
+            <i class="fa-solid fa-boxes-stacked" style="font-size: 2.2rem; color: var(--ai-purple); margin-bottom: 0.5rem;"></i>
+            <h3 style="margin: 0; font-size: 1.25rem;">Elementor Flexbox</h3>
+            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">ثورة الحاويات الحديثة</p>
+          </div>
+          <div class="card" style="min-width: 210px; padding: 1.25rem 2rem; align-items: center;">
+            <i class="fa-solid fa-id-card-clip" style="font-size: 2.2rem; color: var(--emerald-green); margin-bottom: 0.5rem;"></i>
+            <h3 style="margin: 0; font-size: 1.25rem;">Personal Portfolio</h3>
+            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">معرض أعمال شخصي متكامل</p>
+          </div>
+          <div class="card" style="min-width: 210px; padding: 1.25rem 2rem; align-items: center;">
+            <i class="fa-solid fa-trophy" style="font-size: 2.2rem; color: var(--amber-gold); margin-bottom: 0.5rem;"></i>
+            <h3 style="margin: 0; font-size: 1.25rem;">250 XP</h3>
+            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">تحديان للسرعة والهوية</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 1: PORTFOLIO ANATOMY -->
+    <div class="slide" data-slide="1" data-title="تشريح الموقع الشخصي المستهدف">
+      <div class="slide-content-box">
+        <span class="slide-tag"><i class="fa-solid fa-sitemap"></i> تشريح المشروع</span>
+        <h2 class="projector-title" style="font-size: clamp(2rem, 4.5vh, 3.2rem);">الأقسام الأربعة لموقعك الشخصي الاحترافي</h2>
+
+        <div class="cards-grid" style="margin-top: 1.5rem;">
+          <div class="card" style="border-top: 5px solid var(--wp-blue);">
+            <div class="card-icon"><i class="fa-solid fa-id-badge"></i></div>
+            <h3 class="card-title" style="font-size: 1.4rem; color: var(--wp-blue);">1. الـ Hero Section</h3>
+            <p class="card-desc" style="font-size: 1rem;">صورة بورتريه شخصية + عنوان تخصصي واضح + نبذة في سطرين + <strong>زر تحميل السيرة الذاتية (CV PDF)</strong>.</p>
+          </div>
+
+          <div class="card" style="border-top: 5px solid var(--ai-purple);">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-wand-magic"></i></div>
+            <h3 class="card-title" style="font-size: 1.4rem; color: var(--ai-purple);">2. المهارات والخدمات</h3>
+            <p class="card-desc" style="font-size: 1rem;">3 إلى 6 بطاقات أيقونات (Icon Boxes) منسقة توضح مهاراتك وما تستطيع تنفيذه للعميل أو الشركة.</p>
+          </div>
+
+          <div class="card" style="border-top: 5px solid var(--emerald-green);">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-images"></i></div>
+            <h3 class="card-title" style="font-size: 1.4rem; color: var(--emerald-green);">3. معرض الأعمال (Grid)</h3>
+            <p class="card-desc" style="font-size: 1rem;">شبكة تعرض 3 مشاريع سابقة بنظام دراسة الحالة (Case Study) مع صورة وعنوان وأدوات العمل المستخدمة.</p>
+          </div>
+
+          <div class="card" style="border-top: 5px solid var(--amber-gold);">
+            <div class="card-icon" style="color: var(--amber-gold);"><i class="fa-solid fa-envelope-open-text"></i></div>
+            <h3 class="card-title" style="font-size: 1.4rem; color: var(--amber-gold);">4. قسم التواصل المباشر</h3>
+            <p class="card-desc" style="font-size: 1rem;">دعوة واضحة للتعاون + بريد إلكتروني مباشر عبر <code>mailto:</code> + روابط الشبكات المهنية (LinkedIn, GitHub).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: LOCALWP ADVANTAGES -->
+    <div class="slide" data-slide="2" data-title="لماذا LocalWP؟">
+      <div class="slide-content-box">
+        <span class="slide-tag"><i class="fa-solid fa-server"></i> بيئة التطوير</span>
+        <h2 class="projector-title">لماذا نحتاج إلى LocalWP؟</h2>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr; margin-top: 1.5rem;">
+          <div class="card">
+            <h3 class="card-title" style="color: var(--emerald-green);"><i class="fa-solid fa-shield-halved"></i> ساحة تدريب خاصة وآمنة</h3>
+            <p class="card-desc" style="font-size: 1.1rem; line-height: 1.8;">تعديل وتجربة القوالب والإضافات بحرية دون أي تكلفة استضافة، وبلا أي خوف من إتلاف موقع مباشر على الإنترنت.</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title" style="color: var(--wp-blue);"><i class="fa-solid fa-bolt"></i> سرعة الصاروخ واستقلالية تامة</h3>
+            <p class="card-desc" style="font-size: 1.1rem; line-height: 1.8;">الموقع يعمل مباشرة من قرص حاسوبك الشخصي؛ لا بطء في التصفح بسبب الإنترنت، ويمكنك العمل حتى بدون اتصال شبكي بعد التثبيت!</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title" style="color: var(--ai-purple);"><i class="fa-solid fa-folder-open"></i> وصول مباشر للملفات وقاعدة البيانات</h3>
+            <p class="card-desc" style="font-size: 1.1rem; line-height: 1.8;">استكشاف مجلدات <code>wp-content</code> الحقيقية وفهم كيفية حفظ الصور والقوالب وإدارة جداول MySQL عملياً.</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title" style="color: var(--amber-gold);"><i class="fa-solid fa-laptop-code"></i> بيئة عمل المطورين الاحترافية</h3>
+            <p class="card-desc" style="font-size: 1.1rem; line-height: 1.8;">الشركات والمستقلون في العالم يبنون المواقع محلياً أولاً، ثم يقومون بنقلها للاستضافة العامة بعد اكتمال التصميم.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: WP-CONTENT ANATOMY -->
+    <div class="slide" data-slide="3" data-title="تشريح مجلد wp-content">
+      <div class="slide-inner">
+        <span class="slide-tag"><i class="fa-solid fa-folder-tree"></i> بنية الملفات</span>
+        <h2 class="projector-title">أين تعيش قوالبك وإضافاتك؟ داخل <code>wp-content</code></h2>
+
+        <div class="cards-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 1.5rem;">
+          <div class="card" style="border-top: 5px solid var(--wp-blue);">
+            <div class="card-icon"><i class="fa-solid fa-paintbrush"></i></div>
+            <h3 class="card-title" style="font-size: 1.5rem; color: var(--wp-blue);">/themes</h3>
+            <p class="card-desc" style="font-size: 1.05rem;">مجلد القوالب التي تحدد مظهر الموقع وهيكله (Astra, Kadence).</p>
+          </div>
+
+          <div class="card" style="border-top: 5px solid var(--ai-purple);">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-plug"></i></div>
+            <h3 class="card-title" style="font-size: 1.5rem; color: var(--ai-purple);">/plugins</h3>
+            <p class="card-desc" style="font-size: 1.05rem;">مجلد الإضافات التي تمنح الموقع وظائف وقوى إضافية (Elementor).</p>
+          </div>
+
+          <div class="card" style="border-top: 5px solid var(--emerald-green);">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+            <h3 class="card-title" style="font-size: 1.5rem; color: var(--emerald-green);">/uploads</h3>
+            <p class="card-desc" style="font-size: 1.05rem;">مخزن الصور والشعارات وملفات الـ PDF المرفوعة مرتبة بالسنة والشهر.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: PROMPT 1 BRAND IDENTITY -->
+    <div class="slide" data-slide="4" data-title="Prompt 1: الهوية البصرية">
+      <div class="slide-content-box">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="slide-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> تطبيق الذكاء الاصطناعي #1</span>
+          <span class="xp-badge" style="color: var(--ai-purple); border-color: var(--ai-purple);">AI Brand Strategist</span>
+        </div>
+        <h2 class="projector-title" style="font-size: clamp(1.8rem, 4vh, 2.8rem);">Prompt 1: استخراج لوحة الألوان والخطوط لموقعك الشخصي</h2>
+
+        <div class="student-prompt-card">
+          <div class="student-prompt-header">
+            <button class="copy-btn" onclick="copyPrompt(this)">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt الآن</span>
+            </button>
+            <span style="font-family: var(--font-code); color: #c084fc; font-weight: 700;">PROMPT_BRAND_IDENTITY.TXT</span>
+          </div>
+          <div class="student-prompt-text">Act as a professional UI/UX designer and brand strategist.
+I am building a personal portfolio website using WordPress, the free Astra theme, and Elementor Free.
+
+My details:
+- Name: <span class="prompt-var">[اسمك الكامل]</span>
+- Profession: <span class="prompt-var">[تخصصك، مثلاً: UI/UX Designer أو Front-End Developer أو Graphic Designer]</span>
+- Target audience: <span class="prompt-var">[الجمهور: أصحاب شركات توظيف، عملاء مستقلين، شركات تقنية]</span>
+- Personality: <span class="prompt-var">[Modern / Friendly / Professional / Creative]</span>
+- Preferred style: <span class="prompt-var">[Minimalist / Bold / Tech-focused]</span>
+
+Create a practical visual identity with:
+1. One primary color with its HEX code.
+2. One secondary color with its HEX code.
+3. One accent color for CTA buttons.
+4. One light background color and one dark background color.
+5. One readable text color.
+6. A suitable heading font and body font (Google Fonts available in Elementor).
+7. A short explanation of why the choices work together.
+8. Suggested button colors and hover colors.
+9. Accessibility advice for text contrast (WCAG standard).
+
+Return the result as a compact table. Prefer free, widely available fonts and simple implementation in Elementor Free. Do not invent paid features or assume Elementor Pro is installed.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: CHALLENGE 1 TIMER -->
+    <div class="slide" data-slide="5" data-title="التحدي 1: سباق الهوية (10 دقائق)">
+      <div class="slide-content-center">
+        <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.5rem;">
+          <span class="hero-badge" style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #f87171;">
+            <i class="fa-solid fa-stopwatch"></i> التحدي الأول: Brand Identity Sprint
+          </span>
+          <span class="xp-badge" style="color: #ef4444; border-color: #ef4444;"><i class="fa-solid fa-bolt"></i> +100 XP</span>
+        </div>
+
+        <h2 class="projector-title" style="font-size: clamp(2rem, 4.5vh, 3.5rem);">استخراج الهوية البصرية ونبذة الـ Bio وتثبيتها</h2>
+        <p class="projector-subtitle">
+          المهمة: تشغيل Prompt الهوية، استخراج أكواد HEX والخطوط، وكتابة Bio قصير من سطرين وحفظها في ملف ملاحظات جاهزة للتطبيق في Elementor!
+        </p>
+
+        <!-- Live Countdown Widget -->
+        <div class="countdown-widget" id="timerWidget1">
+          <div class="timer-display" id="timerDisplay1">10:00</div>
+          <div class="timer-controls">
+            <button class="timer-btn timer-btn-start" onclick="toggleTimer(1, 10)">
+              <i class="fa-solid fa-play" id="playIcon1"></i> <span id="timerBtnText1">ابدأ التحدي (10 د)</span>
+            </button>
+            <button class="timer-btn timer-btn-reset" onclick="resetTimer(1, 10)">
+              <i class="fa-solid fa-rotate-left"></i> إعادة ضبط
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: FLEXBOX ROW VS COLUMN -->
+    <div class="slide" data-slide="6" data-title="إتقان Flexbox: Row مقابل Column">
+      <div class="slide-content-box">
+        <span class="slide-tag"><i class="fa-solid fa-arrows-up-down-left-right"></i> هندسة التخطيط</span>
+        <h2 class="projector-title">إتقان Flexbox: اتجاه الصف (Row) مقابل اتجاه العمود (Column)</h2>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr; margin-top: 1.5rem;">
+          <div class="card">
+            <h3 class="card-title" style="color: var(--wp-blue); font-size: 1.5rem;"><i class="fa-solid fa-arrows-left-right"></i> Row (أفقي: جنباً إلى جنب)</h3>
+            <p class="card-desc" style="font-size: 1.05rem;">العناصر تقف بجوار بعضها أفقياً. الاستخدام النموذجي: قسم الـ Hero (النصوص يمين والصورة يسار)، وشبكة بطاقات المشاريع.</p>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title" style="color: var(--ai-purple); font-size: 1.5rem;"><i class="fa-solid fa-arrows-up-down"></i> Column (رأسي: فوق بعضها)</h3>
+            <p class="card-desc" style="font-size: 1.05rem;">العناصر تترتب فوق بعضها كطابور رأسي. الاستخدام النموذجي: داخل حاوية النصوص (العنوان أولاً، يليه الوصف، ثم الأزرار)، وعرض الهاتف.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: PADDING VS MARGIN -->
+    <div class="slide" data-slide="7" data-title="Padding مقابل Margin">
+      <div class="slide-content-center">
+        <span class="slide-tag"><i class="fa-solid fa-ruler-combined"></i> أسرار المسافات</span>
+        <h2 class="projector-title">نموذج الصندوق: الفرق الحاسم بين Padding و Margin</h2>
+
+        <div class="box-model-demo">
+          <span style="font-family: var(--font-code); font-weight: 800; color: #f59e0b; margin-bottom: 0.5rem;">MARGIN: الهامش الخارجي الفاصل بين الصندوق والعناصر المجاورة</span>
+          <div class="box-border-demo">
+            <span style="font-family: var(--font-code); font-weight: 800; color: #3b82f6; margin-bottom: 0.4rem;">BORDER: حدود الصندوق</span>
+            <div class="box-padding-demo">
+              <span style="font-family: var(--font-code); font-weight: 800; color: #10b981; margin-bottom: 0.35rem;">PADDING: الحشوة الداخلية بين النص وحدود الصندوق</span>
+              <div class="box-content-demo">
+                CONTENT (المحتوى: العنوان، الزر، أو الصورة)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: PROMPT 3 WIREFRAME PLANNER -->
+    <div class="slide" data-slide="8" data-title="Prompt 3: تخطيط هيكل الصفحة">
+      <div class="slide-content-box">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="slide-tag"><i class="fa-solid fa-compass-drafting"></i> تطبيق الذكاء الاصطناعي #3</span>
+          <span class="xp-badge" style="color: var(--ai-purple); border-color: var(--ai-purple);">UX Wireframe Architect</span>
+        </div>
+        <h2 class="projector-title" style="font-size: clamp(1.8rem, 4vh, 2.8rem);">Prompt 3: تخطيط الحاويات والمسافات قبل البناء</h2>
+
+        <div class="student-prompt-card">
+          <div class="student-prompt-header">
+            <button class="copy-btn" onclick="copyPrompt(this)">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt الآن</span>
+            </button>
+            <span style="font-family: var(--font-code); color: #c084fc; font-weight: 700;">PROMPT_WIREFRAME.TXT</span>
+          </div>
+          <div class="student-prompt-text">Act as a senior web designer who specializes in beginner-friendly WordPress websites.
+I will build a personal portfolio using WordPress, Astra or Kadence, and Elementor Free.
+
+My details:
+- Profession: <span class="prompt-var">[تخصصك]</span>
+- Target audience: <span class="prompt-var">[جمهورك المستهدف]</span>
+- Visual style: <span class="prompt-var">[Minimal / Modern / Tech]</span>
+- Brand colors: <span class="prompt-var">[أكواد الـ HEX لألوانك التي استخرجتها في الخطوة السابقة]</span>
+
+Create a one-page portfolio wireframe containing:
+1. Header and navigation links.
+2. Hero section with headline, description, portrait image, and CV button.
+3. About section.
+4. Skills and services section.
+5. Three project cards grid.
+6. Contact section with direct email link.
+7. Footer.
+
+For each section, specify:
+- Container hierarchy (Parent container vs Child containers).
+- Direction: Row or Column.
+- Suggested content width and Gap suggestions in pixels.
+- Padding and Margin values for clean spacing.
+- Mobile layout behavior (how it stacks on mobile).
+- Which widgets to use from Elementor Free (Heading, Text Editor, Button, Icon Box, Image).
+
+Use standard Containers and free widgets only. Avoid Pro-only widgets. Return the answer in a structured table followed by a step-by-step build sequence.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: CHALLENGE 2 PORTFOLIO SPEED BUILD -->
+    <div class="slide" data-slide="9" data-title="التحدي 2: بناء الموقع (20 دقيقة)">
+      <div class="slide-content-center">
+        <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.5rem;">
+          <span class="hero-badge" style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #f87171;">
+            <i class="fa-solid fa-stopwatch"></i> التحدي الثاني: Portfolio Speed Build
+          </span>
+          <span class="xp-badge" style="color: #ef4444; border-color: #ef4444;"><i class="fa-solid fa-bolt"></i> +150 XP</span>
+        </div>
+
+        <h2 class="projector-title" style="font-size: clamp(2rem, 4.5vh, 3.5rem);">بناء الـ Hero Section وزر السيرة الذاتية (CV PDF)</h2>
+        <p class="projector-subtitle">
+          المهمة: بناء حاوية Hero كاملة بـ Row، وضع النصوص والصورة، ربط زر السيرة الذاتية برابط ملف PDF حقيقي، وفحص الهاتف!
+        </p>
+
+        <!-- Live Countdown Widget 2 -->
+        <div class="countdown-widget" id="timerWidget2">
+          <div class="timer-display" id="timerDisplay2">20:00</div>
+          <div class="timer-controls">
+            <button class="timer-btn timer-btn-start" onclick="toggleTimer(2, 20)">
+              <i class="fa-solid fa-play" id="playIcon2"></i> <span id="timerBtnText2">انطلاق التحدي (20 د)</span>
+            </button>
+            <button class="timer-btn timer-btn-reset" onclick="resetTimer(2, 20)">
+              <i class="fa-solid fa-rotate-left"></i> إعادة ضبط
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: PROMPT 5 & 6 SHOWCASE -->
+    <div class="slide" data-slide="10" data-title="Prompt 5 & 6: المشاريع وكود الـ CSS">
+      <div class="slide-content-box">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="slide-tag"><i class="fa-solid fa-code"></i> أوامر الذكاء الاصطناعي الإضافية</span>
+          <span class="xp-badge" style="color: var(--emerald-green); border-color: var(--emerald-green);">CSS & Project Case Studies</span>
+        </div>
+        <h2 class="projector-title" style="font-size: clamp(1.8rem, 4vh, 2.8rem);">Prompt 5 (المشاريع) و Prompt 6 (المساعد البرمجي CSS)</h2>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr; margin-top: 1.25rem;">
+          <div class="student-prompt-card" style="margin: 0;">
+            <div class="student-prompt-header">
+              <button class="copy-btn" onclick="copyCardPrompt(this, 'p5_txt')">
+                <i class="fa-regular fa-copy"></i> نسخ أمر المشاريع
+              </button>
+              <span style="font-family: var(--font-code); color: #38bdf8;">PROMPT #5: PROJECTS</span>
+            </div>
+            <div class="student-prompt-text" id="p5_txt" style="max-height: 220px; font-size: 0.9rem;">Act as a portfolio content strategist. My field is [مجال تخصصك]. My real projects: [وصف مختصر]. Create 3 project cards: specific title, one-sentence summary, my role, tools used, 3 skills demonstrated, CTA label, and screenshot mockup idea. Do not claim fake results.</div>
+          </div>
+
+          <div class="student-prompt-card" style="margin: 0;">
+            <div class="student-prompt-header">
+              <button class="copy-btn" onclick="copyCardPrompt(this, 'p6_txt')">
+                <i class="fa-regular fa-copy"></i> نسخ أمر الـ CSS
+              </button>
+              <span style="font-family: var(--font-code); color: #34d399;">PROMPT #6: CUSTOM CSS</span>
+            </div>
+            <div class="student-prompt-text" id="p6_txt" style="max-height: 220px; font-size: 0.9rem;">Act as a WordPress front-end developer. I need a small CSS enhancement for Elementor Free. Desired effect: [Card Hover / Glow / Float]. Target class: [my-portfolio-card]. Use standard CSS, mobile-friendly, and explain where to paste it in WordPress Customize -> Additional CSS.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: FINAL CELEBRATION -->
+    <div class="slide" data-slide="11" data-title="ختام اليوم الثاني والاحتفال">
+      <div class="slide-content-center">
+        <i class="fa-solid fa-trophy" style="font-size: 4.5rem; color: var(--ai-purple); margin-bottom: 1rem; filter: drop-shadow(0 0 30px rgba(139,92,246,0.6));"></i>
+        <h2 class="projector-title" style="font-size: clamp(2.5rem, 6vh, 4.5rem);">مبروك! أصبحت الآن AI Page Crafter!</h2>
+        <p class="projector-subtitle" style="margin-bottom: 2rem;">
+          حققت اليوم موقعك الشخصي الأول محلياً على جهازك باستخدام <strong>Elementor Containers</strong>، وأتقنت Flexbox ونموذج الصندوق.
+        </p>
+
+        <div class="card" style="max-width: 820px; padding: 1.5rem 2.5rem; background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(56,88,233,0.15)); border: 2px solid var(--border-highlight); text-align: center;">
+          <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem; color: #fff;">استعدوا لليوم الثالث!</h3>
+          <p style="font-size: 1.15rem; color: var(--text-secondary); margin: 0;">
+            سننتقل غدًا إلى <strong>صفحات الهبوط البيعية (Landing Pages)</strong> وسيكولوجية التحويل والـ AI Copywriting وتحقيق المبيعات!
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- End Deck -->
+
+  <!-- FLOATING BOTTOM CONTROLS FOR INSTRUCTOR / PRESENTER -->
+  <div class="projector-controls">
+    <button class="control-icon-btn" id="prevBtn" title="السابق (السهم الأيمن)">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+    
+    <div class="slide-page-badge" id="slidePageBadge">1 / 12</div>
+
+    <button class="control-icon-btn" id="nextBtn" title="التالي (السهم الأيسر أو مسافة)">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <div style="width: 1px; height: 24px; background: rgba(255,255,255,0.2);"></div>
+
+    <button class="control-icon-btn" id="jumpBtn" title="فهرس الشرائح">
+      <i class="fa-solid fa-list"></i>
+    </button>
+
+    <button class="control-icon-btn" id="themeBtn" title="تبديل الوضع الليلي / النهاري">
+      <i class="fa-solid fa-moon" id="themeIcon"></i>
+    </button>
+
+    <button class="control-icon-btn" id="fullscreenBtn" title="ملء الشاشة">
+      <i class="fa-solid fa-expand"></i>
+    </button>
+  </div>
+
+  <!-- SLIDES QUICK JUMP DRAWER -->
+  <div class="jump-drawer" id="jumpDrawer">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <h3 style="margin: 0; font-size: 1.25rem;"><i class="fa-solid fa-list"></i> فهرس الشرائح</h3>
+      <button class="control-icon-btn" id="closeJumpBtn" style="font-size: 1.1rem; width: 32px; height: 32px;">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div id="jumpList"></div>
+  </div>
+
+  <!-- PRESENTATION LOGIC -->
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const totalSlides = slides.length;
+    let currentSlide = 0;
+
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const slidePageBadge = document.getElementById('slidePageBadge');
+    const progressBar = document.getElementById('progressBar');
+    const toastNotice = document.getElementById('toastNotice');
+
+    const jumpBtn = document.getElementById('jumpBtn');
+    const closeJumpBtn = document.getElementById('closeJumpBtn');
+    const jumpDrawer = document.getElementById('jumpDrawer');
+    const jumpList = document.getElementById('jumpList');
+
+    const themeBtn = document.getElementById('themeBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+    let idleTimeout;
+    function resetIdleTimer() {
+      document.body.classList.remove('idle-cursor');
+      clearTimeout(idleTimeout);
+      idleTimeout = setTimeout(() => {
+        document.body.classList.add('idle-cursor');
+      }, 4000);
+    }
+    document.addEventListener('mousemove', resetIdleTimer);
+    document.addEventListener('keydown', resetIdleTimer);
+
+    function init() {
+      buildJumpList();
+      goTo(0);
+      setupEvents();
+      initTheme();
+    }
+
+    function goTo(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+
+      slides.forEach((s, i) => s.classList.toggle('active', i === index));
+      currentSlide = index;
+
+      slidePageBadge.textContent = `${currentSlide + 1} / ${totalSlides}`;
+      progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+
+      const items = jumpList.querySelectorAll('.jump-item');
+      items.forEach((item, i) => item.classList.toggle('active', i === currentSlide));
+    }
+
+    function next() {
+      if (currentSlide < totalSlides - 1) goTo(currentSlide + 1);
+    }
+
+    function prev() {
+      if (currentSlide > 0) goTo(currentSlide - 1);
+    }
+
+    function buildJumpList() {
+      jumpList.innerHTML = '';
+      slides.forEach((slide, i) => {
+        const title = slide.getAttribute('data-title') || `شريحة ${i + 1}`;
+        const item = document.createElement('div');
+        item.className = `jump-item ${i === 0 ? 'active' : ''}`;
+        item.innerHTML = `<span style="font-family: var(--font-code); color: var(--wp-blue);">#${i + 1}</span> ${title}`;
+        item.addEventListener('click', () => {
+          goTo(i);
+          jumpDrawer.classList.remove('open');
+        });
+        jumpList.appendChild(item);
+      });
+    }
+
+    // Prompt Copy Helper
+    window.copyPrompt = function(btn) {
+      const card = btn.closest('.student-prompt-card');
+      const text = card.querySelector('.student-prompt-text').innerText;
+      copyTextToClipboard(btn, text);
+    };
+
+    window.copyCardPrompt = function(btn, elementId) {
+      const text = document.getElementById(elementId).innerText;
+      copyTextToClipboard(btn, text);
+    };
+
+    function copyTextToClipboard(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerHTML;
+        btn.classList.add('copied');
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> تم النسخ!';
+        toastNotice.classList.add('show');
+        setTimeout(() => {
+          toastNotice.classList.remove('show');
+          btn.classList.remove('copied');
+          btn.innerHTML = orig;
+        }, 2200);
+      });
+    }
+
+    // Timers Controller
+    const timers = {
+      1: { remaining: 10 * 60, interval: null, running: false, def: 10 },
+      2: { remaining: 20 * 60, interval: null, running: false, def: 20 }
+    };
+
+    window.toggleTimer = function(id, defaultMins) {
+      const t = timers[id];
+      const playIcon = document.getElementById(`playIcon${id}`);
+      const btnText = document.getElementById(`timerBtnText${id}`);
+      const display = document.getElementById(`timerDisplay${id}`);
+
+      if (t.running) {
+        clearInterval(t.interval);
+        t.running = false;
+        playIcon.className = 'fa-solid fa-play';
+        btnText.textContent = 'استئناف';
+      } else {
+        t.running = true;
+        playIcon.className = 'fa-solid fa-pause';
+        btnText.textContent = 'إيقاف مؤقت';
+        t.interval = setInterval(() => {
+          if (t.remaining > 0) {
+            t.remaining--;
+            const m = Math.floor(t.remaining / 60);
+            const s = t.remaining % 60;
+            display.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+          } else {
+            clearInterval(t.interval);
+            t.running = false;
+            playIcon.className = 'fa-solid fa-play';
+            btnText.textContent = 'انتهى الوقت!';
+            alert(`انتهى وقت التحدي! 🎉`);
+          }
+        }, 1000);
+      }
+    };
+
+    window.resetTimer = function(id, defaultMins) {
+      const t = timers[id];
+      clearInterval(t.interval);
+      t.running = false;
+      t.remaining = defaultMins * 60;
+      document.getElementById(`playIcon${id}`).className = 'fa-solid fa-play';
+      document.getElementById(`timerBtnText${id}`).textContent = `ابدأ التحدي (${defaultMins} د)`;
+      document.getElementById(`timerDisplay${id}`).textContent = `${defaultMins.toString().padStart(2, '0')}:00`;
+    };
+
+    function setupEvents() {
+      prevBtn.addEventListener('click', prev);
+      nextBtn.addEventListener('click', next);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        if (e.key === 'ArrowLeft' || e.key === ' ' || e.key === 'PageDown') {
+          e.preventDefault();
+          next();
+        } else if (e.key === 'ArrowRight' || e.key === 'PageUp') {
+          e.preventDefault();
+          prev();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          goTo(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          goTo(totalSlides - 1);
+        } else if (e.key.toLowerCase() === 'f') {
+          toggleFullScreen();
+        } else if (e.key.toLowerCase() === 'j') {
+          jumpDrawer.classList.toggle('open');
+        } else if (e.key === 'Escape') {
+          jumpDrawer.classList.remove('open');
+        }
+      });
+
+      jumpBtn.addEventListener('click', () => jumpDrawer.classList.add('open'));
+      closeJumpBtn.addEventListener('click', () => jumpDrawer.classList.remove('open'));
+      themeBtn.addEventListener('click', toggleTheme);
+      fullscreenBtn.addEventListener('click', toggleFullScreen);
+    }
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('slides_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const newTheme = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('slides_theme', newTheme);
+      updateThemeIcon(newTheme);
+    }
+
+    function updateThemeIcon(theme) {
+      themeIcon.className = theme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

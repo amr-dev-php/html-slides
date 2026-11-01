@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اليوم الثالث: هندسة صفحات الهبوط والـ AI Copywriting | AI-Powered WordPress Bootcamp</title>
+  
+  <!-- Font Awesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Shared Theme Palette & Design System -->
+  <link rel="stylesheet" href="theme-palette.css">
+
+  <style>
+    .hero-glow-purple {
+      position: absolute;
+      width: 540px;
+      height: 540px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, rgba(139, 92, 246, 0.15) 40%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      pointer-events: none;
+      filter: blur(50px);
+    }
+
+    .slide-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1220px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Marketing Funnel & Copywriting Visual Styles */
+    .funnel-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-fast);
+    }
+    .funnel-step:hover {
+      border-color: var(--ai-purple);
+      transform: translateX(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    .funnel-letter {
+      font-family: var(--font-heading);
+      font-size: 2.25rem;
+      font-weight: 900;
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .letter-a { background: linear-gradient(135deg, #ef4444, #f97316); }
+    .letter-i { background: linear-gradient(135deg, #f59e0b, #eab308); }
+    .letter-d { background: linear-gradient(135deg, #3b82f6, #06b6d4); }
+    .letter-action { background: linear-gradient(135deg, #10b981, #059669); }
+
+    .letter-p { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .letter-ag { background: linear-gradient(135deg, #f97316, #ea580c); }
+    .letter-s { background: linear-gradient(135deg, #10b981, #16a34a); }
+
+    .conversion-metric-box {
+      background: rgba(16, 185, 129, 0.08);
+      border: 2px dashed var(--emerald-green);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+
+    .slide-timer-box {
+      background: rgba(15, 23, 42, 0.95);
+      border: 2px solid var(--wp-blue);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 0 35px rgba(56, 88, 233, 0.25);
+    }
+    .slide-timer-display {
+      font-family: var(--font-code);
+      font-size: clamp(3rem, 7vh, 5rem);
+      font-weight: 900;
+      color: #38bdf8;
+      letter-spacing: 3px;
+    }
+
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 0.85rem;
+      margin-top: 1rem;
+    }
+    .check-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .check-item:hover {
+      border-color: var(--emerald-green);
+      background: var(--bg-card-hover);
+    }
+    .check-item.done {
+      border-color: var(--emerald-green);
+      color: var(--text-primary);
+      background: rgba(16, 185, 129, 0.08);
+    }
+    .check-item.done i {
+      color: var(--emerald-green);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBar"></div>
+  </div>
+
+  <!-- Top Action Controls -->
+  <div class="top-actions-bar">
+    <button class="action-pill-btn" id="themeToggleBtn" title="تبديل وضع الألوان (Dark/Light)">
+      <i class="fa-solid fa-moon" id="themeIcon"></i>
+      <span id="themeText">الوضع الليلي</span>
+    </button>
+    <button class="action-pill-btn" id="overviewBtn" title="نظرة عامة على الشرائح (O)">
+      <i class="fa-solid fa-grip"></i>
+      <span>فهرس الشرائح</span>
+    </button>
+    <button class="action-pill-btn" id="notesToggleBtn" title="ملاحظات المدرب (N)">
+      <i class="fa-solid fa-chalkboard-user"></i>
+      <span>ملاحظات الشرح</span>
+    </button>
+    <button class="action-pill-btn" id="fullscreenBtn" title="ملء الشاشة (F)">
+      <i class="fa-solid fa-expand"></i>
+    </button>
+  </div>
+
+  <!-- Toast Copy Notification -->
+  <div class="toast-notice" id="toastNotice">
+    <i class="fa-solid fa-circle-check"></i> تم نسخ الـ Prompt بنجاح إلى الحافظة!
+  </div>
+
+  <!-- Main Slides Deck -->
+  <div class="deck" id="deck">
+
+    <!-- =====================================================================
+         SLIDE 0: TITLE & WELCOME
+         ===================================================================== -->
+    <div class="slide active" data-slide="0" data-title="مقدمة اليوم الثالث">
+      <div class="hero-glow-purple"></div>
+      <div class="slide-inner" style="text-align: center;">
+        <span class="slide-tag"><i class="fa-solid fa-bullseye"></i> اليوم الثالث من 6 أيام تدريبية</span>
+        <h1 class="slide-title" style="justify-content: center; font-size: clamp(2rem, 5vh, 3.6rem); margin: 1.25rem 0 0.5rem;">
+          هندسة صفحات الهبوط والـ AI Copywriting
+        </h1>
+        <p class="slide-subtitle" style="font-size: clamp(1.1rem, 2.2vh, 1.45rem); max-width: 850px; margin: 0 auto 2rem;">
+          نقطة التحول من مجرد تصميم صفحات جميلة إلى هندسة صفحات بيعية عالية التحويل (High-Converting Landing Pages) مدعومة بكتابة إعلانية مقنعة باستخدام الذكاء الاصطناعي.
+        </p>
+
+        <div class="cards-grid" style="max-width: 960px; margin: 0 auto;">
+          <div class="card" style="align-items: center; text-align: center;">
+            <div class="card-icon" style="color: var(--rose-accent);"><i class="fa-solid fa-chart-line"></i></div>
+            <h3 class="card-title">سيكولوجية التحويل</h3>
+            <p class="card-desc">تحويل الزائر الفضولي إلى مشترٍ أو عميل مسجل</p>
+          </div>
+          <div class="card" style="align-items: center; text-align: center;">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-pen-nib"></i></div>
+            <h3 class="card-title">AI Copywriting</h3>
+            <p class="card-desc">صياغة العروض بنماذج AIDA و PAS العالمية</p>
+          </div>
+          <div class="card" style="align-items: center; text-align: center;">
+            <div class="card-icon" style="color: var(--wp-blue);"><i class="fa-solid fa-layer-group"></i></div>
+            <h3 class="card-title">تشريح الصفحة</h3>
+            <p class="card-desc">هندسة الـ 6 أقسام البيعية دون تشتيت</p>
+          </div>
+          <div class="card" style="align-items: center; text-align: center;">
+            <div class="card-icon" style="color: var(--amber-gold);"><i class="fa-solid fa-trophy"></i></div>
+            <h3 class="card-title">تحديات اليوم</h3>
+            <p class="card-desc">Prompt Battle + Speed Build (250 XP)</p>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"مقدمة اليوم الثالث","script":"أهلاً بكم في اليوم الثالث. اليوم ننتقل من مجرد تنسيق صفحات إلى التفكير كمسوّقين ومصممي تجربة تحويل (CRO). صفحة الهبوط وظيفتها ليست التباهي بالألوان، بل تحقيق هدف تجاري محدد.","notes":["الترحيب بالمتدربين وتوضيح أهمية مهارة Landing Pages في سوق العمل الفريلانس","التأكيد على أن وضوح الرسالة هو من يقنع الزائر وليس الزخارف الزائدة"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 1: LEARNING OUTCOMES
+         ===================================================================== -->
+    <div class="slide" data-slide="1" data-title="مخرجات اليوم الثالث">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-bullseye"></i> مخرجات التعلم</span>
+            <h2 class="slide-title">ماذا سينجز الطالب بنهاية اليوم الثالث؟</h2>
+          </div>
+          <span class="xp-badge"><i class="fa-solid fa-star"></i> 250 XP متاح</span>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-crosshairs"></i></div>
+            <h3 class="card-title">1. استراتيجية التحويل (Conversion)</h3>
+            <p class="card-desc">فهم الفرق الجوهري بين الموقع متعدد الأهداف وصفحة الهبوط ذات الهدف الواحد، وتطبيق قاعدة منع التسرب والتشتيت.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <h3 class="card-title">2. تشريح الصفحة البيعية</h3>
+            <p class="card-desc">رسم وهندسة هيكل صفحة متكاملة: Hero، نقاط الألم، الفوائد، الإثبات الاجتماعي، إزالة الاعتراضات FAQ، ودعوة الإجراء CTA.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-pen-fancy"></i></div>
+            <h3 class="card-title">3. الكتابة التسويقية بالـ AI</h3>
+            <p class="card-desc">استخدام ChatGPT ككاتب إعلانات محترف وتطبيق نموذجي AIDA و PAS لابتكار عناوين جذابة وعروض قيمة لا تُقاوم.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="color: var(--amber-gold);"><i class="fa-solid fa-cubes"></i></div>
+            <h3 class="card-title">4. البناء العملي في Elementor</h3>
+            <p class="card-desc">توليد صور متناسقة بالـ AI وبناء أول قسمين من صفحة هبوط تسويقية حقيقية على LocalWP واختبار تجاوب الهاتف بالكامل.</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.25rem; background: rgba(139, 92, 246, 0.08); border: 1px solid var(--ai-purple); border-radius: var(--radius-md); padding: 0.9rem 1.25rem; display: flex; align-items: center; gap: 0.75rem;">
+          <i class="fa-solid fa-lightbulb" style="color: var(--ai-purple); font-size: 1.3rem;"></i>
+          <p style="font-size: 0.95rem; margin: 0;"><strong>المشروع التطبيقي الموحد:</strong> كل طالب يختار منتجًا أو خدمة (مثل: دورة إنجليزية، خدمة تصميم مواقع، منتج عضوي، أو كورس ذكاء اصطناعي) ويبني لها صفحة هبوط بيعية حقيقية.</p>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"مخرجات اليوم الثالث","script":"هذه هي المحاور الأربعة الكبرى لليوم. كل طالب سيمر برحلة متكاملة من تحديد العميل وهدفه إلى كتابة النص بالذكاء الاصطناعي وبناء أول قسمين في Elementor.","notes":["تشجيع الطلاب على اختيار منتج يهمهم شخصياً","التأكيد على أن التصميم في خدمة الرسالة البيعية"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 2: TIMELINE
+         ===================================================================== -->
+    <div class="slide" data-slide="2" data-title="الجدول الزمني للسيشن">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-clock"></i> خطة الوقت</span>
+            <h2 class="slide-title">الجدول الزمني للسيشن (210 دقيقة مكثفة)</h2>
+          </div>
+          <span class="slide-subtitle">3 ساعات و30 دقيقة شاملة الاستراحة</span>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+          <div class="card">
+            <span class="xp-badge" style="width: fit-content; margin-bottom: 0.5rem;">00 - 30 د</span>
+            <h4 class="card-title">الموقع مقابل Landing Page</h4>
+            <p class="card-desc">كسر الجليد، سيكولوجية التحويل، وأهداف الشركات من صفحات الهبوط.</p>
+          </div>
+
+          <div class="card">
+            <span class="xp-badge" style="width: fit-content; margin-bottom: 0.5rem; color: var(--ai-purple); border-color: var(--ai-purple); background: rgba(139,92,246,0.1);">30 - 75 د</span>
+            <h4 class="card-title">تشريح الصفحة وهندسة العناوين</h4>
+            <p class="card-desc">دراسة الأقسام الستة، والفرق بين الميزة والفائدة، وصياغة الـ CTA.</p>
+          </div>
+
+          <div class="card">
+            <span class="xp-badge" style="width: fit-content; margin-bottom: 0.5rem; color: var(--amber-gold); border-color: var(--amber-gold); background: rgba(245,158,11,0.1);">90 - 130 د</span>
+            <h4 class="card-title">AIDA و PAS وتوليد الصور</h4>
+            <p class="card-desc">تطبيق أوامر الذكاء الاصطناعي، نماذج الإقناع، وتوليد بانرات متناسقة.</p>
+          </div>
+
+          <div class="card">
+            <span class="xp-badge" style="width: fit-content; margin-bottom: 0.5rem; color: var(--emerald-green); border-color: var(--emerald-green); background: rgba(16,185,129,0.1);">130 - 210 د</span>
+            <h4 class="card-title">البناء العملي والتحديات</h4>
+            <p class="card-desc">تحدي Prompt Battle + تحدي Speed Build لبناء أول قسمين وتقييم الأعمال.</p>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"الجدول الزمني للسيشن","script":"توزيع الوقت محسوب بدقة: 55 دقيقة للمفاهيم والتشريح، 45 دقيقة للـ Copywriting ونماذج الذكاء الاصطناعي، 15 دقيقة للصور، 30 دقيقة بناء مباشر، و35 دقيقة للمنافسات الفردية.","notes":["التشديد على الانضباط الزمني في التحديات","التأكد من أخذ استراحة الـ 15 دقيقة في موعدها"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 3: WEBSITE VS LANDING PAGE
+         ===================================================================== -->
+    <div class="slide" data-slide="3" data-title="الموقع العادي أم صفحة الهبوط؟">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-scale-balanced"></i> المقارنة الأساسية</span>
+            <h2 class="slide-title">الموقع التقليدي (Website) مقابل صفحة الهبوط (Landing Page)</h2>
+          </div>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>وجه المقارنة</th>
+              <th>الموقع التقليدي (Website)</th>
+              <th style="color: var(--emerald-green);">صفحة الهبوط (Landing Page)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>الهدف الأساسي</strong></td>
+              <td>يخدم أهدافًا متعددة ومتباينة</td>
+              <td><strong>تركز على هدف تحويل تجاري واحد محدد (One Goal)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>القوائم والروابط</strong></td>
+              <td>يحتوي على قوائم وروابط خارجية كثيرة</td>
+              <td><strong>تُلغى الروابط غير الضرورية لمنع تشتت الزائر أو خروجه</strong></td>
+            </tr>
+            <tr>
+              <td><strong>سلوك الزائر</strong></td>
+              <td>يشجع الزائر على التجول والاستكشاف</td>
+              <td><strong>توجه الزائر في مسار إقناعي واضح نحو زر الإجراء (CTA)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>المثال الواقعي</strong></td>
+              <td>مثل: «المول التجاري» فيه عشرات المتاجر</td>
+              <td>مثل: «جناح مخصص لمنتج واحد» مع بائع يشرح كيف تطلبه الآن!</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="card" style="margin-top: 1rem; background: rgba(56,88,233,0.06); border-color: var(--wp-blue);">
+          <p style="font-size: 0.95rem; margin: 0;">💡 <strong>مفهوم خاطئ:</strong> صفحة الهبوط ليست بالضرورة صفحة قصيرة! قد تكون صفحة طويلة جداً (Long-Form) تحتوي على شروحات عميقة وأدلة، لكنها تظل منظمة بالكامل حول <strong>هدف واحد فقط</strong> دون أي روابط تشتت.</p>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"الموقع التقليدي مقابل صفحة الهبوط","script":"هذا التمييز هو جوهر السيشن. في الموقع العادي نريد من الزائر أن يستكشف، لكن في صفحة الهبوط الإعلانية نريد منه اتخاذ قرار محدد (شراء، تسجيل، حجز).","notes":["تشبيه المول التجاري بجناح العرض المخصص","سؤال الطلاب: لماذا نلغي القائمة العلوية Header أحياناً في صفحات الهبوط؟"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 4: WHY COMPANIES PAY HUNDREDS OF DOLLARS
+         ===================================================================== -->
+    <div class="slide" data-slide="4" data-title="لماذا تدفع الشركات مئات الدولارات؟">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-sack-dollar"></i> القيمة في سوق العمل</span>
+            <h2 class="slide-title">لماذا تدفع الشركات مئات الدولارات لصفحة واحدة فقط؟</h2>
+          </div>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-arrow-trend-up"></i></div>
+            <h3 class="card-title">1. حلقة الوصل في رحلة البيع</h3>
+            <p class="card-desc">الشركة قد تنفق آلاف الدولارات على إعلانات فيسبوك أو جوجل، وإذا هبط الزائر على صفحة مشتتة تضيع كل تلك الميزانية سدى.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="color: var(--wp-blue);"><i class="fa-solid fa-bolt-lightning"></i></div>
+            <h3 class="card-title">2. تقليل الاحتكاك (Friction)</h3>
+            <p class="card-desc">التصميم المتقن يزيل الشكوك، ويجيب عن المخاوف، ويجعل اتخاذ قرار الشراء أو التسجيل تجربة سهلة وسريعة في ثوانٍ.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-chart-pie"></i></div>
+            <h3 class="card-title">3. صفحة قابلة للقياس والاختبار (A/B Testing)</h3>
+            <p class="card-desc">يمكن اختبار نسختين من الصفحة لمعرفة أي عنوان يحقق مبيعات أكثر بناءً على أرقام وبيانات حقيقية وليس تخمينات.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="color: var(--amber-gold);"><i class="fa-solid fa-gem"></i></div>
+            <h3 class="card-title">4. زيادة معدل التحويل (ROI)</h3>
+            <p class="card-desc">تحسين معدل التحويل من 1% إلى 2% فقط يعني مضاعفة أرباح ومبيعات الشركة بالكامل بنفس ميزانية الإعلانات الحالية!</p>
+          </div>
+        </div>
+
+        <div class="conversion-metric-box">
+          <span style="font-weight: 700; font-size: 1.05rem;">📊 رحلة الزائر: إعلان ممول ⟵ صفحة هبوط مقنعة ⟵ ضغط الزر CTA ⟵ إتمام البيع والتحويل</span>
+          <span class="xp-badge" style="color: var(--emerald-green); border-color: var(--emerald-green);">عائد استثماري مضاعف</span>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"القيمة التجارية لصفحات الهبوط","script":"اشرح للطلاب أن العميل لا يدفع مقابل عدد الأقسام أو كود الـ HTML، بل يدفع مقابل صفحة تزيد له المبيعات. المطور الذي يفهم الـ Conversion يكسب أضعاف من يصمم صفحات شكلية فقط.","notes":["شرح مفهوم العائد على الاستثمار ROI ببساطة","توضيح كيف تضاعف زيادة الـ Conversion Rate الأرباح"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 5: CONVERSION GOAL & CTA
+         ===================================================================== -->
+    <div class="slide" data-slide="5" data-title="ما هو Conversion Goal؟">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-bullseye"></i> مبادئ التسويق</span>
+            <h2 class="slide-title">ما هو الـ Conversion Goal؟ وما دور زر الـ CTA؟</h2>
+          </div>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="card" style="border-top: 4px solid var(--wp-blue);">
+            <div class="card-icon"><i class="fa-solid fa-flag-checkered"></i></div>
+            <h3 class="card-title" style="color: var(--wp-blue);">التحويل (Conversion)</h3>
+            <p class="card-desc" style="font-size: 1.05rem; line-height: 1.8;">
+              هو <strong>الفعل الوحيد والمحدد</strong> الذي صُممت الصفحة من أجله، ويتحول فيه الزائر المجهول إلى عميل محتمل أو مشترٍ فعلي.
+            </p>
+            <ul style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8; margin-top: 0.5rem;">
+              <li>شراء منتج فوري (E-commerce / Course).</li>
+              <li>تسجيل بيانات في استمارة (Lead Generation).</li>
+              <li>حجز استشارة أو مكالمة تعريفية مجانية.</li>
+              <li>طلب عرض سعر مخصص (B2B Quote).</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--emerald-green);">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-hand-pointer"></i></div>
+            <h3 class="card-title" style="color: var(--emerald-green);">زر الدعوة للإجراء (CTA)</h3>
+            <p class="card-desc" style="font-size: 1.05rem; line-height: 1.8;">
+              <strong>Call To Action:</strong> هو العنصر البصري الأهم في الصفحة الذي يوجه الزائر للخطوة التالية بوضوح لا يحتمل اللبس.
+            </p>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem;">
+              <span class="action-pill-btn" style="background: var(--wp-blue); color: #fff; border: none;">اشترِ الكورس الآن</span>
+              <span class="action-pill-btn" style="background: var(--emerald-green); color: #fff; border: none;">سجّل مقعدك مجانًا</span>
+              <span class="action-pill-btn" style="background: var(--amber-gold); color: #fff; border: none;">احجز استشارتك</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1rem; background: var(--bg-card); border-right: 4px solid var(--rose-accent); padding: 0.85rem 1.25rem; border-radius: var(--radius-sm);">
+          <p style="margin: 0; font-size: 0.95rem; color: var(--text-secondary);">🎯 <strong>تطبيق لحظي:</strong> أكمل الجملة التالية لمشروعك اليوم: <em>«بعد زيارة صفحتي، أريد من الزائر تحديدًا أن يقوم بـ <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>»</em>.</p>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"مفهوم Conversion Goal و CTA","script":"اطلب من كل طالب في القاعة تحديد الفعل المطلوب. حول الأهداف العامة مثل (يتعرف على الشركة) إلى أفعال قابلة للملاحظة والقياس مثل (يحجز استشارة).","notes":["التشديد على ضرورة وجود هدف واحد محدد لكل صفحة","تنبيه الطلاب لعدم استخدام نصوص عامة مثل 'اضغط هنا'"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 6: LANDING PAGE ANATOMY (6 SECTIONS)
+         ===================================================================== -->
+    <div class="slide" data-slide="6" data-title="تشريح صفحة الهبوط الناجحة">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-layer-group"></i> الهيكل المعماري</span>
+            <h2 class="slide-title">تشريح صفحة الهبوط الناجحة: الأقسام الستة الكبرى</h2>
+          </div>
+          <span class="slide-subtitle">رحلة العميل من الفضول إلى القرار</span>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+          <div class="card" style="border-right: 4px solid var(--wp-blue);">
+            <h4 class="card-title" style="color: var(--wp-blue);">1. Hero Section</h4>
+            <p class="card-desc"><strong>أول انطباع (5 ثوانٍ):</strong> عنوان رئيسي يوضح النتيجة، وصف موجز، صورة جاذبة، وزر CTA أساسي بارز.</p>
+          </div>
+
+          <div class="card" style="border-right: 4px solid var(--rose-accent);">
+            <h4 class="card-title" style="color: var(--rose-accent);">2. نقاط الألم (Pain Points)</h4>
+            <p class="card-desc"><strong>أنا أفهمك:</strong> تسمية المشكلات الواقعية التي يعاني منها العميل وجعلته يبحث عن حلول.</p>
+          </div>
+
+          <div class="card" style="border-right: 4px solid var(--emerald-green);">
+            <h4 class="card-title" style="color: var(--emerald-green);">3. الحل والفوائد (Benefits)</h4>
+            <p class="card-desc"><strong>كيف أساعدك:</strong> تقديم منتجك كحل مباشر، مع تحويل كل ميزة فنية إلى فائدة ملموسة في حياة العميل.</p>
+          </div>
+
+          <div class="card" style="border-right: 4px solid var(--amber-gold);">
+            <h4 class="card-title" style="color: var(--amber-gold);">4. الإثبات الاجتماعي (Social Proof)</h4>
+            <p class="card-desc"><strong>بناء الثقة:</strong> آراء وتجارب عملاء حقيقيين، دراسات حالة، أو شعارات جهات موثوقة (دون أي اختلاق كاذب).</p>
+          </div>
+
+          <div class="card" style="border-right: 4px solid var(--ai-purple);">
+            <h4 class="card-title" style="color: var(--ai-purple);">5. الأسئلة الشائعة (FAQ)</h4>
+            <p class="card-desc"><strong>إزالة الاعتراضات:</strong> الإجابة عن مخاوف السعر، الضمان، طريقة الاستلام، والدعم قبل أن يتردد الزائر.</p>
+          </div>
+
+          <div class="card" style="border-right: 4px solid var(--cyber-teal);">
+            <h4 class="card-title" style="color: var(--cyber-teal);">6. الدعوة الأخيرة (Final CTA)</h4>
+            <p class="card-desc"><strong>الفرصة الأخيرة:</strong> تذكير الزائر بالعرض وقيمته وحثه على اتخاذ الخطوة الآن دون تأجيل.</p>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"تشريح صفحة الهبوط","script":"شبه هذه الأقسام بمحادثة واقعية مع مشتري: ترحب به وتخبره ماذا تبيع (Hero)، تؤكد له أنك تفهم معاناته (Pain)، تعرض حلك وفوائده (Benefits)، تثبت كلامك برأي غيرك (Proof)، تزيل مخاوفه (FAQ)، وتطلب منه الشراء (Final CTA).","notes":["توضيح أن ترتيب الأقسام قد يتغير حسب نوع المنتج","التركيز على منطقية الانتقال بين قسم وآخر"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 7: HERO SECTION DEEP DIVE
+         ===================================================================== -->
+    <div class="slide" data-slide="7" data-title="تشريح الـ Hero Section">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-star"></i> أول 5 ثوانٍ</span>
+            <h2 class="slide-title">تشريح الـ Hero Section: القاعدة الأساسية لبقاء الزائر</h2>
+          </div>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1.2fr 1fr;">
+          <div class="card">
+            <h3 class="card-title" style="color: var(--wp-blue);">العناصر الخمسة الإلزامية في أي Hero</h3>
+            <ul style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 2;">
+              <li><strong>1. العنوان الرئيسي (Headline):</strong> ما هي القيمة أو النتيجة الأساسية في 8–12 كلمة؟</li>
+              <li><strong>2. العنوان الفرعي (Subheadline):</strong> كيف يحصل الزائر على النتيجة ولمن يناسب العرض؟</li>
+              <li><strong>3. زر الإجراء (Primary CTA):</strong> بارز، متباين اللون، بنص محدد وواضح.</li>
+              <li><strong>4. العنصر البصري (Hero Visual):</strong> صورة منتج، لقطة شاشة توضيحية، أو بانر يخدم الرسالة.</li>
+              <li><strong>5. إشارة الثقة (Trust Cue):</strong> ضمان استرجاع، عدد الطلاب، أو نجوم تقييم تحت الزر.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="background: rgba(56, 88, 233, 0.05); border: 2px dashed var(--border-highlight); justify-content: center;">
+            <h4 style="color: var(--rose-accent); margin-bottom: 0.5rem;"><i class="fa-solid fa-xmark"></i> مثال ضعيف ومبهم:</h4>
+            <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.25rem;">«منصة تعليمية ذكية ومتطورة تقدم أفضل الخدمات» (لا توضح ماذا سأستفيد!).</p>
+
+            <h4 style="color: var(--emerald-green); margin-bottom: 0.5rem;"><i class="fa-solid fa-check"></i> مثال قوي وواضح:</h4>
+            <p style="font-size: 0.95rem; color: var(--text-primary); font-weight: 700; margin: 0;">«تعلّم أساسيات تصميم المواقع بالذكاء الاصطناعي وابنِ أول 3 مواقع احترافية في 6 أيام».</p>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"تشريح قسم Hero Section","script":"الـ Hero هو واجهة الكتاب. إذا لم يجد الزائر سبباً للبقاء في 5 ثوانٍ فسيغادر الصفحة فوراً. قارن بين العناوين الإنشائية الضعيفة والعناوين التي تركز على النتيجة.","notes":["التشديد على عدم استخدام وعود غير قابلة للإثبات","توضيح أهمية وجود إشارة ثقة قريبة من الزر"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 8: FEATURE VS BENEFIT
+         ===================================================================== -->
+    <div class="slide" data-slide="8" data-title="الميزة مقابل الفائدة">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-gem"></i> سيكولوجية البيع</span>
+            <h2 class="slide-title">لا تخلط أبدًا بين الميزة (Feature) والفائدة (Benefit)!</h2>
+          </div>
+          <span class="slide-subtitle">الناس لا يشترون الميزات.. بل يشترون ما تفعله الميزة لحياتهم!</span>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>الميزة الفنية (Feature) — ما يملكه المنتج</th>
+              <th style="color: var(--emerald-green);">الفائدة الواقعية (Benefit) — لماذا يهتم العميل؟</th>
+              <th>الأثر على حياة العميل (Outcome)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>دروس مسجلة بجودة 4K</td>
+              <td><strong>تعلّم في أي وقت يناسب جدولك اليومي</strong></td>
+              <td>حرية ومرونة بدون التزام بمواعيد صارمة</td>
+            </tr>
+            <tr>
+              <td>قوالب Elementor جاهزة</td>
+              <td><strong>ابنِ صفحتك في دقائق دون البدء من الصفر</strong></td>
+              <td>توفير ساعات طويلة من التخبط والإحباط</td>
+            </tr>
+            <tr>
+              <td>دعم فني وتدريب مباشر</td>
+              <td><strong>احصل على حل فوري لأي عطل تواجهه</strong></td>
+              <td>راحة بال وضمان عدم التوقف عند أي مشكلة</td>
+            </tr>
+            <tr>
+              <td>مشاريع تطبيقية حقيقية</td>
+              <td><strong>امتلك معرض أعمال تتقدم به للوظائف فوراً</strong></td>
+              <td>الحصول على عملاء وتحقيق دخل مادي حقيقي</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="card" style="margin-top: 1rem; text-align: center; background: rgba(16,185,129,0.06); border-color: var(--emerald-green);">
+          <p style="margin: 0; font-size: 1rem; color: var(--text-primary); font-weight: 700;">
+            🚗 عندما تشتري سيارة، لا تدفع المال مقابل عدد صمامات المحرك؛ أنت تشتري الراحة والأمان وسرعة الوصول!
+          </p>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"الميزة مقابل الفائدة","script":"هذا هو جوهر التسويق. الميزة تصف مواصفات المنتج، بينما الفائدة تشرح كيف تحل مشكلة العميل. درب الطلاب على تحويل كل ميزة في منتجهم إلى فائدة واضحة.","notes":["تطبيق مباشر مع الطلاب على منتجاتهم","سؤال طالب: ما ميزة كورس الإنجليزي؟ وما فائدته؟"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 9: SOCIAL PROOF & FAQ
+         ===================================================================== -->
+    <div class="slide" data-slide="9" data-title="الثقة وإزالة الاعتراضات">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-shield-heart"></i> الثقة والاعتراضات</span>
+            <h2 class="slide-title">Social Proof و FAQ: إزالة الشكوك قبل خطوة الشراء</h2>
+          </div>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="card">
+            <div class="card-icon" style="color: var(--emerald-green);"><i class="fa-solid fa-users-viewfinder"></i></div>
+            <h3 class="card-title" style="color: var(--emerald-green);">Social Proof (بناء الثقة بصدق)</h3>
+            <ul style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.9;">
+              <li>آراء عملاء حقيقيين بأسمائهم وصورهم بعد إذنهم.</li>
+              <li>أرقام وإحصائيات موثقة (عدد الطلاب، نسب الإنجاز).</li>
+              <li>شعارات شركات أو شركاء بموافقتهم الرسمية.</li>
+              <li><strong>قاعدة أخلاقية:</strong> لا تخترع تقييمات وهمية! إذا كنت مبتدئاً اعرض نموذجاً توضيحياً وقسم «ما الذي ستحصل عليه؟» بدلاً من الكذب.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="color: var(--ai-purple);"><i class="fa-solid fa-circle-question"></i></div>
+            <h3 class="card-title" style="color: var(--ai-purple);">قسم الـ FAQ (هدم الاعتراضات)</h3>
+            <ul style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.9;">
+              <li>ما السعر وطرق الدفع المتاحة؟</li>
+              <li>هل أحتاج إلى أي خبرة برمجية سابقة؟</li>
+              <li>ماذا يحدث بالضبط فور إتمام الدفع أو التسجيل؟</li>
+              <li>ما هي سياسة الاسترجاع أو الضمان المتاحة؟</li>
+              <li>الـ FAQ يجيب عن التردد الذي قد يدفع الزائر لمغادرة الصفحة.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"الثقة والأسئلة الشائعة","script":"أكد بشدة على الأمانة والمصداقية في الـ Social Proof. اختلاق شهادات وهمية يدمر سمعة المشروع. والـ FAQ يعمل كبائع ذكي يجيب عن أسئلة العميل التي قد تمنعه من الشراء.","notes":["التشديد على بدائل الشهادات للمشاريع الجديدة","شرح كيفية عمل Accordion في Elementor"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 10: AIDA COPYWRITING MODEL
+         ===================================================================== -->
+    <div class="slide" data-slide="10" data-title="نموذج AIDA في الكتابة الإعلانية">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-funnel-dollar"></i> فن الـ Copywriting</span>
+            <h2 class="slide-title">نموذج AIDA: الرحلة النفسية من جذب الانتباه حتى الشراء</h2>
+          </div>
+          <span class="slide-subtitle">النموذج الإعلاني الأشهر عالميًا</span>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: repeat(4, 1fr);">
+          <div class="funnel-step" style="flex-direction: column; text-align: center;">
+            <div class="funnel-letter letter-a">A</div>
+            <h4 style="font-size: 1.2rem; margin: 0.25rem 0;">Attention</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;"><strong>اجذب الانتباه:</strong> عنوان بيعي صادم أو واعد يوقف الزائر عن التمرير.</p>
+          </div>
+
+          <div class="funnel-step" style="flex-direction: column; text-align: center;">
+            <div class="funnel-letter letter-i">I</div>
+            <h4 style="font-size: 1.2rem; margin: 0.25rem 0;">Interest</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;"><strong>ابنِ الاهتمام:</strong> اشرح لماذا يهم هذا العرض العميل وتحدث عن واقعه.</p>
+          </div>
+
+          <div class="funnel-step" style="flex-direction: column; text-align: center;">
+            <div class="funnel-letter letter-d">D</div>
+            <h4 style="font-size: 1.2rem; margin: 0.25rem 0;">Desire</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;"><strong>أشعل الرغبة:</strong> اربط فوائد المنتج بما يحلم به العميل وكيف سيغير واقعه.</p>
+          </div>
+
+          <div class="funnel-step" style="flex-direction: column; text-align: center;">
+            <div class="funnel-letter letter-action">A</div>
+            <h4 style="font-size: 1.2rem; margin: 0.25rem 0;">Action</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;"><strong>اطلب التحرك:</strong> دعوة واضحة لاتخاذ القرار الآن عبر زر CTA صريح.</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.25rem; background: var(--bg-card); padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); text-align: center; font-size: 0.95rem;">
+          💡 <strong>الاستخدام:</strong> مثالي لكتابة قسم الـ Hero والعروض الترويجية والبانرات الإعلانية السريعة.
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"نموذج AIDA","script":"نموذج AIDA هو العمود الفقري للإعلانات منذ أكثر من 100 عام. يبدأ بجذب الانتباه، ثم إثارة الاهتمام، ثم تحريك الرغبة، وأخيراً طلب الفعل. سنطبقه عبر ChatGPT بعد قليل.","notes":["إعطاء مثال حي على كورس لغة إنجليزية باستخدام AIDA","التأكيد على أن AIDA ينطبق على الصفحة ككل أو على قسم الـ Hero"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 11: PAS COPYWRITING MODEL
+         ===================================================================== -->
+    <div class="slide" data-slide="11" data-title="نموذج PAS في الكتابة الإعلانية">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-heart-pulse"></i> علم الإقناع</span>
+            <h2 class="slide-title">نموذج PAS: المشكلة، توضيح أثرها، ثم تقديم الحل السحري</h2>
+          </div>
+          <span class="slide-subtitle">النموذج الأقوى لصفحات المنتجات والخدمات</span>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: repeat(3, 1fr);">
+          <div class="funnel-step" style="flex-direction: column; text-align: center;">
+            <div class="funnel-letter letter-p">P</div>
+            <h4 style="font-size: 1.25rem; margin: 0.25rem 0; color: #ef4444;">Problem — المشكلة</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">سمِّ المشكلة بدقة بلغة العميل (مثلاً: تتشتت بين عشرات القنوات المجانية دون خطة واضحة).</p>
+          </div>
+
+          <div class="funnel-step" style="flex-direction: column; text-align: center;">
+            <div class="funnel-letter letter-ag">A</div>
+            <h4 style="font-size: 1.25rem; margin: 0.25rem 0; color: #f97316;">Agitation — تضخيم الأثر</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">وضّح أثر استمرار المشكلة بواقعية (يضيع وقتك وتفقد شهوراً من عمرك وتتأخر عن سوق العمل).</p>
+          </div>
+
+          <div class="funnel-step" style="flex-direction: column; text-align: center;">
+            <div class="funnel-letter letter-s">S</div>
+            <h4 style="font-size: 1.25rem; margin: 0.25rem 0; color: #10b981;">Solution — الحل الحقيقي</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">قدّم منتجك كالحل المنقذ (معسكر عملي مكثف خطوة بخطوة يبني لك معرض أعمال حقيقي في 6 أيام).</p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 1.25rem; background: rgba(249, 115, 22, 0.08); border-color: rgba(249, 115, 22, 0.3);">
+          <p style="margin: 0; font-size: 0.95rem; color: var(--text-primary);">⚠️ <strong>تنبيه للمدرب:</strong> في مرحلة Agitation لا نخترع ألمًا غير موجود ولا نلجأ لتخويف الناس بأسلوب مضلل، بل نساعد العميل على رؤية التكلفة الحقيقية لتأجيل حل المشكلة.</p>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"نموذج PAS","script":"نموذج PAS (Problem - Agitation - Solution) هو أفضل نموذج لقسم المشكلة والحل في صفحة الهبوط. العميل يشعر أنك تفهمه لأنه يرى مشكلته موصوفة بكلماته هو.","notes":["مقارنة PAS بزيارة الطبيب: يسألك عن العرض، يشرح أثره، ثم يكتب الدواء","تحذير الطلاب من المبالغة أو التخويف المصطنع"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 12: PROMPT 1 MARKETING STRATEGY
+         ===================================================================== -->
+    <div class="slide" data-slide="12" data-title="Prompt 1: الاستراتيجية التسويقية">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> حقيبة أوامر الذكاء الاصطناعي</span>
+            <h2 class="slide-title">Prompt 1: بناء الاستراتيجية التسويقية الكاملة للصفحة</h2>
+          </div>
+          <span class="xp-badge"><i class="fa-solid fa-star"></i> AI Marketing Strategist</span>
+        </div>
+
+        <div class="prompt-container">
+          <div class="prompt-header">
+            <div class="prompt-window-dots">
+              <span class="prompt-dot dot-red"></span>
+              <span class="prompt-dot dot-yellow"></span>
+              <span class="prompt-dot dot-green"></span>
+            </div>
+            <div class="prompt-header-rtl">
+              <span class="prompt-badge">AI PROMPT #1</span>
+              <span class="prompt-title-badge">استراتيجية العميل والعرض والتحويل</span>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this)">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt</span>
+            </button>
+          </div>
+          <div class="prompt-content">أنت خبير في التسويق الرقمي وتصميم صفحات الهبوط البيعية عالية التحويل.
+
+أريد منك إعداد استراتيجية تسويقية مختصرة لصفحة هبوط خاصة بالمنتج أو الخدمة التالية:
+- اسم المنتج/الخدمة: <span class="prompt-var">[اسم المنتج، مثلاً: معسكر تصميم المواقع بالـ AI]</span>
+- وصف المنتج: <span class="prompt-var">[وصف مختصر في سطرين]</span>
+- السعر: <span class="prompt-var">[السعر أو اكتب غير محدد]</span>
+- الجمهور المستهدف: <span class="prompt-var">[الجمهور بدقة، مثلاً: طلاب جامعيون وباحثون عن عمل حر]</span>
+- المشكلة الأساسية: <span class="prompt-var">[المشكلة التي يعانون منها]</span>
+- الميزة التنافسية الحقيقية: <span class="prompt-var">[ما يميزك حقاً]</span>
+- هدف الصفحة: <span class="prompt-var">[شراء / تسجيل في دورة / حجز استشارة / طلب عرض سعر]</span>
+
+المطلوب:
+1. وصف دقيق للعميل المثالي (Buyer Persona).
+2. تحديد أهم 3 مشكلات ونقاط ألم يواجهها (Pain Points).
+3. تحديد أهم 3 فوائد يقدمها المنتج مرتبطة بالمشكلات.
+4. كتابة عرض تسويقي واضح ومقنع (Unique Value Proposition).
+5. اقتراح هدف تحويل أساسي واحد قابل للملاحظة.
+6. اقتراح نص جذاب ومحدد لزر الدعوة لاتخاذ إجراء (CTA).
+7. تحديد أهم 3 اعتراضات ومخاوف قد تمنع العميل من اتخاذ القرار وكيفية الرد عليها.
+
+ملاحظة: لا تخترع معلومات أو أرقامًا غير موجودة. إذا كانت المعلومات غير كافية، اسألني قبل افتراضها.</div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"Prompt 1: الاستراتيجية التسويقية","script":"هذا هو الأساس الذي تُبنى عليه الصفحة. ينفذه الطالب أولاً ليحدد هوية عميله ومشكلاته وعرض القيمة قبل كتابة سطر واحد في ووردبريس.","notes":["التأكد من ملء المتغيرات ببيانات منتج واقعي","مراجعة هدف التحويل والتأكد من أنه محدد"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 13: PROMPT 2 AIDA HEADLINES
+         ===================================================================== -->
+    <div class="slide" data-slide="13" data-title="Prompt 2: كتابة العناوين بـ AIDA">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-pen-nib"></i> صياغة العناوين</span>
+            <h2 class="slide-title">Prompt 2: توليد 5 خيارات عناوين بيعية جذابة بنموذج AIDA</h2>
+          </div>
+          <span class="xp-badge"><i class="fa-solid fa-star"></i> AIDA Copywriter</span>
+        </div>
+
+        <div class="prompt-container">
+          <div class="prompt-header">
+            <div class="prompt-window-dots">
+              <span class="prompt-dot dot-red"></span>
+              <span class="prompt-dot dot-yellow"></span>
+              <span class="prompt-dot dot-green"></span>
+            </div>
+            <div class="prompt-header-rtl">
+              <span class="prompt-badge">AI PROMPT #2</span>
+              <span class="prompt-title-badge">عناوين وأوصاف بيعية للـ Hero</span>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this)">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt</span>
+            </button>
+          </div>
+          <div class="prompt-content">تصرّف ككاتب إعلانات تسويقية محترف (Senior Copywriter) متخصص في صفحات الهبوط (Landing Pages).
+
+بيانات المشروع:
+- المنتج: <span class="prompt-var">[اسم المنتج أو الخدمة]</span>
+- الجمهور المستهدف: <span class="prompt-var">[الجمهور]</span>
+- المشكلة الأساسية: <span class="prompt-var">[المشكلة]</span>
+- النتيجة الواقعية التي يساعد العرض على تحقيقها: <span class="prompt-var">[النتيجة]</span>
+- الميزة التنافسية: <span class="prompt-var">[الميزة]</span>
+- نبرة الكتابة: <span class="prompt-var">[احترافي / ودود / جريء / مبسط]</span>
+- اللغة: العربية
+
+استخدم نموذج AIDA (Attention, Interest, Desire, Action) لإنشاء 5 خيارات مختلفة بالكامل لقسم الـ Hero، يتضمن كل خيار:
+1. Headline رئيسي واضح وجذاب من 8 إلى 12 كلمة.
+2. Subheadline يشرح القيمة في جملتين قصيرتين.
+3. نص زر CTA محدد وصريح.
+4. سطر يوضح سبب ملاءمة هذا الخيار للجمهور المستهدف.
+
+الشروط الإلزامية:
+- استخدم لغة عربية سليمة ومباشرة وتجنب الكليشيهات المبتذلة (مثل: الأفضل على الإطلاق / الحل السحري).
+- لا تقدم وعودًا خيالية غير قابلة للإثبات.
+- اجعل العنوان مفهومًا وقويًا بمفرده دون الحاجة لقراءة باقي الصفحة.
+
+في النهاية، رتّب الخيارات الخمسة حسب وضوح الرسالة وملاءمتها للجمهور.</div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"Prompt 2: عناوين AIDA","script":"هذا الأمر ينتج 5 زوايا تسويقية مختلفة للعنوان. اطلب من الطلاب اختيار العنوان الأكثر وضوحاً وليس الأكثر صخباً أو مبالغة.","notes":["مناقشة الفرق بين Clickbait والعنوان الصادق الجذاب","تطبيق الخيار الفائز في تمرين البناء القادم"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 14: PROMPT 3 PAS COPYWRITING
+         ===================================================================== -->
+    <div class="slide" data-slide="14" data-title="Prompt 3: صياغة المشكلة والحل بـ PAS">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-heart-crack"></i> التعاطف مع العميل</span>
+            <h2 class="slide-title">Prompt 3: كتابة قسم المشكلة والحل بنموذج PAS</h2>
+          </div>
+          <span class="xp-badge"><i class="fa-solid fa-star"></i> PAS Content Writer</span>
+        </div>
+
+        <div class="prompt-container">
+          <div class="prompt-header">
+            <div class="prompt-window-dots">
+              <span class="prompt-dot dot-red"></span>
+              <span class="prompt-dot dot-yellow"></span>
+              <span class="prompt-dot dot-green"></span>
+            </div>
+            <div class="prompt-header-rtl">
+              <span class="prompt-badge">AI PROMPT #3</span>
+              <span class="prompt-title-badge">محتوى قسم المشكلة والفوائد</span>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this)">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt</span>
+            </button>
+          </div>
+          <div class="prompt-content">أنت Copywriter متخصص في كتابة نصوص صفحات الهبوط التي تبني التعاطف وتدفع للتحويل.
+
+اكتب محتوى متكامل لقسم المشكلة والحل باستخدام نموذج PAS:
+- Problem: المشكلة التي يعيشها العميل.
+- Agitation: أثر استمرار المشكلة على واقعه دون تهويل أو تخويف غير واقعي.
+- Solution: كيف يمثل منتجنا الحل المباشر المرتبط بفوائد ملموسة.
+
+بيانات مشروعي:
+- المنتج أو الخدمة: <span class="prompt-var">[اسم المنتج]</span>
+- الجمهور المستهدف: <span class="prompt-var">[الجمهور]</span>
+- المشكلة: <span class="prompt-var">[المشكلة الأساسية]</span>
+- الأثر الواقعي لاستمرار المشكلة: <span class="prompt-var">[الأثر]</span>
+- الحل الذي نقدمه: <span class="prompt-var">[الحل]</span>
+- الفوائد الحقيقية: <span class="prompt-var">[الفوائد]</span>
+
+المخرجات المطلوبة بالتنسيق التالي:
+1. عنوان رئيسي جذاب لقسم المشكلة (مثلاً: هل تواجه هذه الصعوبات؟).
+2. فقرة قصيرة تصف المشكلة بلغة العميل اليومية.
+3. ثلاث نقاط تمثل صعوبات واقعية محددة في شكل بطاقات.
+4. عنوان لقسم الحل.
+5. فقرة تشرح كيف يساعد المنتج في تجاوز الصعوبات.
+6. ثلاث فوائد رئيسية مرتبطة مباشرة بالمشكلات السابقة.
+7. نص CTA مناسب ختامي للقسم.</div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"Prompt 3: محتوى PAS","script":"هذا الأمر يولد نصوص القسم الثاني من الصفحة. يوضح للطالب كيف يصيغ المشكلات في 3 بطاقات واضحة وكيف يقدم الفوائد كرد عليها.","notes":["التأكد من الترابط بين المشكلة المذكورة والحل المقدم","استخدام نصوص البطاقات مباشرة في Elementor"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 15: PROMPT 4 FULL LANDING PAGE PLAN
+         ===================================================================== -->
+    <div class="slide" data-slide="15" data-title="Prompt 4: مخطط صفحة الهبوط الكاملة">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-sitemap"></i> المخطط الهيكلي</span>
+            <h2 class="slide-title">Prompt 4: إنشاء مخطط كامل لأقسام صفحة الهبوط (UX Wireframe)</h2>
+          </div>
+          <span class="xp-badge"><i class="fa-solid fa-star"></i> Full Page Architect</span>
+        </div>
+
+        <div class="prompt-container">
+          <div class="prompt-header">
+            <div class="prompt-window-dots">
+              <span class="prompt-dot dot-red"></span>
+              <span class="prompt-dot dot-yellow"></span>
+              <span class="prompt-dot dot-green"></span>
+            </div>
+            <div class="prompt-header-rtl">
+              <span class="prompt-badge">AI PROMPT #4</span>
+              <span class="prompt-title-badge">مخطط الأقسام الستة لـ Elementor</span>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this)">
+              <i class="fa-regular fa-copy"></i>
+              <span>نسخ الـ Prompt</span>
+            </button>
+          </div>
+          <div class="prompt-content">أنت خبير في UX Writing وتصميم صفحات الهبوط التسويقية ببرنامج WordPress و Elementor Free.
+
+أنشئ مخططًا كاملاً لصفحة هبوط للمشروع التالي:
+- المنتج: <span class="prompt-var">[اسم المنتج]</span>
+- الجمهور: <span class="prompt-var">[الجمهور]</span>
+- هدف التحويل: <span class="prompt-var">[الهدف]</span>
+- تفاصيل العرض: <span class="prompt-var">[تفاصيل العرض]</span>
+- الأسلوب البصري: <span class="prompt-var">[Modern / Clean / Tech]</span>
+- أهم الفوائد: <span class="prompt-var">[الفوائد]</span>
+
+نظّم الصفحة بالأقسام الستة التالية بالترتيب:
+1. Hero Section: عنوان، وصف، CTA، فكرة العنصر البصري.
+2. Pain Points: ثلاث مشكلات واقعية.
+3. Solution & Benefits: الحل وثلاث فوائد.
+4. Social Proof: نوع دليل الثقة المقترح (بديل صادق إذا لم تتوفر شهادات حقيقية).
+5. FAQ: خمسة أسئلة وأجوبة تزيل التردد.
+6. Final CTA: عنوان ختامي وزر تحويل واضح.
+
+لكل قسم من الأقسام، حدد:
+- عنوان القسم والنص المقترح.
+- الهدف التسويقي من القسم.
+- الاقتراح البصري ونوع الـ Container المطلوب في Elementor Free.
+- ملاحظة تصميمية لضمان قراءة ممتازة على شاشات الهواتف.</div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"Prompt 4: مخطط الصفحة الكاملة","script":"المخطط الكامل يعطي الطالب الرؤية الشاملة للصفحة، بحيث يستطيع اليوم بناء القسمين الأولين، وإكمال باقي الأقسام في الأيام التالية بكل وضوح.","notes":["التشديد على قصر النصوص لسهولة القراءة على شاشات الموبايل","الابتعاد عن اختلاق شهادات عملاء وهمية"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 16: PROMPT 5 & 6 AI IMAGES & REVIEW
+         ===================================================================== -->
+    <div class="slide" data-slide="16" data-title="Prompts 5 & 6: الصور والمراجعة النقدية">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-wand-magic"></i> أدوات الذكاء الاصطناعي المساندة</span>
+            <h2 class="slide-title">Prompts 5 & 6: توليد الصور بالـ AI والمراجعة التسويقية قبل النشر</h2>
+          </div>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr;">
+          <!-- Prompt 5 -->
+          <div class="card" style="padding: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span class="prompt-badge">PROMPT #5: توليد صورة الـ Hero</span>
+              <button class="copy-btn" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;" onclick="copyInnerPrompt(this, 'p5_day3')">
+                <i class="fa-regular fa-copy"></i> نسخ
+              </button>
+            </div>
+            <div id="p5_day3" style="font-size: 0.825rem; color: var(--code-text); background: var(--code-bg); padding: 0.75rem; border-radius: var(--radius-sm); max-height: 200px; overflow-y: auto; white-space: pre-wrap;">I need a professional marketing hero image for a landing page:
+- Product/Service: [Your Product]
+- Target Audience: [Audience]
+- Visual Style: [Minimalist / Modern 3D / Editorial / Photorealistic]
+- Main Colors: [Your HEX Colors]
+- Placement: [Right side of text / Hero Background]
+- Aspect ratio: [16:9 or 4:3]
+
+Write a detailed English prompt for an AI image generator (e.g., Microsoft Designer / Midjourney).
+Rules: Clean composition, professional lighting, copy-space on the left for text overlay, strictly NO text, NO letters, NO brand logos, and NO clutter.</div>
+          </div>
+
+          <!-- Prompt 6 -->
+          <div class="card" style="padding: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span class="prompt-badge" style="color: var(--emerald-green); border-color: var(--emerald-green); background: rgba(16,185,129,0.1);">PROMPT #6: مراجعة النصوص قبل البناء</span>
+              <button class="copy-btn" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;" onclick="copyInnerPrompt(this, 'p6_day3')">
+                <i class="fa-regular fa-copy"></i> نسخ
+              </button>
+            </div>
+            <div id="p6_day3" style="font-size: 0.825rem; color: var(--code-text); background: var(--code-bg); padding: 0.75rem; border-radius: var(--radius-sm); max-height: 200px; overflow-y: auto; white-space: pre-wrap;">أنت مراجع متخصص في محتوى صفحات الهبوط وتحسين معدل التحويل (CRO Reviewer).
+
+راجع النص التالي:
+[الصق محتوى صفحة الهبوط هنا]
+
+قيّم المحتوى من 1 إلى 5 في المعايير التالية:
+1. وضوح العنوان وقوته في أول 5 ثوانٍ.
+2. فهم الجمهور للقيمة والفائدة الحقيقية.
+3. قوة زر الـ CTA وصراحته.
+4. سهولة القراءة والتصفح على الهاتف.
+5. الصدق وقابلية إثبات الادعاءات.
+
+ثم حدد أهم 3 نقاط ضعف واقترح تعديلًا عمليًا لكل منها، وأعد كتابة النسخة المحسنة الجاهزة للنشر.</div>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"Prompts 5 و 6 للصور والمراجعة","script":"أمر توليد الصور بالإنجليزية لضمان أفضل جودة مع التشديد على خلو الصورة من الحروف المشوهة. وأمر المراجعة يعمل كناقد قبل نقل النصوص إلى محرر Elementor.","notes":["تنبيه الطلاب بأن النصوص توضع في Elementor وليس داخل الصورة المولدة","تطبيق أمر المراجعة لتحسين النصوص قبل بدء التحدي"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 17: ELEMENTOR BUILD PLAN (FIRST 2 SECTIONS)
+         ===================================================================== -->
+    <div class="slide" data-slide="17" data-title="خطة البناء في Elementor Free">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-laptop-code"></i> التطبيق العملي</span>
+            <h2 class="slide-title">خطة بناء أول قسمين في Elementor Free</h2>
+          </div>
+          <span class="slide-subtitle">إعدادات مقترحة لبناء احترافي سريع</span>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="card" style="border-top: 4px solid var(--wp-blue);">
+            <h4 class="card-title" style="color: var(--wp-blue); font-size: 1.25rem;">1. الـ Hero Section (القسم الأول)</h4>
+            <ul style="padding-right: 1.25rem; font-size: 0.925rem; color: var(--text-secondary); line-height: 1.9;">
+              <li><strong>Container رئيسية:</strong> اتجاه <code>Row</code>، العرض <code>Boxed (1140px)</code>.</li>
+              <li><strong>حاوية النصوص:</strong> Heading (العنوان) + Text (الوصف) + Button (الـ CTA).</li>
+              <li><strong>حاوية الصورة:</strong> ودجت Image مع تدوير الحواف وظل ناعم.</li>
+              <li><strong>الهاتف:</strong> يتحول تلقائياً إلى <code>Column</code> مع توسيط الزر وتقليص حجم الخط.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--emerald-green);">
+            <h4 class="card-title" style="color: var(--emerald-green); font-size: 1.25rem;">2. قسم المشكلة أو الفوائد (القسم الثاني)</h4>
+            <ul style="padding-right: 1.25rem; font-size: 0.925rem; color: var(--text-secondary); line-height: 1.9;">
+              <li><strong>Container رئيسية:</strong> اتجاه <code>Column</code>، تضم عنوان القسم وفقرة توضيحية.</li>
+              <li><strong>Container البطاقات:</strong> اتجاه <code>Row</code> مع تفعيل <code>Wrap</code>.</li>
+              <li><strong>3 بطاقات داخلية:</strong> أيقونة + عنوان المشكلة/الفائدة + شرح في سطرين.</li>
+              <li><strong>المسافات:</strong> استخدام <code>Gap: 24px</code> لتوحيد المسافات بين البطاقات بنقرة واحدة.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="margin-top: 1rem; background: var(--bg-card); padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); display: flex; justify-content: space-around; text-align: center; font-size: 0.9rem;">
+          <span>📏 <strong>عرض المحتوى:</strong> 1140px</span>
+          <span>📐 <strong>حشوة القسم (Padding):</strong> 60px أعلى وأسفل</span>
+          <span>📱 <strong>حجم خط العنوان:</strong> 42px ديسكتوب / 28px موبايل</span>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"خطة البناء في Elementor","script":"استعرض المقاسات القياسية أمام الطلاب. هذا التوحيد يمنع تباين الأحجام العشوائي ويضمن أن تظهر صفحة الهبوط بشكل احترافي ومتزن.","notes":["تنفيذ الخطوات عملياً أمام الطلاب في 10 دقائق","تذكير الطلاب بفحص الموبايل في كل مرحلة"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 18: CHALLENGE 1 PROMPT BATTLE
+         ===================================================================== -->
+    <div class="slide" data-slide="18" data-title="التحدي الأول: Prompt Battle">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag" style="background: rgba(239,68,68,0.15); color: #f87171; border-color: rgba(239,68,68,0.3);"><i class="fa-solid fa-bolt"></i> التحدي الأول: 15 دقيقة</span>
+            <h2 class="slide-title">التحدي الأول: معركة الأوامر (Prompt Battle)</h2>
+          </div>
+          <span class="xp-badge" style="color: #ef4444; border-color: #ef4444;"><i class="fa-solid fa-trophy"></i> +100 XP</span>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 2fr 1fr;">
+          <div class="card">
+            <h3 class="card-title" style="color: var(--wp-blue);">المهمة: اكتب أقوى عنوان بيعي وعرض تسويقي بالـ AI</h3>
+            <ol style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 2;">
+              <li>(3 دقائق): تحديد الجمهور والمشكلة والميزة الأساسية لمنتجك.</li>
+              <li>(5 دقائق): تشغيل Prompt AIDA أو PAS لإنتاج 3 نسخ مختلفة بالذكاء الاصطناعي.</li>
+              <li>(4 دقائق): مراجعة واختيار أفضل عنوان ووصف وكتابة زر CTA محدد.</li>
+              <li>(3 دقائق): عرض النسخة الفائزة على المدرب أو الزميل المجاور للتقييم.</li>
+            </ol>
+            <div style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--emerald-green); font-weight: 700;">
+              معايير الفوز: وضوح العنوان (30 XP) + وضوح الفائدة الحقيقية (25 XP) + تحديد الـ CTA (20 XP) + تنظيم الـ Prompt (15 XP) + الصدق والإبداع (10 XP).
+            </div>
+          </div>
+
+          <div class="slide-timer-box" id="timerBox1">
+            <div class="slide-timer-display" id="battleTimerDisplay">15:00</div>
+            <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+              <button class="action-pill-btn" style="background: var(--emerald-green); color: #fff;" onclick="toggleBattleTimer(this)">
+                <i class="fa-solid fa-play"></i> ابدأ المعركة
+              </button>
+              <button class="action-pill-btn" onclick="resetBattleTimer()">
+                <i class="fa-solid fa-rotate-left"></i> ضبط (15 د)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"تحدي Prompt Battle","script":"شغّل المؤقت وشجع المنافسة. ذكّر الطلاب أن العنوان الفائز ليس الأعلى صخباً بل الأكثر وضوحاً وارتباطاً بحاجة العميل.","notes":["الاستماع لـ 3 نماذج من الطلاب بعد انتهاء الوقت","منح 100 XP للمشاركات الملتزمة بالمعايير"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 19: CHALLENGE 2 SPEED BUILD
+         ===================================================================== -->
+    <div class="slide" data-slide="19" data-title="التحدي الثاني: Speed Build">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag" style="background: rgba(239,68,68,0.15); color: #f87171; border-color: rgba(239,68,68,0.3);"><i class="fa-solid fa-stopwatch"></i> التحدي الأكبر: 20 دقيقة</span>
+            <h2 class="slide-title">التحدي الثاني: بناء أول قسمين في Elementor (Speed Build)</h2>
+          </div>
+          <span class="xp-badge" style="color: #ef4444; border-color: #ef4444;"><i class="fa-solid fa-fire"></i> +150 XP</span>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns: 2fr 1fr;">
+          <div class="card">
+            <h3 class="card-title" style="color: var(--emerald-green);">المهمة: ابنِ الـ Hero وقسم المشكلة/الفوائد كاملاً</h3>
+            <ol style="padding-right: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 2;">
+              <li>(3 دقائق): فتح صفحة جديدة باسم Landing Page في LocalWP وتشغيل Elementor.</li>
+              <li>(7 دقائق): بناء قسم Hero (عنوان H1 + وصف + زر CTA + صورة متناسقة).</li>
+              <li>(7 دقائق): بناء القسم الثاني (عنوان القسم + 3 بطاقات للمشكلات أو الفوائد).</li>
+              <li>(3 دقائق): ضبط المسافات والألوان وحفظ الصفحة وفحصها على الهاتف!</li>
+            </ol>
+            <div style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--emerald-green); font-weight: 700;">
+              معايير الفوز: اكتمال الـ Hero (40 XP) + وضوح القسم الثاني (30 XP) + تنسيق المسافات (20 XP) + فحص الهاتف والحفظ (10 XP) + الالتزام بالوقت (50 XP).
+            </div>
+          </div>
+
+          <div class="slide-timer-box" id="timerBox2">
+            <div class="slide-timer-display" id="speedTimerDisplayDay3">20:00</div>
+            <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+              <button class="action-pill-btn" style="background: var(--emerald-green); color: #fff;" onclick="toggleSpeedTimerDay3(this)">
+                <i class="fa-solid fa-play"></i> انطلاق التحدي!
+              </button>
+              <button class="action-pill-btn" onclick="resetSpeedTimerDay3()">
+                <i class="fa-solid fa-rotate-left"></i> ضبط (20 د)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"تحدي Speed Build لصفحة الهبوط","script":"هذا هو التطبيق العملي الأهم لليوم. في 20 دقيقة ينقل الطلاب ما خططوه بالذكاء الاصطناعي إلى صفحة حقيقية على Elementor.","notes":["مراقبة التزام الطلاب بالوقت","التأكيد على معاينة شاشة الموبايل قبل الحفظ"]}
+      </script>
+    </div>
+
+    <!-- =====================================================================
+         SLIDE 20: CHECKLIST & CLOSING
+         ===================================================================== -->
+    <div class="slide" data-slide="20" data-title="قائمة الفحص وخاتمة اليوم الثالث">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div>
+            <span class="slide-tag"><i class="fa-solid fa-clipboard-check"></i> قائمة التسليم</span>
+            <h2 class="slide-title">قائمة فحص إطلاق صفحة الهبوط (Landing Page Launch Checklist)</h2>
+          </div>
+          <span class="xp-badge"><i class="fa-solid fa-trophy"></i> إجمالي اليوم: حتى 250 XP</span>
+        </div>
+
+        <div class="checklist-grid">
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>1. تحديد هدف تحويل تجاري أساسي واحد للصفحة</span>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>2. كتابة عنوان رئيسي قوي ووصف يوضح الفائدة الحقيقية</span>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>3. إضافة زر CTA بلون متباين ونص محدد وصريح</span>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>4. بناء قسم المشكلات أو الفوائد في 3 بطاقات منسقة</span>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>5. اختيار صورة متناسقة تخدم المعنى دون نصوص مشوهة</span>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>6. اختبار ومعاينة الصفحة بالكامل على شاشة الهاتف</span>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>7. حفظ الصفحة ومراجعة ظهور التعديلات في المعاينة</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.5rem; text-align: center; background: linear-gradient(135deg, rgba(236,72,153,0.15), rgba(139,92,246,0.15)); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-highlight);">
+          <h3 style="margin-bottom: 0.35rem; font-size: 1.4rem;">🚀 مبروك! لقد أتقنت اليوم عقلية المسوّق وهندسة التحويل!</h3>
+          <p style="margin: 0; color: var(--text-secondary); font-size: 0.95rem;">
+            استعدوا للسيشن التالية: سنكمل بناء باقي أقسام صفحة الهبوط (Social Proof و FAQ و Final CTA) ونراجع تجربة الزائر الكاملة!
+          </p>
+        </div>
+      </div>
+      <script type="application/json" class="slide-notes">
+      {"title":"ختام اليوم الثالث والتقييم","script":"اختم بالاحتفال بما أنجزه الطلاب. اليوم تعلموا التفكير كمسوقين وليس كمصممين فقط. كل طالب بنى أول قسمين من صفحة هبوط بيعية حقيقية لها هدف تجاري واضح.","notes":["تسجيل نقاط التحديات في لوحة الشرف","تذكير الطلاب بالواجب المنزلي الاختياري لتحسين العناوين"]}
+      </script>
+    </div>
+
+  </div> <!-- End Deck -->
+
+  <!-- Bottom Navigation Controls Bar -->
+  <div class="controls-bottom-bar">
+    <button class="nav-btn" id="prevBtn" title="الشريحة السابقة (السهم الأيمن أو Up)">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+    <div class="slide-counter" id="slideCounter">1 / 21</div>
+    <button class="nav-btn" id="nextBtn" title="الشريحة التالية (السهم الأيسر أو المسافة)">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+  </div>
+
+  <!-- Speaker Notes Drawer -->
+  <div class="notes-drawer" id="notesDrawer">
+    <div class="notes-drawer-header">
+      <h3 style="margin: 0; color: var(--wp-blue); font-size: 1.15rem;"><i class="fa-solid fa-chalkboard-user"></i> ملاحظات الشرح للمدرب</h3>
+      <button class="action-pill-btn" id="closeNotesBtn" style="padding: 0.2rem 0.6rem;">
+        <i class="fa-solid fa-xmark"></i> إغلاق
+      </button>
+    </div>
+    <div id="notesBody">
+      <h4 id="notesTitle" style="color: var(--text-primary); margin-bottom: 0.4rem;"></h4>
+      <p id="notesScript" style="color: var(--text-secondary); line-height: 1.7; margin-bottom: 0.75rem; font-size: 0.95rem;"></p>
+      <div id="notesBullets" style="font-size: 0.875rem; color: var(--emerald-green);"></div>
+    </div>
+  </div>
+
+  <!-- Overview Grid Modal -->
+  <div class="overview-modal" id="overviewModal">
+    <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; width: 100%; margin: 0 auto;">
+      <h2 style="margin: 0;"><i class="fa-solid fa-grip"></i> فهرس شرائح اليوم الثالث</h2>
+      <button class="action-pill-btn" id="closeOverviewBtn">
+        <i class="fa-solid fa-xmark"></i> إغلاق الفهرس
+      </button>
+    </div>
+    <div class="overview-grid" id="overviewGrid" style="max-width: 1200px; width: 100%; margin: 1.5rem auto 0;"></div>
+  </div>
+
+  <!-- Presentation Engine Script -->
+  <script>
+    const deck = document.getElementById('deck');
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const slideCounter = document.getElementById('slideCounter');
+    const progressBar = document.getElementById('progressBar');
+    
+    // Notes & Overview Elements
+    const notesDrawer = document.getElementById('notesDrawer');
+    const notesToggleBtn = document.getElementById('notesToggleBtn');
+    const closeNotesBtn = document.getElementById('closeNotesBtn');
+    const notesTitle = document.getElementById('notesTitle');
+    const notesScript = document.getElementById('notesScript');
+    const notesBullets = document.getElementById('notesBullets');
+
+    const overviewModal = document.getElementById('overviewModal');
+    const overviewBtn = document.getElementById('overviewBtn');
+    const closeOverviewBtn = document.getElementById('closeOverviewBtn');
+    const overviewGrid = document.getElementById('overviewGrid');
+
+    // Theme Elements
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const toastNotice = document.getElementById('toastNotice');
+
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+
+    function init() {
+      buildOverviewGrid();
+      goTo(0);
+      setupEventListeners();
+      initTheme();
+    }
+
+    function goTo(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+
+      currentSlide = index;
+      updateUI();
+      updateNotes();
+    }
+
+    function next() {
+      if (currentSlide < totalSlides - 1) goTo(currentSlide + 1);
+    }
+
+    function prev() {
+      if (currentSlide > 0) goTo(currentSlide - 1);
+    }
+
+    function updateUI() {
+      slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+      const progressPercent = ((currentSlide + 1) / totalSlides) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      const thumbs = overviewGrid.querySelectorAll('.overview-thumb');
+      thumbs.forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === currentSlide);
+      });
+    }
+
+    function updateNotes() {
+      const activeSlide = slides[currentSlide];
+      const notesScriptTag = activeSlide.querySelector('.slide-notes');
+      if (notesScriptTag) {
+        try {
+          const data = JSON.parse(notesScriptTag.textContent);
+          notesTitle.textContent = data.title || `شريحة ${currentSlide + 1}`;
+          notesScript.textContent = data.script || 'لا يوجد نص للشرح في هذه الشريحة.';
+          
+          if (data.notes && Array.isArray(data.notes)) {
+            notesBullets.innerHTML = '<ul style="margin: 0; padding-right: 1.25rem;">' + 
+              data.notes.map(n => `<li style="margin-bottom: 0.25rem;">${n}</li>`).join('') + 
+              '</ul>';
+          } else {
+            notesBullets.innerHTML = '';
+          }
+        } catch (e) {
+          notesTitle.textContent = `شريحة ${currentSlide + 1}`;
+          notesScript.textContent = notesScriptTag.textContent;
+          notesBullets.innerHTML = '';
+        }
+      } else {
+        notesTitle.textContent = `شريحة ${currentSlide + 1}`;
+        notesScript.textContent = 'لا توجد ملاحظات مسجلة لهذه الشريحة.';
+        notesBullets.innerHTML = '';
+      }
+    }
+
+    function buildOverviewGrid() {
+      overviewGrid.innerHTML = '';
+      slides.forEach((slide, i) => {
+        const title = slide.getAttribute('data-title') || `شريحة ${i + 1}`;
+        const thumb = document.createElement('div');
+        thumb.className = `overview-thumb ${i === 0 ? 'active' : ''}`;
+        thumb.innerHTML = `
+          <div class="overview-thumb-num">#${i + 1}</div>
+          <div class="overview-thumb-title">${title}</div>
+        `;
+        thumb.addEventListener('click', () => {
+          goTo(i);
+          overviewModal.classList.remove('open');
+        });
+        overviewGrid.appendChild(thumb);
+      });
+    }
+
+    // Prompt Copy Helper
+    window.copyPrompt = function(btn) {
+      const container = btn.closest('.prompt-container');
+      const content = container.querySelector('.prompt-content').innerText;
+      navigator.clipboard.writeText(content).then(() => {
+        showCopyToast(btn);
+      });
+    };
+
+    window.copyInnerPrompt = function(btn, elementId) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        showCopyToast(btn);
+      });
+    };
+
+    function showCopyToast(btn) {
+      const originalHTML = btn.innerHTML;
+      btn.classList.add('copied');
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> <span>تم النسخ!</span>';
+
+      toastNotice.classList.add('show');
+      setTimeout(() => {
+        toastNotice.classList.remove('show');
+        btn.classList.remove('copied');
+        btn.innerHTML = originalHTML;
+      }, 2000);
+    }
+
+    // Timers for Day 3 Challenges
+    let battleTime = 15 * 60;
+    let battleInterval = null;
+    let isBattleRunning = false;
+
+    window.toggleBattleTimer = function(btn) {
+      if (isBattleRunning) {
+        clearInterval(battleInterval);
+        isBattleRunning = false;
+        btn.innerHTML = '<i class="fa-solid fa-play"></i> استئناف';
+      } else {
+        isBattleRunning = true;
+        btn.innerHTML = '<i class="fa-solid fa-pause"></i> إيقاف مؤقت';
+        battleInterval = setInterval(() => {
+          if (battleTime > 0) {
+            battleTime--;
+            const mins = Math.floor(battleTime / 60);
+            const secs = battleTime % 60;
+            document.getElementById('battleTimerDisplay').textContent = 
+              `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+          } else {
+            clearInterval(battleInterval);
+            isBattleRunning = false;
+            btn.innerHTML = '<i class="fa-solid fa-flag-checkered"></i> انتهى الوقت!';
+            alert('انتهت الـ 15 دقيقة لتحدي Prompt Battle! حان وقت استعراض العناوين 🏆');
+          }
+        }, 1000);
+      }
+    };
+
+    window.resetBattleTimer = function() {
+      clearInterval(battleInterval);
+      isBattleRunning = false;
+      battleTime = 15 * 60;
+      document.getElementById('battleTimerDisplay').textContent = '15:00';
+    };
+
+    let speedTimeDay3 = 20 * 60;
+    let speedIntervalDay3 = null;
+    let isSpeedRunningDay3 = false;
+
+    window.toggleSpeedTimerDay3 = function(btn) {
+      if (isSpeedRunningDay3) {
+        clearInterval(speedIntervalDay3);
+        isSpeedRunningDay3 = false;
+        btn.innerHTML = '<i class="fa-solid fa-play"></i> استئناف';
+      } else {
+        isSpeedRunningDay3 = true;
+        btn.innerHTML = '<i class="fa-solid fa-pause"></i> إيقاف مؤقت';
+        speedIntervalDay3 = setInterval(() => {
+          if (speedTimeDay3 > 0) {
+            speedTimeDay3--;
+            const mins = Math.floor(speedTimeDay3 / 60);
+            const secs = speedTimeDay3 % 60;
+            document.getElementById('speedTimerDisplayDay3').textContent = 
+              `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+          } else {
+            clearInterval(speedIntervalDay3);
+            isSpeedRunningDay3 = false;
+            btn.innerHTML = '<i class="fa-solid fa-flag-checkered"></i> انتهى التحدي!';
+            alert('انتهت الـ 20 دقيقة لتحدي Speed Build لصفحة الهبوط! حان وقت المعاينة 🚀');
+          }
+        }, 1000);
+      }
+    };
+
+    window.resetSpeedTimerDay3 = function() {
+      clearInterval(speedIntervalDay3);
+      isSpeedRunningDay3 = false;
+      speedTimeDay3 = 20 * 60;
+      document.getElementById('speedTimerDisplayDay3').textContent = '20:00';
+    };
+
+    function setupEventListeners() {
+      prevBtn.addEventListener('click', prev);
+      nextBtn.addEventListener('click', next);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        if (e.key === 'ArrowLeft' || e.key === ' ' || e.key === 'PageDown') {
+          e.preventDefault();
+          next();
+        } else if (e.key === 'ArrowRight' || e.key === 'PageUp') {
+          e.preventDefault();
+          prev();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          goTo(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          goTo(totalSlides - 1);
+        } else if (e.key.toLowerCase() === 'o') {
+          overviewModal.classList.toggle('open');
+        } else if (e.key.toLowerCase() === 'n') {
+          notesDrawer.classList.toggle('open');
+        } else if (e.key.toLowerCase() === 'f') {
+          toggleFullScreen();
+        } else if (e.key === 'Escape') {
+          overviewModal.classList.remove('open');
+          notesDrawer.classList.remove('open');
+        }
+      });
+
+      overviewBtn.addEventListener('click', () => overviewModal.classList.add('open'));
+      closeOverviewBtn.addEventListener('click', () => overviewModal.classList.remove('open'));
+      notesToggleBtn.addEventListener('click', () => notesDrawer.classList.toggle('open'));
+      closeNotesBtn.addEventListener('click', () => notesDrawer.classList.remove('open'));
+      fullscreenBtn.addEventListener('click', toggleFullScreen);
+      themeToggleBtn.addEventListener('click', toggleTheme);
+    }
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('slides_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeButton(savedTheme);
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const newTheme = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('slides_theme', newTheme);
+      updateThemeButton(newTheme);
+    }
+
+    function updateThemeButton(theme) {
+      if (theme === 'dark') {
+        themeIcon.className = 'fa-solid fa-moon';
+        themeText.textContent = 'الوضع الليلي';
+      } else {
+        themeIcon.className = 'fa-solid fa-sun';
+        themeText.textContent = 'الوضع النهاري';
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
